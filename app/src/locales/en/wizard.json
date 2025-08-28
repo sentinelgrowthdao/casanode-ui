@@ -13,29 +13,6 @@
 	"moniker-placeholder": "Enter your moniker",
 	"moniker-error": "The moniker must be at least 4 characters long.",
 	
-	"location-title": "Select Node Location",
-	"location-text": "Choose the type of environment where your node is hosted. This helps configure network settings for optimal performance.",
-	"location-residential": "Residential",
-	"location-datacenter": "Datacenter",
-	"location-residential-desc": "Residential: If your node is hosted in a home or personal space.",
-	"location-datacenter-desc": "Datacenter: If your node is hosted in a datacenter or server facility.",
-	"location-placeholder": "Choose location",
-	
-	"protocol-title": "Select Your VPN Protocol",
-	"protocol-text": "Choose the protocol that best suits your needs:",
-	"protocol-wireguard": "WireGuard",
-	"protocol-wireguard-desc": "A fast and modern VPN protocol known for its simplicity and strong encryption.",
-	"protocol-v2ray": "V2Ray",
-	"protocol-v2ray-desc": "A versatile protocol supporting multiple features, ideal for bypassing internet censorship.",
-	"protocol-placeholder": "Choose protocol",
-	
-	"network-title": "Configure Network Settings",
-	"network-text": "Provide the following information to set up your node's network:",
-	"network-public-ip": "Public IP",
-	"network-api-port": "API Port",
-	"network-wireguard-port": "WireGuard Port",
-	"network-v2ray-port": "V2Ray Port",
-	
 	"protection-title": "Wallet Protection",
 	"protection-text": "Do you wish to protect your wallet with a passphrase? This will enhance security, but the passphrase will be required every time the node restarts.",
 	

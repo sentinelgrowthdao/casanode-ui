@@ -6,6 +6,7 @@ import {
 import { useRouter } from 'vue-router';
 import { useNodeStore } from '@stores/NodeStore';
 import LoadingButton from '@components/LoadingButton.vue';
+import NodeService from '@/services/NodeService';
 
 // Router
 const router = useRouter();
@@ -18,6 +19,12 @@ const nodeStore = useNodeStore();
  */
 const checkNodeConfiguration = async () =>
 {
+	// Reset the store to avoid persisted data
+	nodeStore.resetStore();
+	
+	// Load actual configuration from the node
+	await NodeService.loadNodeConfiguration();
+	
 	// If node already configured, go to the reset page
 	if(nodeStore.moniker.length > 0
 		|| nodeStore.nodeType.length > 0

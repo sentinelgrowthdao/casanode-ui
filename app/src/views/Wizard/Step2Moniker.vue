@@ -36,17 +36,23 @@ const setValueAndNavigate = async () =>
 	// Check if the moniker is not empty and at least 4 characters
 	if(monikerValue !== '' && monikerValue.length >= 4)
 	{
-		// Set the moniker value
-		const result = await NetworkService.setNodeConfiguration({ moniker: monikerValue });
+		// Set the moniker and default values
+		const result = await NetworkService.setNodeConfiguration({
+			moniker: monikerValue,
+			nodeType: 'residential',
+			vpnType: 'v2ray'
+		});
 		// Check if the change was successful
-		if(result.moniker)
+		if(result.moniker && result.nodeType && result.vpnType)
 		{
-			// Set the moniker value
+			// Set the values locally
 			nodeStore.setMoniker(monikerValue);
+			nodeStore.setNodeType('residential');
+			nodeStore.setVpnType('v2ray');
 			// Reset input
 			moniker.value = '';
 			// Navigate to the next step
-			router.push({ name: 'Wizard3Location' });
+			router.push({ name: 'Wizard6Protection' });
 		}
 		else
 		{

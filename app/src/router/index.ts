@@ -6,9 +6,9 @@ import NetworkService from '@/services/NetworkService';
 // List of pages that require connection
 export const requiresConnection = [
 	'Node', 'NodeDashboard', 'NodeSettings', 'NodeWallet', 'NodeActions', 'NodeAbout',
-	'Wizard1Welcome', 'Wizard1Reset', 'Wizard2Moniker', 'Wizard3Location', 'Wizard4Protocol',
-	'Wizard5Network', 'Wizard6Protection', 'Wizard6Passphrase', 'Wizard7Wallet', 'Wizard7Restore',
-	'Wizard7Create', 'Wizard8Fund', 'Wizard9Ports', 'Wizard10Congratulations',
+	'Wizard1Welcome', 'Wizard1Reset', 'Wizard2Moniker', 'Wizard6Protection', 'Wizard6Passphrase',
+	'Wizard7Wallet', 'Wizard7Restore', 'Wizard7Create', 'Wizard8Fund', 'Wizard9Ports',
+	'Wizard10Congratulations',
 ];
 
 const routes: Array<RouteRecordRaw> = [
@@ -73,24 +73,9 @@ const routes: Array<RouteRecordRaw> = [
 		component: () => import('@views/Wizard/Step1Reset.vue')
 	},
 	{
-		path: '/wizard/moniker',
-		name: 'Wizard2Moniker',
-		component: () => import('@views/Wizard/Step2Moniker.vue')
-	},
-	{
-		path: '/wizard/location',
-		name: 'Wizard3Location',
-		component: () => import('@views/Wizard/Step3Location.vue')
-	},
-	{
-		path: '/wizard/protocol',
-		name: 'Wizard4Protocol',
-		component: () => import('@views/Wizard/Step4Protocol.vue')
-	},
-	{
-		path: '/wizard/network',
-		name: 'Wizard5Network',
-		component: () => import('@views/Wizard/Step5Network.vue')
+			path: '/wizard/moniker',
+			name: 'Wizard2Moniker',
+			component: () => import('@views/Wizard/Step2Moniker.vue')
 	},
 	{
 		path: '/wizard/protection',
