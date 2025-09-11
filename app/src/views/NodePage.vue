@@ -4,9 +4,9 @@ import {
 	IonTabBar, IonTabButton, IonIcon, IonLabel
 } from '@ionic/vue';
 import { shieldHalf, settings, wallet, power, helpCircle } from 'ionicons/icons';
-import { startNetworkMonitorHook } from '@/hooks/BluetoothMonitorHook';
+import { startNetworkMonitorHook } from '@/hooks/NetworkMonitorHook';
 
-// Start the Bluetooth monitor hook
+// Start the network monitor hook
 startNetworkMonitorHook();
 </script>
 
