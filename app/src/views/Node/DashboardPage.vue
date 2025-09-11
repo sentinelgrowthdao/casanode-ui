@@ -27,7 +27,7 @@ const deviceStore = useDeviceStore();
  */
 onMounted(() =>
 {
-	// Check if the Bluetooth is connected
+    // Check if the node is connected
 	if(NetworkService.isConnected())
 	{
 		// Get the last device
