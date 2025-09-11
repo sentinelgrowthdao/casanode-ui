@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { type Ref, ref, watch, defineProps, defineEmits, onMounted } from 'vue';
+import { type Ref, ref, watch, onMounted } from 'vue';
 import { IonInput } from '@ionic/vue';
 
 const props = defineProps({
