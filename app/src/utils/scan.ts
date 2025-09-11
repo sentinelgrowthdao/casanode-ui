@@ -1,27 +1,6 @@
 import { BarcodeScanner, BarcodeFormat } from '@capacitor-mlkit/barcode-scanning';
-import NetworkService from '@/services/NetworkService';
+import { parseClaimUrl, type ClaimPayload } from '@/utils/claim';
 
-export interface QRData
-{
-	device: string;
-	os: string;
-	kernel: string;
-	architecture: string;
-	ip: string | null;
-	webPort: string | number;
-	apiPort: string | number;
-	authToken: string;
-	bluetooth?: {
-		uuid: string;
-		discovery: string;
-		seed: string;
-	};
-}
-
-/**
- * Install Google Barcode Scanner module
- * @returns {Promise<void>}
- */
 /**
  * Install Google Barcode Scanner module
  * @returns {Promise<void>}
@@ -30,16 +9,11 @@ export async function installScannerModule(): Promise<void>
 {
 	try
 	{
-		// Check camera permission
 		await BarcodeScanner.requestPermissions();
-		
-		// Check if the Google Barcode Scanner module is available
 		const module = await BarcodeScanner.isGoogleBarcodeScannerModuleAvailable();
-		// If not available, install the module
-		if (!module.available)
+		if(!module.available)
 		{
 			console.log('[SCANNER] Google Barcode Scanner module is not available');
-			// Install Google Barcode Scanner module
 			await BarcodeScanner.installGoogleBarcodeScannerModule();
 			console.log('[SCANNER] Google Barcode Scanner module installed');
 		}
@@ -52,55 +26,105 @@ export async function installScannerModule(): Promise<void>
 	}
 }
 
-
 /**
- * Scan a QR code and return the data
- * @returns {Promise<QRData|undefined>}
+ * Scan a QR code containing a casanode claim URL
+ * @returns {Promise<ClaimPayload|undefined>}
  */
-export async function scanQrcode(): Promise<QRData|undefined>
+export async function scanClaimQr(): Promise<ClaimPayload | undefined>
 {
 	try
 	{
-		// Start scanning
-		const result = await BarcodeScanner.scan({formats: [BarcodeFormat.QrCode]});
-		
-		// Check if the scan was successful and has content
+		const result = await BarcodeScanner.scan({ formats: [BarcodeFormat.QrCode] });
 		if(result && result.barcodes.length > 0)
 		{
-			// Check if the device is connected
-			const isConnected = await NetworkService.isConnected();
-			
-			// Disconnect if already connected
-			if(isConnected)
-				await NetworkService.disconnect();
-			
-			// Parse the QR code data
-			const qrData: QRData = JSON.parse(result.barcodes[0].rawValue) as QRData;
-			// Return the QR code data
-			return qrData;
+			const raw = result.barcodes[0].rawValue;
+			if(raw)
+				return parseClaimUrl(raw);
 		}
 		else
 		{
 			console.error('Scan failed or no content found');
-		}
-	}
-	catch (error: any)
-	{
-		// Check if the error is due to the barcode scanner being unavailable
-		if(typeof(error?.code) !== 'undefined' && error?.code === 'UNAVAILABLE')
-		{
-			// Attempt to load the JSON file in development mode if the scanner is unavailable
 			if(process.env.NODE_ENV === 'development')
 			{
 				try
 				{
-					// @ts-expect-error Dynamically import the JSON file
+					// @ts-expect-error dynamically import JSON alias
 					const qrData = await import('@qrcode.json');
-					return qrData.default as QRData;
+					const payload = qrData?.default;
+					if (typeof payload === 'string')
+						return parseClaimUrl(payload);
+					if (payload && typeof payload === 'object')
+					{
+						if (typeof payload.raw === 'string')
+							return parseClaimUrl(payload.raw);
+						if (typeof payload.ip === 'string' && (typeof payload.apiPort === 'string' || typeof payload.apiPort === 'number'))
+						{
+							const apiPortNum = typeof payload.apiPort === 'string' ? parseInt(payload.apiPort, 10) : payload.apiPort;
+							return {
+								deviceId: payload.device || 'dev-node',
+								claimCode: '',
+								ap: '',
+								pw: '',
+								host: payload.ip,
+								fp: undefined,
+								authToken: typeof payload.authToken === 'string' ? payload.authToken : undefined,
+								apiPort: Number.isFinite(apiPortNum) ? apiPortNum : 8443,
+							} as ClaimPayload;
+						}
+					}
 				}
-				catch (fileError)
+				catch(fileError)
 				{
-					console.error('The qrdata.json file is not available or could not be loaded');
+					console.error('The qrcode.json file is not available or could not be loaded');
+				}
+			}
+		}
+	}
+	catch (error: any)
+	{
+		if(typeof(error?.code) !== 'undefined' && error?.code === 'UNAVAILABLE')
+		{
+			if(process.env.NODE_ENV === 'development')
+			{
+				try
+				{
+					// @ts-expect-error dynamically import JSON alias
+					const qrData = await import('@qrcode.json');
+					const payload = qrData?.default;
+					// Support two dev formats:
+					// 1) A string or { raw } containing the claim URL
+					// 2) An object with { ip, apiPort, authToken }
+					if (typeof payload === 'string')
+					{
+						return parseClaimUrl(payload);
+					}
+					else if (payload && typeof payload === 'object')
+					{
+						if (typeof payload.raw === 'string')
+						{
+							return parseClaimUrl(payload.raw);
+						}
+						// Object with remote API details
+						if (typeof payload.ip === 'string' && (typeof payload.apiPort === 'string' || typeof payload.apiPort === 'number'))
+						{
+							const apiPortNum = typeof payload.apiPort === 'string' ? parseInt(payload.apiPort, 10) : payload.apiPort;
+							return {
+								deviceId: payload.device || 'dev-node',
+								claimCode: '',
+								ap: '',
+								pw: '',
+								host: payload.ip,
+								fp: undefined,
+								authToken: typeof payload.authToken === 'string' ? payload.authToken : undefined,
+								apiPort: Number.isFinite(apiPortNum) ? apiPortNum : 8443,
+							} as ClaimPayload;
+						}
+					}
+					console.error('The qrcode.json file format is not recognized');
+				}
+				catch(fileError)
+				{
+					console.error('The qrcode.json file is not available or could not be loaded');
 				}
 			}
 			else
@@ -113,6 +137,6 @@ export async function scanQrcode(): Promise<QRData|undefined>
 			console.error('An unexpected error occurred:', error);
 		}
 	}
-	
+
 	return undefined;
 }
