@@ -18,11 +18,6 @@ const routes: Array<RouteRecordRaw> = [
 		component: () => import('@views/HomePage.vue')
 	},
 	{
-		path: '/bluetooth',
-		name: 'BluetoothTester',
-		component: () => import('@views/BluetoothPage.vue')
-	},
-	{
 		path: '/node',
 		name: 'Node',
 		component: NodeManager,
@@ -127,10 +122,10 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) =>
 {
-	// If the page requires bluetooth connection
+	// If the page requires a connection to the node
 	if(requiresConnection.includes(to.name as string))
 	{
-		// Check if the bluetooth is connected
+		// Check if the node is connected
 		const isConnected = await NetworkService.isConnected();
 		// If not connected, redirect to home
 		if (!isConnected)
