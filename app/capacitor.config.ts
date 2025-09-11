@@ -8,9 +8,6 @@ const config: CapacitorConfig = {
 	{
 		CapacitorMLKitBarcodeScanning: {
 			cameraPermissionText: "We need camera access to scan QR codes."
-		},
-		BluetoothLe: {
-			bluetoothPermissionText: "We need Bluetooth access to connect to your device."
 		}
 	}
 };
