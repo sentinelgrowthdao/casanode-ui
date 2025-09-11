@@ -14,11 +14,14 @@ import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { Browser } from '@capacitor/browser';
 import ConnectHelpModal from '@components/ConnectHelpModal.vue';
-import { installScannerModule, type QRData, scanQrcode } from '@/utils/scan';
+import { installScannerModule, scanClaimQr } from '@/utils/scan';
+import { type ClaimPayload } from '@/utils/claim';
 import { toggleKeepAwake } from '@/utils/awake';
 import { useDeviceStore, type DeviceEntry } from '@stores/DeviceStore';
 import NetworkService from '@/services/NetworkService';
 import NodeService from '@/services/NodeService';
+import { CasaWifi } from '@/plugins/CasaWifi';
+import { CasaHttp } from '@/plugins/CasaHttp';
 
 // Router
 const router = useRouter();
@@ -28,8 +31,8 @@ const { t } = useI18n();
 const deviceStore = useDeviceStore();
 // Device Ref
 const deviceRef: Ref<DeviceEntry | null> = ref(null);
-// QR Code data
-const deviceQrcodeData: Ref<QRData | null> = ref(null);
+// Claim payload data
+const deviceQrcodeData: Ref<ClaimPayload | null> = ref(null);
 
 // Connecting message
 const connectingMessage: Ref<string> = ref('');
@@ -86,22 +89,11 @@ const deviceConnection = async () =>
 	{
 		// Keep the device awake
 		await toggleKeepAwake(true);
-		// Check if the device is ble
-		if(deviceRef.value.connector === 'ble')
-		{
-			// Connect to the device
-			await NetworkService.connect('bluetooth', {seed: deviceRef.value.bleUuid});
-		}
-		else
-		{
-			// Connect to the device
-			await NetworkService.connect('api', {
-				ip: deviceRef.value.apiIp,
-				port: deviceRef.value.apiPort,
-				token: deviceRef.value.apiToken,
-			});
-		}
-		// Continue the connection process
+		await NetworkService.connect({
+			ip: deviceRef.value.apiIp ?? undefined,
+			port: deviceRef.value.apiPort ?? undefined,
+			token: deviceRef.value.apiToken ?? undefined,
+		});
 		await connectionToNode();
 	}
 };
@@ -120,45 +112,29 @@ const deviceRemove = () =>
 };
 
 /**
- * Try to connect to the Bluetooth device using scanned QR code
+ * Try to connect to the device using scanned QR code
  * @returns {Promise<void>}
  */
 const tryConnection = async () =>
 {
-	// Clear the messages
 	connectingMessage.value = '';
 	errorMessage.value = '';
 	passphraseErrorMessage.value = '';
-	
-	// Keep the device awake
+
 	await toggleKeepAwake(true);
-	// Install the scanner if required
 	await installScannerModule();
-	// Scan the QR code
-	const qrcodeData : QRData | undefined = await scanQrcode();
-	
-	// If the QR code data is available
+	const qrcodeData: ClaimPayload | undefined = await scanClaimQr();
+
 	if(qrcodeData)
 	{
 		deviceQrcodeData.value = qrcodeData;
-		// If attribut bluetooth exists and is not null
-		if(qrcodeData.bluetooth)
-		{
-			// Open the choose method box
-			chooseConnectionMethodOpen.value = true;
-		}
-		else
-		{
-			// Connect to the device
-			await connectLocalNetwork();
-		}
+		await connectLocalNetwork();
 	}
 	else
 	{
-		// Disable the keep awake
 		await toggleKeepAwake(false);
 	}
-	
+
 };
 
 /**
@@ -167,99 +143,113 @@ const tryConnection = async () =>
  */
 const connectLocalNetwork = async (): Promise<void> =>
 {
-	// If the connection is in progress
 	if (isConnecting.value)
 		return;
 	isConnecting.value = true;
-	
+
 	try
 	{
-		// Get the IP, Port and Token
-		const ip = deviceQrcodeData.value?.ip || null;
-		const port = deviceQrcodeData.value?.apiPort || null;
-		const token = deviceQrcodeData.value?.authToken || null;
-		// Connect to the device using the IP, Port and Token
-		const connected = await NetworkService.connect('api', {
-			ip: ip,
-			port: port,
-			token: token,
+		// Development fallback: connect directly to remote API if token is provided
+		if (deviceQrcodeData.value?.authToken)
+		{
+			const connected = await NetworkService.connect({
+				ip: deviceQrcodeData.value.host,
+				port: deviceQrcodeData.value.apiPort || 8443,
+				token: deviceQrcodeData.value.authToken,
+			});
+
+			if (connected)
+			{
+				chooseConnectionMethodOpen.value = false;
+				deviceStore.addDevice({
+					uuid: deviceQrcodeData.value.deviceId || 'dev-node',
+					name: deviceQrcodeData.value.deviceId || 'dev-node',
+					address: `${deviceQrcodeData.value.host}:${deviceQrcodeData.value.apiPort || 8443}`,
+					connector: 'tcp',
+					bleUuid: null,
+					apiIp: deviceQrcodeData.value.host || null,
+					apiPort: deviceQrcodeData.value.apiPort || 8443,
+					apiToken: deviceQrcodeData.value.authToken || null,
+				});
+				deviceRef.value = deviceStore.getLastDevice();
+				await connectionToNode();
+				await toggleKeepAwake(false);
+			}
+			else
+			{
+				errorMessage.value = t('loading.error-message') as string;
+			}
+			return;
+		}
+
+		const join = await CasaWifi.join({
+			ssid: deviceQrcodeData.value?.ap || '',
+			passphrase: deviceQrcodeData.value?.pw,
+			timeoutMs: 15000,
 		});
-		
-		// If connected to the device
+		if(!join.connected)
+		{
+			errorMessage.value = t('loading.error-message') as string;
+			return;
+		}
+
+		const health = await CasaHttp.get({
+			url: `https://${deviceQrcodeData.value?.host}:8443/health`,
+			fingerprintSha256: deviceQrcodeData.value?.fp,
+		});
+		if(health.status !== 200)
+		{
+			errorMessage.value = t('loading.error-message') as string;
+			return;
+		}
+
+		const connected = await NetworkService.connect({
+			ip: deviceQrcodeData.value?.host,
+			port: 8443,
+		});
+
 		if(connected)
 		{
-			// Close the choose connection method
 			chooseConnectionMethodOpen.value = false;
-			// Continue the connection process
+			deviceStore.addDevice({
+				uuid: deviceQrcodeData.value?.deviceId || '',
+				name: deviceQrcodeData.value?.deviceId || '',
+				address: deviceQrcodeData.value?.host || '',
+				connector: 'tcp',
+				bleUuid: null,
+				apiIp: deviceQrcodeData.value?.host || null,
+				apiPort: 8443,
+				apiToken: null,
+			});
+			deviceRef.value = deviceStore.getLastDevice();
 			await connectionToNode();
-			// Disable the keep awake
 			await toggleKeepAwake(false);
 		}
 		else
 		{
-			// Set the connecting message
 			errorMessage.value = t('loading.error-message') as string;
 		}
 	}
-	finally 
+	finally
 	{
 		isConnecting.value = false;
 	}
 }
 
 /**
- * Connect to the device using Bluetooth
+ * Legacy Bluetooth connection (unsupported)
  * @returns {Promise<void>}
  */
 const connectBluetooth = async (): Promise<void> =>
 {
-	// If the connection is in progress
-	if (isConnecting.value)
-		return;
-	isConnecting.value = true;
-	
-	// Show the connecting message
-	connectingMessage.value = t('loading.wait-connection') as string;
-	errorMessage.value = '';
-	passphraseErrorMessage.value = '';
-	chooseConnectionMethodOpen.value = false;
-	passphraseFormOpen.value = false;
-	chooseConnectionMethodOpen.value = false;
-	
-	try
-	{
-		// Get the seed
-		const seed = deviceQrcodeData.value?.bluetooth?.seed || null;
-		// Connect to the device using the seed
-		const connected = await NetworkService.connect('bluetooth', {seed: seed});
-		
-		// If connected to the device
-		if(connected)
-		{
-			// Close the choose connection method
-			chooseConnectionMethodOpen.value = false;
-			// Continue the connection process
-			await connectionToNode();
-			// Disable the keep awake
-			await toggleKeepAwake(false);
-		}
-		else
-		{
-			// Set the connecting message
-			errorMessage.value = t('loading.error-message') as string;
-		}
-	}
-	finally 
-	{
-		isConnecting.value = false;
-	}
+	errorMessage.value = t('loading.error-message') as string;
 }
 
 /**
  * Cancel the connection
  * @returns {Promise<void>}
  */
-const cancelConnection = async (): Promise<void> => 
+const cancelConnection = async (): Promise<void> =>
 {
 	// Disable the keep awake
 	await toggleKeepAwake(false);
@@ -268,8 +258,6 @@ const cancelConnection = async (): Promise<void> =>
 	passphraseErrorMessage.value = '';
 	// Close the passphrase form
 	passphraseFormOpen.value = false;
-	// Close the choose connection method
-	chooseConnectionMethodOpen.value = false;
 };
 
 /**
@@ -278,31 +266,11 @@ const cancelConnection = async (): Promise<void> =>
 */
 const openHelpModal = async () =>
 {
-	// Show the find QR code loader
-	findQRCodeLoader.value = true;
-	// Connect to the device
-	const connected = await NetworkService.connect('bluetooth', {seed: ''});
-	// If connected to the device
-	if(connected)
-	{
-		// Read the IP and Port
-		const ipPort = await NetworkService.readDiscoveryInfos();
-		// Disconnect from the device
-		await NetworkService.disconnect();
-		
-		// Create the modal
-		const modal = await modalController.create({
-			component: ConnectHelpModal,
-			componentProps: {
-				ipPort
-			}
-		});
-		
-		// Present the modal
-		modal.present();
-	}
-	// Hide the find QR code loader
-	findQRCodeLoader.value = false;
+	const modal = await modalController.create({
+		component: ConnectHelpModal,
+		componentProps: { ipPort: '192.168.50.1:8081' }
+	});
+	modal.present();
 };
 
 /**
@@ -318,7 +286,7 @@ const isLoading = () =>
 }
 
 /**
- * Process the connection to the Bluetooth device
+ * Process the connection to the device
  */
 const connectionToNode = async () =>
 {
@@ -335,13 +303,12 @@ const connectionToNode = async () =>
 		{
 			// Get installation status
 			const checkInstallation = await NetworkService.checkInstallation();
-			
+
 			// Parse the installation status
 			const imageAvailable = checkInstallation.image;
 			const nodeConfig = checkInstallation.nodeConfig;
 			const vpnConfig = checkInstallation.vpnConfig;
 			const certificateKey = checkInstallation.certificateKey;
-			const walletAvailable = checkInstallation.wallet;
 			
 			// If the image is unavailable
 			if(!imageAvailable)
@@ -365,7 +332,7 @@ const connectionToNode = async () =>
 				// Set the waiting message
 				connectingMessage.value = t('loading.wait-config') as string;
 				// Request to install the node configuration
-				const installConfigs = await NetworkService.installNodeConfiguration();
+								const installConfigs = await NetworkService.installConfigs();
 				// If an error occurred
 				if(!installConfigs.nodeConfig || !installConfigs.vpnConfig || !installConfigs.certificate)
 				{
@@ -468,7 +435,7 @@ const submitPassphrase = async () =>
 	// Send the passphrase to the device
 	const passphraseValid = await NetworkService.setNodePassphrase(passphrase);
 	
-	// Send the passphrase to the BLE device
+	// Send the passphrase to the device
 	if(passphraseValid)
 	{
 		// Hide the loading
