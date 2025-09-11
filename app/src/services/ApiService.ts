@@ -3,6 +3,7 @@ import {
 	type HttpOptions,
 	type HttpHeaders,
 } from '@capacitor-community/http';
+import { Capacitor } from '@capacitor/core';
 import {
 	type NetworkStatus,
 	type NetworkConfiguration,
@@ -53,7 +54,8 @@ class ApiService
 		this.apiIp = ip;
 		this.apiPort = port;
 		this.authToken = token;
-		this.baseUrl = `https://${this.apiIp}:${this.apiPort}/api/v1`;
+		const isWebDev = typeof window !== 'undefined' && typeof import.meta !== 'undefined' && (import.meta as any).env && (import.meta as any).env.DEV && Capacitor.getPlatform() === 'web';
+		this.baseUrl = isWebDev ? `/api/v1` : `https://${this.apiIp}:${this.apiPort}/api/v1`;
 		this.connected = true;
 		return true;
 	}
