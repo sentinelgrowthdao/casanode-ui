@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { IonToolbar, IonTitle, IonButtons, IonButton } from '@ionic/vue';
+import { IonToolbar, IonTitle, IonButtons, IonButton } from '@/ui';
 import { useRouter } from 'vue-router';
 import { useNodeStore } from '@stores/NodeStore';
 import { computed } from 'vue';
@@ -44,19 +44,19 @@ const nodeDisconnect = async() =>
 </script>
 
 <template>
-	<ion-toolbar>
-		<ion-buttons slot="start">
-			<ion-button fill="outline" class="logo" @click="nodeDisconnect">
-				<img class="logo" src="@assets/images/casanode-logo.png" alt="Casanode" />
-			</ion-button>
-		</ion-buttons>
-		<ion-title>{{ nodeStore.moniker }}</ion-title>
-		<ion-buttons slot="end">
-			<ion-button fill="clear" @click="refreshNodeStatus">
-				<img :src="statusImage" alt="Status" />
-			</ion-button>
-		</ion-buttons>
-	</ion-toolbar>
+<ion-toolbar>
+	<ion-buttons slot="start">
+		<ion-button fill="outline" class="logo" @click="nodeDisconnect">
+			<img class="logo" src="@assets/images/casanode-logo.png" alt="Casanode" />
+		</ion-button>
+	</ion-buttons>
+	<ion-title>{{ nodeStore.moniker }}</ion-title>
+	<ion-buttons slot="end">
+		<ion-button fill="clear" @click="refreshNodeStatus">
+			<img :src="statusImage" alt="Status" />
+		</ion-button>
+	</ion-buttons>
+</ion-toolbar>
 </template>
 
 <style lang="scss" scoped>
