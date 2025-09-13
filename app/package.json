@@ -11,8 +11,9 @@
     "preview": "vite preview",
     "test:e2e": "cypress run",
     "test:unit": "vitest",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint": "eslint --ext .ts,.tsx,.js,.jsx,.vue .",
+    "lint:fix": "eslint --ext .ts,.tsx,.js,.jsx,.vue --fix .",
+    "format": "prettier --write ."
   },
   "dependencies": {
     "@capacitor-community/http": "^1.4.1",
@@ -31,6 +32,12 @@
     "buffer": "^6.0.3",
     "crypto-js": "^4.2.0",
     "ionicons": "^7.0.0",
+    "@fortawesome/fontawesome-svg-core": "^6.5.2",
+    "@fortawesome/free-solid-svg-icons": "^6.5.2",
+    "@fortawesome/free-regular-svg-icons": "^6.5.2",
+    "@fortawesome/vue-fontawesome": "^3.0.6",
+    "@fontsource/lato": "^5.0.21",
+    "@kyvg/vue3-notification": "^3.2.2",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.1",
     "uuid": "^10.0.0",
