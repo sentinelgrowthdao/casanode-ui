@@ -51,13 +51,127 @@ class ApiService
 	 */
 	public connect(ip: string, port: number, token: string): boolean
 	{
-		this.apiIp = ip;
-		this.apiPort = port;
+		// If explicit host/port are provided, use them
+		if (ip && port) 
+		{
+			this.apiIp = ip;
+			this.apiPort = port;
+			this.authToken = token || null;
+			const isWebDev = typeof window !== 'undefined' && typeof import.meta !== 'undefined' && (import.meta as any).env && (import.meta as any).env.DEV && Capacitor.getPlatform() === 'web';
+			this.baseUrl = isWebDev ? `/api/v1` : `https://${this.apiIp}:${this.apiPort}/api/v1`;
+			this.connected = true;
+			return true;
+		}
+
+		// Fallback to .env configuration
+		const env: any = (import.meta as any).env || {};
+		const envBaseUrl = env.VITE_API_BASE_URL as string | undefined;
+		if (envBaseUrl) 
+		{
+			this.baseUrl = envBaseUrl;
+			// Do not set Authorization here; JWT will be obtained via /auth/login
+			this.authToken = null;
+			this.apiIp = null;
+			this.apiPort = null;
+			this.connected = false;
+			return true;
+		}
+
+		// If no config found, mark disconnected
+		this.connected = false;
+		this.baseUrl = null;
+		this.authToken = null;
+		return false;
+	}
+
+	/**
+   * Manually set the Authorization token
+   */
+	public setAuthToken(token: string | null) 
+	{
 		this.authToken = token;
-		const isWebDev = typeof window !== 'undefined' && typeof import.meta !== 'undefined' && (import.meta as any).env && (import.meta as any).env.DEV && Capacitor.getPlatform() === 'web';
-		this.baseUrl = isWebDev ? `/api/v1` : `https://${this.apiIp}:${this.apiPort}/api/v1`;
-		this.connected = true;
-		return true;
+		// Set connection state only if both baseUrl and token exist
+		this.connected = !!(this.baseUrl && this.authToken);
+	}
+
+	/**
+   * Read current Authorization token
+   */
+	public getAuthToken(): string | null 
+	{
+		return this.authToken;
+	}
+
+	/**
+   * Send POST without Authorization header (e.g., /auth/login)
+   */
+	private async postNoAuth(endpoint: string, body?: any): Promise<any>
+	{
+		try
+		{
+			if (!this.baseUrl)
+				throw new Error("API baseUrl is not initialized.");
+
+			const options: HttpOptions = {
+				url: `${this.baseUrl}${endpoint}`,
+				data: body || {},
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+			};
+
+			const response = await Http.request(options);
+			return response.data;
+		}
+		catch (error)
+		{
+			console.error(`POST(no-auth) request failed: ${error}`);
+			return null;
+		}
+	}
+
+	/**
+   * Authenticate and retrieve JWT
+   */
+	public async login(preSharedToken?: string): Promise<{ token: string; refreshToken?: string } | null>
+	{
+		const env: any = (import.meta as any).env || {};
+		const bodyToken = preSharedToken || env.VITE_API_AUTH || env.VITE_API_TOKEN;
+		const data = await this.postNoAuth('/auth/login', { token: bodyToken });
+		if (!data) return null;
+		// Try common keys
+		const token = data.token || data.jwt || data.accessToken || data.access_token || null;
+		const refreshToken = data.refreshToken || data.refresh_token || undefined;
+		if (!token) return null;
+		return { token, refreshToken };
+	}
+
+	/** Refresh JWT (implementation flexible depending on backend) */
+	public async refreshAuth(refreshToken?: string): Promise<{ token: string; refreshToken?: string } | null>
+	{
+		try
+		{
+			if (!this.baseUrl)
+				throw new Error('API baseUrl is not initialized.');
+
+			// If refreshToken provided, send in body; otherwise try with current Authorization
+			const options: HttpOptions = {
+				url: `${this.baseUrl}/auth/refresh`,
+				method: 'POST',
+				data: refreshToken ? { token: refreshToken } : {},
+				headers: refreshToken ? { 'Content-Type': 'application/json' } : this.getHeaders(),
+			};
+			const response = await Http.request(options);
+			const data = response.data || {};
+			const token = data.token || data.jwt || data.accessToken || data.access_token || null;
+			const newRefresh = data.refreshToken || data.refresh_token || refreshToken;
+			if (!token) return null;
+			return { token, refreshToken: newRefresh };
+		}
+		catch (error)
+		{
+			console.error('Refresh auth failed:', error);
+			return null;
+		}
 	}
 	
 	/**
