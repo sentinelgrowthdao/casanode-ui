@@ -2,10 +2,9 @@
 import {
 	IonPage, IonContent, IonHeader,
 	IonCard, IonCardHeader, IonCardTitle, IonCardContent,
-	IonButton, IonIcon, IonGrid, IonRow, IonCol, IonItem, IonLabel
-} from '@ionic/vue';
+	IonButton, IonGrid, IonRow, IonCol, IonItem, IonLabel
+} from '@/ui';
 import { computed } from 'vue';
-import { refresh, link, copy } from 'ionicons/icons';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import AppToolbar from '@/components/AppToolbar.vue';
@@ -58,89 +57,88 @@ const removeWallet = async () =>
 
 </script>
 <template>
-	<ion-page>
-		<ion-header>
-			<app-toolbar />
-		</ion-header>
-		<ion-content>
-			<div class="wallet">
-				<!-- Node Balance -->
-				<ion-card class="container header bg-blue">
-					<ion-card-content>
-						<ion-grid>
-							<ion-row>
-								<ion-col size="9">
-									<p class="label">{{ $t('wallet.node-balance-label') }}</p>
-									<p class="amount">{{ formattedAmount }}<span class="unit">{{ nodeStore.nodeBalance.denom }}</span></p>
-								</ion-col>
-								<ion-col size="3" class="ion-text-right">
-									<ion-button fill="clear" size="large" class="refresh-button" @click="refreshNodeBalance">
-										<ion-icon :icon="refresh" size="large"
-											aria-label="{{ $t('wallet.balance-refresh') }}" />
-									</ion-button>
-								</ion-col>
-							</ion-row>
-						</ion-grid>
-					</ion-card-content>
-				</ion-card>
-
-				<!-- Public and Node Address -->
-				<ion-card class="container addresses">
-					<ion-card-content>
-						<ion-button class="item" fill="clear"
-							@click="copyToClipboard(t('wallet.clipboard-address'), nodeStore.publicAddress)">
-							<div class=" content">
-								<p class="label">
-									{{ $t('wallet.public-address-label') }}<ion-icon :icon="copy" class="icon-right" />
-								</p>
-								<p class="value">{{ nodeStore.publicAddress }}</p>
-							</div>
-						</ion-button>
-						<ion-button class="item" fill="clear"
-							@click="copyToClipboard(t('wallet.clipboard-address'), nodeStore.nodeAddress)">
-							<div class="content">
-								<p class="label">
-									{{ $t('wallet.node-address-label') }}<ion-icon :icon="copy" class="icon-right" />
-								</p>
-								<p class="value">{{ nodeStore.nodeAddress }}</p>
-							</div>
-						</ion-button>
-					</ion-card-content>
-				</ion-card>
-
-				<!-- Latest Transactions -->
-				<ion-card class="container list" v-if="nodeStore.transactions.length > 0">
-					<ion-card-header>
-						<ion-card-title>{{ $t('wallet.latest-transactions-label') }}</ion-card-title>
-					</ion-card-header>
-					<ion-card-content>
-						<ion-item v-for="(transaction, index) in nodeStore.transactions" :key="index"
-							class="transaction">
-							<ion-label>
-								<div class="first-line">
-									<p class="type">{{ $t(`wallet.${transaction.type}-label`) }}</p>
-									<p class="amount">{{ transaction.amount }}</p>
-								</div>
-								<ion-button class="hash" fill="clear" expand="full">
-									{{ transaction.hash }}
-									<ion-icon :icon="link"></ion-icon>
+<ion-page>
+	<ion-header>
+		<app-toolbar />
+	</ion-header>
+	<ion-content>
+		<div class="wallet">
+			<!-- Node Balance -->
+			<ion-card class="container header bg-blue">
+				<ion-card-content>
+					<ion-grid>
+						<ion-row>
+							<ion-col size="9">
+								<p class="label">{{ $t('wallet.node-balance-label') }}</p>
+								<p class="amount">{{ formattedAmount }}<span class="unit">{{ nodeStore.nodeBalance.denom }}</span></p>
+							</ion-col>
+							<ion-col size="3" class="ion-text-right">
+								<ion-button fill="clear" size="large" class="refresh-button" @click="refreshNodeBalance">
+									<font-awesome-icon :icon="['fas','arrows-rotate']" size="lg" />
 								</ion-button>
-							</ion-label>
-						</ion-item>
-					</ion-card-content>
-				</ion-card>
+							</ion-col>
+						</ion-row>
+					</ion-grid>
+				</ion-card-content>
+			</ion-card>
 
-				<!-- Delete Wallet -->
-				<ion-card class="container nobg">
-					<ion-card-content>
-						<ion-button color="danger" fill="outline" expand="block" @click="removeWallet">
-							{{ $t('wallet.delete-wallet-label') }}
-						</ion-button>
-					</ion-card-content>
-				</ion-card>
-			</div>
-		</ion-content>
-	</ion-page>
+			<!-- Public and Node Address -->
+			<ion-card class="container addresses">
+				<ion-card-content>
+					<ion-button class="item" fill="clear"
+						@click="copyToClipboard(t('wallet.clipboard-address'), nodeStore.publicAddress)">
+						<div class=" content">
+							<p class="label">
+								{{ $t('wallet.public-address-label') }}<font-awesome-icon :icon="['fas','copy']" class="icon-right" />
+							</p>
+							<p class="value">{{ nodeStore.publicAddress }}</p>
+						</div>
+					</ion-button>
+					<ion-button class="item" fill="clear"
+						@click="copyToClipboard(t('wallet.clipboard-address'), nodeStore.nodeAddress)">
+						<div class="content">
+							<p class="label">
+								{{ $t('wallet.node-address-label') }}<font-awesome-icon :icon="['fas','copy']" class="icon-right" />
+							</p>
+							<p class="value">{{ nodeStore.nodeAddress }}</p>
+						</div>
+					</ion-button>
+				</ion-card-content>
+			</ion-card>
+
+			<!-- Latest Transactions -->
+			<ion-card class="container list" v-if="nodeStore.transactions.length > 0">
+				<ion-card-header>
+					<ion-card-title>{{ $t('wallet.latest-transactions-label') }}</ion-card-title>
+				</ion-card-header>
+				<ion-card-content>
+					<ion-item v-for="(transaction, index) in nodeStore.transactions" :key="index"
+						class="transaction">
+						<ion-label>
+							<div class="first-line">
+								<p class="type">{{ $t(`wallet.${transaction.type}-label`) }}</p>
+								<p class="amount">{{ transaction.amount }}</p>
+							</div>
+							<ion-button class="hash" fill="clear" expand="full">
+								{{ transaction.hash }}
+								<font-awesome-icon :icon="['fas','link']" />
+							</ion-button>
+						</ion-label>
+					</ion-item>
+				</ion-card-content>
+			</ion-card>
+
+			<!-- Delete Wallet -->
+			<ion-card class="container nobg">
+				<ion-card-content>
+					<ion-button color="danger" fill="outline" expand="block" @click="removeWallet">
+						{{ $t('wallet.delete-wallet-label') }}
+					</ion-button>
+				</ion-card-content>
+			</ion-card>
+		</div>
+	</ion-content>
+</ion-page>
 </template>
 
 <style lang="scss" scoped>
