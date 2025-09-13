@@ -5,7 +5,7 @@ import {
 	IonGrid, IonRow, IonCol,
 	IonList, IonItem,
 	IonInput, IonText
-} from '@ionic/vue';
+} from '@/ui';
 import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
@@ -63,37 +63,37 @@ const setPassphraseAndNavigate = async () =>
 
 </script>
 <template>
-	<ion-page>
-		<ion-content :fullscreen="true">
-			<div class="wizard">
-				<div class="form">
-					<h1>{{ $t('wizard.passphrase-title') }}</h1>
-					<p class="text">{{ $t('wizard.passphrase-text') }}</p>
-					<ion-list class="input">
-						<ion-item>
-							<ion-input
-								aria-label="Passphrase"
-								type="password"
-								v-model="passphrase"
-								:placeholder="$t('wizard.passphrase-placeholder')" />
-						</ion-item>
-						<ion-item lines="none" v-if="errorMessage">
-							<ion-text color="danger">{{ errorMessage }}</ion-text>
-						</ion-item>
-					</ion-list>
-				</div>
-				<div class="submit">
-					<ion-grid>
-						<ion-row>
-							<ion-col size="6" offset="6">
-								<loading-button :label="$t('wizard.button-next')" :callback="setPassphraseAndNavigate" />
-							</ion-col>
-						</ion-row>
-					</ion-grid>
-				</div>
+<ion-page>
+	<ion-content :fullscreen="true">
+		<div class="wizard">
+			<div class="form">
+				<h1>{{ $t('wizard.passphrase-title') }}</h1>
+				<p class="text">{{ $t('wizard.passphrase-text') }}</p>
+				<ion-list class="input">
+					<ion-item>
+						<ion-input
+							aria-label="Passphrase"
+							type="password"
+							v-model="passphrase"
+							:placeholder="$t('wizard.passphrase-placeholder')" />
+					</ion-item>
+					<ion-item lines="none" v-if="errorMessage">
+						<ion-text color="danger">{{ errorMessage }}</ion-text>
+					</ion-item>
+				</ion-list>
 			</div>
-		</ion-content>
-	</ion-page>
+			<div class="submit">
+				<ion-grid>
+					<ion-row>
+						<ion-col size="6" offset="6">
+							<loading-button :label="$t('wizard.button-next')" :callback="setPassphraseAndNavigate" />
+						</ion-col>
+					</ion-row>
+				</ion-grid>
+			</div>
+		</div>
+	</ion-content>
+</ion-page>
 </template>
 <style lang="scss" scoped>
 @import "@scss/wizard.scss";
