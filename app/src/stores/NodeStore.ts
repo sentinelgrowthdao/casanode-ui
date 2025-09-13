@@ -62,10 +62,10 @@ function createDefaultState()
 }
 
 export const useNodeStore = defineStore('node',
-{
-	state: () => createDefaultState(),
+	{
+		state: () => createDefaultState(),
 	
-	actions:
+		actions:
 	{
 		// Reset store
 		resetStore(): void
@@ -193,4 +193,4 @@ export const useNodeStore = defineStore('node',
 			this.mnemonic = [];
 		},
 	}
-});
+	});
