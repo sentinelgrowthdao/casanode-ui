@@ -1,11 +1,7 @@
 <script lang="ts" setup>
 import { type Ref, ref } from 'vue';
-import {
-	IonPage, IonContent, IonHeader,
-	IonSegment, IonSegmentButton,
-	IonCard, IonCardContent,
-	toastController,
-} from '@ionic/vue';
+import { IonPage, IonContent, IonHeader, IonSegment, IonSegmentButton, IonCard, IonCardContent } from '@/ui';
+import { notify } from '@kyvg/vue3-notification';
 import AppToolbar from '@/components/AppToolbar.vue';
 import NetworkService from '@/services/NetworkService';
 import { useRouter } from 'vue-router';
@@ -41,17 +37,7 @@ const segmentChanged = (event: CustomEvent) =>
  * @param message Message to show
  * @returns Promise<void>
  */
-const showToastMessage = async(message: string) =>
-{
-	// Show a toast message
-	const toast = await toastController.create({
-				message: message,
-				duration: 1500,
-				position: 'bottom',
-			});
-	// Wait for the toast to be dismissed
-	await toast.present();
-};
+const showToastMessage = async(message: string) => { notify({ text: message }); };
 
 /**
  * Redirect to the home page
@@ -231,108 +217,108 @@ const systemAction = async(action: string) =>
 </script>
 
 <template>
-	<ion-page>
-		<ion-header>
-			<app-toolbar />
-		</ion-header>
-		<ion-content>
-			<div class="actions">
-				<div class="segment-container ion-padding-top">
-					<ion-segment :value="segmentSelected" @ionChange="segmentChanged">
-						<ion-segment-button value="node">
-							{{ $t('actions.node-tab') }}
-						</ion-segment-button>
-						<ion-segment-button value="maintenance">
-							{{ $t('actions.maintenance-tab') }}
-						</ion-segment-button>
-						<ion-segment-button value="system">
-							{{ $t('actions.system-tab') }}
-						</ion-segment-button>
-					</ion-segment>
-				</div>
-				
-				<div v-if="segmentSelected === 'node'">
-					<!-- Start Node -->
-					<ion-card v-if="nodeStore.status !== 'running'" class="container">
-						<ion-card-content>
-							<p>{{ $t('actions.start-node-description') }}</p>
-							<loading-button :label="$t('actions.start-node-button')" :disabled="requestInProgress" :callback="async() => await nodeAction('start')" />
-						</ion-card-content>
-					</ion-card>
-					
-					<!-- Stop Node -->
-					<ion-card v-if="nodeStore.status === 'running'" class="container">
-						<ion-card-content>
-							<p>{{ $t('actions.stop-node-description') }}</p>
-							<loading-button :label="$t('actions.stop-node-button')" :disabled="requestInProgress" :callback="async() => await nodeAction('stop')" />
-						</ion-card-content>
-					</ion-card>
-					
-					<!-- Restart Node -->
-					<ion-card v-if="nodeStore.status === 'running'" class="container">
-						<ion-card-content>
-							<p>{{ $t('actions.restart-node-description') }}</p>
-							<loading-button :label="$t('actions.restart-node-button')" :disabled="requestInProgress" :callback="async() => await nodeAction('restart')" />
-						</ion-card-content>
-					</ion-card>
-
-					<!-- Regenerate SSL Certificate -->
-					<ion-card class="container">
-						<ion-card-content>
-							<p>{{ $t('actions.regenerate-ssl-description') }}</p>
-							<loading-button :label="$t('actions.regenerate-ssl-button')" :disabled="requestInProgress" :callback="async() => await certificateAction('renew')" />
-						</ion-card-content>
-					</ion-card>
-				</div>
-
-				<div v-if="segmentSelected === 'maintenance'">
-					<!-- Upgrade System -->
-					<ion-card class="container">
-						<ion-card-content>
-							<p>{{ $t('actions.upgrade-system-description') }}</p>
-							<loading-button :label="$t('actions.upgrade-system-button')" :disabled="requestInProgress" :callback="async() => await systemAction('update-system')" />
-						</ion-card-content>
-					</ion-card>
-
-					<!-- Update Sentinel Parameters -->
-					<ion-card class="container">
-						<ion-card-content>
-							<p>{{ $t('actions.update-sentinel-description') }}</p>
-							<loading-button :label="$t('actions.update-sentinel-button')" :disabled="requestInProgress" :callback="async() => await systemAction('update-sentinel')" />
-						</ion-card-content>
-					</ion-card>
-
-					<!-- Factory Reset -->
-					<ion-card class="container">
-						<ion-card-content>
-							<p>{{ $t('actions.factory-reset-description') }}</p>
-							<loading-button color="danger" :label="$t('actions.factory-reset-button')" :disabled="requestInProgress" :callback="async() => await systemAction('reset')" />
-						</ion-card-content>
-					</ion-card>
-				</div>
-
-				<div v-if="segmentSelected === 'system'">
-					<!-- Hard Reboot -->
-					<ion-card class="container">
-						<ion-card-content>
-							<p>{{ $t('actions.hard-reboot-description') }}</p>
-							<loading-button :label="$t('actions.hard-reboot-button')" :disabled="requestInProgress" :callback="async() => await systemAction('reboot')" />
-						</ion-card-content>
-					</ion-card>
-
-					<!-- Shutdown -->
-					<ion-card class="container">
-						<ion-card-content>
-							<p>{{ $t('actions.shutdown-description') }}</p>
-							<loading-button :label="$t('actions.shutdown-button')" :disabled="requestInProgress" :callback="async() => await systemAction('shutdown')" />
-						</ion-card-content>
-					</ion-card>
-				</div>
-
-
+<ion-page>
+	<ion-header>
+		<app-toolbar />
+	</ion-header>
+	<ion-content>
+		<div class="actions">
+			<div class="segment-container ion-padding-top">
+				<ion-segment :value="segmentSelected" @ionChange="segmentChanged">
+					<ion-segment-button value="node">
+						{{ $t('actions.node-tab') }}
+					</ion-segment-button>
+					<ion-segment-button value="maintenance">
+						{{ $t('actions.maintenance-tab') }}
+					</ion-segment-button>
+					<ion-segment-button value="system">
+						{{ $t('actions.system-tab') }}
+					</ion-segment-button>
+				</ion-segment>
 			</div>
-		</ion-content>
-	</ion-page>
+				
+			<div v-if="segmentSelected === 'node'">
+				<!-- Start Node -->
+				<ion-card v-if="nodeStore.status !== 'running'" class="container">
+					<ion-card-content>
+						<p>{{ $t('actions.start-node-description') }}</p>
+						<loading-button :label="$t('actions.start-node-button')" :disabled="requestInProgress" :callback="async() => await nodeAction('start')" />
+					</ion-card-content>
+				</ion-card>
+					
+				<!-- Stop Node -->
+				<ion-card v-if="nodeStore.status === 'running'" class="container">
+					<ion-card-content>
+						<p>{{ $t('actions.stop-node-description') }}</p>
+						<loading-button :label="$t('actions.stop-node-button')" :disabled="requestInProgress" :callback="async() => await nodeAction('stop')" />
+					</ion-card-content>
+				</ion-card>
+					
+				<!-- Restart Node -->
+				<ion-card v-if="nodeStore.status === 'running'" class="container">
+					<ion-card-content>
+						<p>{{ $t('actions.restart-node-description') }}</p>
+						<loading-button :label="$t('actions.restart-node-button')" :disabled="requestInProgress" :callback="async() => await nodeAction('restart')" />
+					</ion-card-content>
+				</ion-card>
+
+				<!-- Regenerate SSL Certificate -->
+				<ion-card class="container">
+					<ion-card-content>
+						<p>{{ $t('actions.regenerate-ssl-description') }}</p>
+						<loading-button :label="$t('actions.regenerate-ssl-button')" :disabled="requestInProgress" :callback="async() => await certificateAction('renew')" />
+					</ion-card-content>
+				</ion-card>
+			</div>
+
+			<div v-if="segmentSelected === 'maintenance'">
+				<!-- Upgrade System -->
+				<ion-card class="container">
+					<ion-card-content>
+						<p>{{ $t('actions.upgrade-system-description') }}</p>
+						<loading-button :label="$t('actions.upgrade-system-button')" :disabled="requestInProgress" :callback="async() => await systemAction('update-system')" />
+					</ion-card-content>
+				</ion-card>
+
+				<!-- Update Sentinel Parameters -->
+				<ion-card class="container">
+					<ion-card-content>
+						<p>{{ $t('actions.update-sentinel-description') }}</p>
+						<loading-button :label="$t('actions.update-sentinel-button')" :disabled="requestInProgress" :callback="async() => await systemAction('update-sentinel')" />
+					</ion-card-content>
+				</ion-card>
+
+				<!-- Factory Reset -->
+				<ion-card class="container">
+					<ion-card-content>
+						<p>{{ $t('actions.factory-reset-description') }}</p>
+						<loading-button color="danger" :label="$t('actions.factory-reset-button')" :disabled="requestInProgress" :callback="async() => await systemAction('reset')" />
+					</ion-card-content>
+				</ion-card>
+			</div>
+
+			<div v-if="segmentSelected === 'system'">
+				<!-- Hard Reboot -->
+				<ion-card class="container">
+					<ion-card-content>
+						<p>{{ $t('actions.hard-reboot-description') }}</p>
+						<loading-button :label="$t('actions.hard-reboot-button')" :disabled="requestInProgress" :callback="async() => await systemAction('reboot')" />
+					</ion-card-content>
+				</ion-card>
+
+				<!-- Shutdown -->
+				<ion-card class="container">
+					<ion-card-content>
+						<p>{{ $t('actions.shutdown-description') }}</p>
+						<loading-button :label="$t('actions.shutdown-button')" :disabled="requestInProgress" :callback="async() => await systemAction('shutdown')" />
+					</ion-card-content>
+				</ion-card>
+			</div>
+
+
+		</div>
+	</ion-content>
+</ion-page>
 </template>
 
 <style lang="scss" scoped>
