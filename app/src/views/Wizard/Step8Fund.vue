@@ -4,7 +4,7 @@ import {
 	IonPage, IonContent,
 	IonGrid, IonCol, IonRow,
 	IonItem, IonText
-} from '@ionic/vue';
+} from '@/ui';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { copyToClipboard } from '@/utils/clipboard';
@@ -66,32 +66,32 @@ const checkWalletBalance = async () =>
 
 </script>
 <template>
-	<ion-page>
-		<ion-content :fullscreen="true">
-			<div class="wizard">
-				<div class="form">
-					<h1>{{ $t('wizard.wallet-fund-title') }}</h1>
-					<p class="text">{{ $t('wizard.wallet-fund-text') }}</p>
-					<p class="address" @click="copyToClipboard(t('wizard.wallet-fund-copied'), nodeStore.publicAddress)">
-						{{ nodeStore.publicAddress }}
-					</p>
-					<p class="text">{{ $t('wizard.wallet-fund-next') }}</p>
-					<ion-item lines="none" v-if="balanceMessage">
-						<ion-text color="warning">{{ balanceMessage }}</ion-text>
-					</ion-item>
-				</div>
-				<div class="submit">
-					<ion-grid>
-						<ion-row>
-							<ion-col size="6" offset="6">
-								<loading-button :label="$t('wizard.button-next')" :callback="checkWalletBalance" />
-							</ion-col>
-						</ion-row>
-					</ion-grid>
-				</div>
+<ion-page>
+	<ion-content :fullscreen="true">
+		<div class="wizard">
+			<div class="form">
+				<h1>{{ $t('wizard.wallet-fund-title') }}</h1>
+				<p class="text">{{ $t('wizard.wallet-fund-text') }}</p>
+				<p class="address" @click="copyToClipboard(t('wizard.wallet-fund-copied'), nodeStore.publicAddress)">
+					{{ nodeStore.publicAddress }}
+				</p>
+				<p class="text">{{ $t('wizard.wallet-fund-next') }}</p>
+				<ion-item lines="none" v-if="balanceMessage">
+					<ion-text color="warning">{{ balanceMessage }}</ion-text>
+				</ion-item>
 			</div>
-		</ion-content>
-	</ion-page>
+			<div class="submit">
+				<ion-grid>
+					<ion-row>
+						<ion-col size="6" offset="6">
+							<loading-button :label="$t('wizard.button-next')" :callback="checkWalletBalance" />
+						</ion-col>
+					</ion-row>
+				</ion-grid>
+			</div>
+		</div>
+	</ion-content>
+</ion-page>
 </template>
 <style lang="scss" scoped>
 @import "@scss/wizard.scss";
