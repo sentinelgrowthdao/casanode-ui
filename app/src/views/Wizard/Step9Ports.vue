@@ -3,7 +3,7 @@ import { type Ref, ref } from 'vue';
 import {
 	IonPage, IonContent,
 	IonGrid, IonCol, IonRow
-} from '@ionic/vue';
+} from '@/ui';
 import { useRouter } from 'vue-router';
 import { useNodeStore } from '@stores/NodeStore';
 import NetworkService from '@/services/NetworkService';
@@ -73,49 +73,49 @@ const retryTest = () =>
 
 </script>
 <template>
-	<ion-page>
-		<ion-content :fullscreen="true">
-			<div class="wizard">
-				<div class="form">
-					<h1>{{ $t('wizard.ports-title') }}</h1>
-					<p class="text">{{ $t('wizard.ports-text') }}</p>
-					<p class="text">{{ $t('wizard.ports-more') }} <a href="https://docs.sentinel.co/node-setup/manual/node-config#enable-port-forwarding-for-residential-nodes" target="_blank" rel="noopener noreferrer">{{ $t('wizard.ports-documentation') }}</a>.</p>
-					<div class="port">
-						<CheckMarkCross :isCheckMark="nodeCheckMarkCross" />
-						<div class="text">
-							<p class="label">{{ $t('wizard.ports-node-label') }}</p>
-							<p class="value">{{ $t('wizard.ports-node-tcp', {port: nodeStore.nodePort }) }}</p>
-						</div>
+<ion-page>
+	<ion-content :fullscreen="true">
+		<div class="wizard">
+			<div class="form">
+				<h1>{{ $t('wizard.ports-title') }}</h1>
+				<p class="text">{{ $t('wizard.ports-text') }}</p>
+				<p class="text">{{ $t('wizard.ports-more') }} <a href="https://docs.sentinel.co/node-setup/manual/node-config#enable-port-forwarding-for-residential-nodes" target="_blank" rel="noopener noreferrer">{{ $t('wizard.ports-documentation') }}</a>.</p>
+				<div class="port">
+					<CheckMarkCross :isCheckMark="nodeCheckMarkCross" />
+					<div class="text">
+						<p class="label">{{ $t('wizard.ports-node-label') }}</p>
+						<p class="value">{{ $t('wizard.ports-node-tcp', {port: nodeStore.nodePort }) }}</p>
 					</div>
-					<div class="port">
-						<CheckMarkCross :isCheckMark="vpnCheckMarkCross" />
-						<div class="text">
-							<p class="label">{{ $t(`wizard.ports-${nodeStore.vpnType}-label`) }}</p>
-							<p v-if="nodeStore.vpnType === 'wireguard'" class="value">{{ $t('wizard.ports-node-udp', {port: nodeStore.vpnPort }) }}</p>
-							<p v-if="nodeStore.vpnType === 'v2ray'" class="value">{{ $t('wizard.ports-node-tcp', {port: nodeStore.vpnPort }) }}</p>
-						</div>
+				</div>
+				<div class="port">
+					<CheckMarkCross :isCheckMark="vpnCheckMarkCross" />
+					<div class="text">
+						<p class="label">{{ $t(`wizard.ports-${nodeStore.vpnType}-label`) }}</p>
+						<p v-if="nodeStore.vpnType === 'wireguard'" class="value">{{ $t('wizard.ports-node-udp', {port: nodeStore.vpnPort }) }}</p>
+						<p v-if="nodeStore.vpnType === 'v2ray'" class="value">{{ $t('wizard.ports-node-tcp', {port: nodeStore.vpnPort }) }}</p>
 					</div>
-					<Transition>
-						<div class="retry-block" v-if="testPerformed && (nodeCheckMarkCross === 'cross' || vpnCheckMarkCross === 'cross')">
-							<p class="text">{{ $t('wizard.ports-error') }}</p>
-							<ion-button size="small" fill="clear" @click="retryTest">{{ $t('wizard.ports-retry') }}</ion-button>
-						</div>
-					</Transition>
 				</div>
-				<div class="submit">
-					<ion-grid>
-						<ion-row>
-							<ion-col size="6" offset="6">
-								<loading-button ref="loadingButtonRef"
-									:label="$t(testPerformed ? 'wizard.button-next' : 'wizard.button-test-ports')"
-									:callback="checkPorts" />
-							</ion-col>
-						</ion-row>
-					</ion-grid>
-				</div>
+				<Transition>
+					<div class="retry-block" v-if="testPerformed && (nodeCheckMarkCross === 'cross' || vpnCheckMarkCross === 'cross')">
+						<p class="text">{{ $t('wizard.ports-error') }}</p>
+						<ion-button size="small" fill="clear" @click="retryTest">{{ $t('wizard.ports-retry') }}</ion-button>
+					</div>
+				</Transition>
 			</div>
-		</ion-content>
-	</ion-page>
+			<div class="submit">
+				<ion-grid>
+					<ion-row>
+						<ion-col size="6" offset="6">
+							<loading-button ref="loadingButtonRef"
+								:label="$t(testPerformed ? 'wizard.button-next' : 'wizard.button-test-ports')"
+								:callback="checkPorts" />
+						</ion-col>
+					</ion-row>
+				</ion-grid>
+			</div>
+		</div>
+	</ion-content>
+</ion-page>
 </template>
 <style lang="scss" scoped>
 @import "@scss/wizard.scss";
