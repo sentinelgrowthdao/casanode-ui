@@ -42,6 +42,7 @@ export default defineConfig({
 			'@stores': path.resolve(__dirname, './src/stores'),
 			'@interfaces': path.resolve(__dirname, './src/interfaces'),
 			'@qrcode.json': qrcodeAliasPath,
+			'@ionic/vue': path.resolve(__dirname, './src/ionic-shim'),
 		},
 	},
 	server: {
