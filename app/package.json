@@ -7,10 +7,12 @@
     "dev": "vite",
     "prebuild": "node scripts/updateBuildInfo.mjs",
     "build": "npm run update-build-info && vue-tsc && vite build",
+    "update-build-info": "node scripts/updateBuildInfo.mjs",
     "preview": "vite preview",
     "test:e2e": "cypress run",
     "test:unit": "vitest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
     "@capacitor-community/http": "^1.4.1",
@@ -25,8 +27,6 @@
     "@capacitor/haptics": "6.0.0",
     "@capacitor/keyboard": "6.0.0",
     "@capacitor/status-bar": "6.0.0",
-    "@ionic/vue": "^8.0.0",
-    "@ionic/vue-router": "^8.0.0",
     "@sentry/vue": "^8.48.0",
     "buffer": "^6.0.3",
     "crypto-js": "^4.2.0",
@@ -58,5 +58,5 @@
     "vitest": "^0.34.6",
     "vue-tsc": "^1.0.24"
   },
-  "description": "An Ionic project"
+  "description": "Casanode SPA (Vue 3)"
 }
