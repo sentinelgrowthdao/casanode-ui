@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { IonButton, IonSpinner } from '@ionic/vue';
+import { IonButton, IonSpinner } from '@/ui';
 import { toggleKeepAwake } from '@/utils/awake';
 
 interface Props
@@ -33,12 +33,12 @@ const handleClick = async () =>
 };
 </script>
 <template>
-	<ion-button @click="handleClick" :disabled="loading" expand="block" :class="{ loading: loading }">
-		<div class="button-content">
-			<ion-spinner v-if="loading" name="crescent" slot="start" />
-			<span>{{ label }}</span>
-		</div>
-	</ion-button>
+<ion-button @click="handleClick" :disabled="loading" expand="block" :class="{ loading: loading }">
+	<div class="button-content">
+		<ion-spinner v-if="loading" name="crescent" slot="start" />
+		<span>{{ label }}</span>
+	</div>
+</ion-button>
 </template>
 <style scoped lang="scss">
 ion-button
