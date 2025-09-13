@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { IonButton, IonSpinner } from '@/ui';
-import { toggleKeepAwake } from '@/utils/awake';
 
 interface Props
 {
@@ -16,8 +15,6 @@ const handleClick = async () =>
 {
 	// Show the loading spinner
 	loading.value = true;
-	// Keep the device awake
-	await toggleKeepAwake(true);
 	try
 	{
 		// Call the callback function
@@ -25,8 +22,6 @@ const handleClick = async () =>
 	}
 	finally
 	{
-		// Disable the keep awake
-		await toggleKeepAwake(false);
 		// Hide the loading spinner
 		loading.value = false;
 	}
