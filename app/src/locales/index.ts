@@ -73,7 +73,7 @@ const messages : MessageFile =
  * Get the locale language
  * @returns {Promise<string>}
  */
-async function localeLanguage(): Promise<string>
+export async function localeLanguage(): Promise<string>
 {
 	const systemLocale = await Device.getLanguageCode();
 	return systemLocale.value || 'en';
@@ -81,9 +81,22 @@ async function localeLanguage(): Promise<string>
 
 // Create a new i18n instance with a default locale
 const i18n = createI18n({
-	locale: 'en', // await localeLanguage()
+	locale: 'en',
 	fallbackLocale: 'en',
 	messages: messages
+});
+
+// Best-effort async locale init without blocking app bootstrap
+localeLanguage().then((loc) =>
+{
+	try
+	{
+		(i18n.global as any).locale = loc;
+	}
+	catch (e)
+	{
+		if (import.meta.env.DEV) console.warn('Failed to set locale', e);
+	}
 });
 
 export default i18n;
