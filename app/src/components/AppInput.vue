@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { type Ref, ref, watch, onMounted } from 'vue';
-import { IonInput } from '@ionic/vue';
+import { IonInput } from '@/ui';
 
 const props = defineProps({
 	placeholder: String,
@@ -26,13 +26,13 @@ const validateIp = (value: string, type: 'ipv4' | 'ipv6'): boolean =>
 	if (type === 'ipv4')
 	{
 		return !!value.match(
-		/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/
+			/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/
 		);
 	}
 	else if (type === 'ipv6')
 	{
 		return !!value.match(
-		/([0-9a-fA-F]{1,4}:){7}([0-9a-fA-F]{1,4}|:)/
+			/([0-9a-fA-F]{1,4}:){7}([0-9a-fA-F]{1,4}|:)/
 		);
 	}
 	return false;
@@ -46,14 +46,14 @@ const validate = (value: string) =>
 	{
 		case 'text':
 			isValid = value.length >= (props.minLength || 0) && value.length <= (props.maxLength || Infinity);
-		break;
+			break;
 		case 'number':
 			isValid = !isNaN(Number(value));
-		break;
+			break;
 		case 'ipv4':
 		case 'ipv6':
 			isValid = validateIp(value, props.type);
-		break;
+			break;
 	}
 	
 	return isValid;
@@ -112,15 +112,14 @@ onMounted(() =>
 </script>
 
 <template>
-	<ion-input
-		ref="inputRef"
-		:type="inputType"
-		:placeholder="placeholder"
-		:aria-label="ariaLabel"
-		:value="inputValue"
-		:error-text="props.errorMessage"
-		@ionInput="handleInput"
-		@ionBlur="markTouched"
-		lines="none"
-	/>
+<ion-input
+	ref="inputRef"
+	:type="inputType"
+	:placeholder="placeholder"
+	:aria-label="ariaLabel"
+	:value="inputValue"
+	:error-text="props.errorMessage"
+	@ionInput="handleInput"
+	@ionBlur="markTouched"
+	lines="none"/>
 </template>
