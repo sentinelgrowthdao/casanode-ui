@@ -15,4 +15,4 @@ export interface HttpResponse<T = any> {
 
 export const CasaHttp = registerPlugin<{
 	get<T = any>(options: HttpGetRequest): Promise<HttpResponse<T>>;
-}>('CasaHttp');
+		}>('CasaHttp');

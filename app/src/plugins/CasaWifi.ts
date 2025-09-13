@@ -13,4 +13,4 @@ export interface WifiJoinResult {
 
 export const CasaWifi = registerPlugin<{
 	join(options: WifiJoinRequest): Promise<WifiJoinResult>;
-}>('CasaWifi');
+		}>('CasaWifi');
