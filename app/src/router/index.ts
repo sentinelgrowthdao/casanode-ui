@@ -1,11 +1,10 @@
-import { createRouter, createWebHistory } from '@ionic/vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
 import { RouteRecordRaw } from 'vue-router';
-import NodeManager from '@views/NodePage.vue';
 import NetworkService from '@/services/NetworkService';
 
 // List of pages that require connection
 export const requiresConnection = [
-	'Node', 'NodeDashboard', 'NodeSettings', 'NodeWallet', 'NodeActions', 'NodeAbout',
+	'NodeDashboard', 'NodeSettings', 'NodeWallet', 'NodeActions', 'NodeAbout',
 	'Wizard1Welcome', 'Wizard1Reset', 'Wizard2Moniker', 'Wizard6Protection', 'Wizard6Passphrase',
 	'Wizard7Wallet', 'Wizard7Restore', 'Wizard7Create', 'Wizard8Fund', 'Wizard9Ports',
 	'Wizard10Congratulations',
@@ -20,14 +19,14 @@ const routes: Array<RouteRecordRaw> = [
 	{
 		path: '/node',
 		name: 'Node',
-		component: NodeManager,
+		component: () => import('@views/NodePage.vue'),
 		children: [
 			{
-				path: '/node',
-				redirect: '/node/dashboard',
+				path: '',
+				redirect: { name: 'NodeDashboard' },
 			},
 			{
-				path: '/node/dashboard',
+				path: 'dashboard',
 				name: 'NodeDashboard',
 				component: () => import('@views/Node/DashboardPage.vue'),
 			},
@@ -68,9 +67,9 @@ const routes: Array<RouteRecordRaw> = [
 		component: () => import('@views/Wizard/Step1Reset.vue')
 	},
 	{
-			path: '/wizard/moniker',
-			name: 'Wizard2Moniker',
-			component: () => import('@views/Wizard/Step2Moniker.vue')
+		path: '/wizard/moniker',
+		name: 'Wizard2Moniker',
+		component: () => import('@views/Wizard/Step2Moniker.vue')
 	},
 	{
 		path: '/wizard/protection',
