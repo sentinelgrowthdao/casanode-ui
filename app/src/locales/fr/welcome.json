@@ -1,8 +1,8 @@
 {
 	"start-title": "Bienvenue !",
 	"start-title-alt": "Bon retour !",
-	"start-text": "Pour commencer à vous connecter à votre nœud, veuillez scanner le code QR situé sur votre appareil.",
-	"start-button": "Scanner le code QR",
+	"start-text": "Ceci est la page d'administration de votre nœud. Cliquez sur «\u00A0Commencer\u00A0» pour continuer.",
+	"start-button": "Commencer",
 	"start-button-alt": "Se connecter",
 	"start-scan-button": "Trouver un autre nœud",
 	"start-help-button": "Trouver le code QR de connexion ?",
