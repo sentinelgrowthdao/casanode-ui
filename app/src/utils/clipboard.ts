@@ -1,4 +1,4 @@
-import { toastController } from '@ionic/vue';
+import { notify } from '@kyvg/vue3-notification';
 
 
 /**
@@ -14,12 +14,7 @@ export async function copyToClipboard(message: string, data: string)
 		try
 		{
 			await navigator.clipboard.writeText(data);
-			const toast = await toastController.create({
-				message: message,
-				duration: 1500,
-				position: 'bottom',
-			});
-			await toast.present();
+			notify({ text: message, type: 'success' });
 		}
 		catch (err)
 		{
