@@ -1,9 +1,9 @@
 <template>
-	<ion-app>
-		<ion-router-outlet />
-	</ion-app>
+<div class="app-root">
+	<router-view />
+	<notifications position="bottom center" />
+</div>
 </template>
 
 <script setup lang="ts">
-import { IonApp, IonRouterOutlet } from '@ionic/vue';
 </script>
