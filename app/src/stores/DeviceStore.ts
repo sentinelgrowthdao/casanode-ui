@@ -13,14 +13,14 @@ export interface DeviceEntry
 }
 
 export const useDeviceStore = defineStore('device',
-{
-	persist: true,
+	{
+		persist: true,
 
-	state: () => ({
-		aDevices: <DeviceEntry[]>[],
-	}),
+		state: () => ({
+			aDevices: <DeviceEntry[]>[],
+		}),
 	
-	actions:
+		actions:
 	{
 		/**
 		 * Add a device to the store
@@ -76,4 +76,4 @@ export const useDeviceStore = defineStore('device',
 			return this.aDevices.length;
 		}
 	}
-});
+	});
