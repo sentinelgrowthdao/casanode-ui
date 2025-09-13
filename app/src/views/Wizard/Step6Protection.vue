@@ -4,7 +4,7 @@ import {
 	IonPage, IonContent,
 	IonGrid, IonCol, IonRow,
 	IonItem, IonText,
-} from '@ionic/vue';
+} from '@/ui';
 import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
@@ -59,33 +59,33 @@ const setKeyringBackendValue = async (value: string) =>
 
 </script>
 <template>
-	<ion-page>
-		<ion-content :fullscreen="true">
-			<div class="wizard">
-				<div class="form">
-					<h1>{{ $t('wizard.protection-title') }}</h1>
-					<p class="text">{{ $t('wizard.protection-text') }}</p>
-				</div>
-				<div class="submit">
-					<ion-grid>
-						<ion-row>
-							<ion-item lines="none" v-if="errorMessage">
-								<ion-text color="danger">{{ errorMessage }}</ion-text>
-							</ion-item>
-						</ion-row>
-						<ion-row>
-							<ion-col size="6">
-								<loading-button :label="$t('wizard.button-yes')" :callback="async() => await setKeyringBackendValue('file')" />
-							</ion-col>
-							<ion-col size="6">
-								<loading-button :label="$t('wizard.button-no')" :callback="async() => await setKeyringBackendValue('test')" />
-							</ion-col>
-						</ion-row>
-					</ion-grid>
-				</div>
+<ion-page>
+	<ion-content :fullscreen="true">
+		<div class="wizard">
+			<div class="form">
+				<h1>{{ $t('wizard.protection-title') }}</h1>
+				<p class="text">{{ $t('wizard.protection-text') }}</p>
 			</div>
-		</ion-content>
-	</ion-page>
+			<div class="submit">
+				<ion-grid>
+					<ion-row>
+						<ion-item lines="none" v-if="errorMessage">
+							<ion-text color="danger">{{ errorMessage }}</ion-text>
+						</ion-item>
+					</ion-row>
+					<ion-row>
+						<ion-col size="6">
+							<loading-button :label="$t('wizard.button-yes')" :callback="async() => await setKeyringBackendValue('file')" />
+						</ion-col>
+						<ion-col size="6">
+							<loading-button :label="$t('wizard.button-no')" :callback="async() => await setKeyringBackendValue('test')" />
+						</ion-col>
+					</ion-row>
+				</ion-grid>
+			</div>
+		</div>
+	</ion-content>
+</ion-page>
 </template>
 <style lang="scss" scoped>
 @import "@scss/wizard.scss";
