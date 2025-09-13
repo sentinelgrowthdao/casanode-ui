@@ -1,0 +1,12 @@
+# Ignore code files to let ESLint handle formatting & indentation
+src/**/*.ts
+src/**/*.tsx
+src/**/*.js
+src/**/*.jsx
+src/**/*.vue
+
+# Build outputs
+node_modules
+/dist
+/build
+coverage
