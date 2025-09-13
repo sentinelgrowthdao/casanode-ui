@@ -4,7 +4,7 @@ import {
 	IonPage, IonContent,
 	IonGrid, IonCol, IonRow,
 	IonTextarea, IonText, IonItem,
-} from '@ionic/vue';
+} from '@/ui';
 import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
@@ -87,35 +87,35 @@ const requestRestoreWallet = async () =>
 
 </script>
 <template>
-	<ion-page>
-		<ion-content :fullscreen="true">
-			<div class="wizard">
-				<div class="form">
-					<h1>{{ $t('wizard.wallet-restore-title') }}</h1>
-					<p class="text">{{ $t('wizard.wallet-restore-text') }}</p>
-					<div class="mnemonic">
-						<ion-textarea v-model="mnemonic" aria-label="Mnemonic" fill="outline"
-							:rows="5" :placeholder="$t('wizard.wallet-restore-placeholder')" class="mnemonic"></ion-textarea>
-					</div>
-					<p class="caption">{{ $t('wizard.wallet-restore-warning') }}</p>
+<ion-page>
+	<ion-content :fullscreen="true">
+		<div class="wizard">
+			<div class="form">
+				<h1>{{ $t('wizard.wallet-restore-title') }}</h1>
+				<p class="text">{{ $t('wizard.wallet-restore-text') }}</p>
+				<div class="mnemonic">
+					<ion-textarea v-model="mnemonic" aria-label="Mnemonic" fill="outline"
+						:rows="5" :placeholder="$t('wizard.wallet-restore-placeholder')" class="mnemonic"></ion-textarea>
 				</div>
-				<div class="submit">
-					<ion-grid>
-						<ion-row v-if="errorMessage">
-							<ion-item lines="none">
-								<ion-text color="danger">{{ errorMessage }}</ion-text>
-							</ion-item>
-						</ion-row>
-						<ion-row>
-							<ion-col size="6" offset="6">
-								<loading-button :label="$t('wizard.button-next')" :callback="requestRestoreWallet" />
-							</ion-col>
-						</ion-row>
-					</ion-grid>
-				</div>
+				<p class="caption">{{ $t('wizard.wallet-restore-warning') }}</p>
 			</div>
-		</ion-content>
-	</ion-page>
+			<div class="submit">
+				<ion-grid>
+					<ion-row v-if="errorMessage">
+						<ion-item lines="none">
+							<ion-text color="danger">{{ errorMessage }}</ion-text>
+						</ion-item>
+					</ion-row>
+					<ion-row>
+						<ion-col size="6" offset="6">
+							<loading-button :label="$t('wizard.button-next')" :callback="requestRestoreWallet" />
+						</ion-col>
+					</ion-row>
+				</ion-grid>
+			</div>
+		</div>
+	</ion-content>
+</ion-page>
 </template>
 <style lang="scss" scoped>
 @import "@scss/wizard.scss";
