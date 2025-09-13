@@ -28,7 +28,16 @@ export function startNetworkMonitorHook()
 		let status = null;
 		// If the user is connected, read the node status
 		if(connected)
-			status = await refreshNodeStatus();
+		{
+			try 
+			{
+				status = await refreshNodeStatus();
+			}
+			catch (e) 
+			{
+				status = null;
+			}
+		}
 		
 		// If the user is not connected or the status is null, redirect to the Home page
 		if (!connected || status === null)
