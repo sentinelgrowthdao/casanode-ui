@@ -2,7 +2,7 @@
 import {
 	IonPage, IonContent,
 	IonGrid, IonRow, IonCol
-} from '@ionic/vue';
+} from '@/ui';
 import { useRouter } from 'vue-router';
 import { useNodeStore } from '@stores/NodeStore';
 import LoadingButton from '@components/LoadingButton.vue';
@@ -44,26 +44,26 @@ const checkNodeConfiguration = async () =>
 </script>
 
 <template>
-	<ion-page>
-		<ion-content :fullscreen="true">
-			<div class="wizard">
-				<div class="form">
-					<h1>{{ $t('wizard.welcome-title') }}</h1>
-					<p class="text">{{ $t('wizard.welcome-text') }}</p>
-					<p class="text">{{ $t('wizard.welcome-next') }}</p>
-				</div>
-				<div class="submit">
-					<ion-grid>
-						<ion-row>
-							<ion-col size="6" offset="6">
-								<loading-button :label="$t('wizard.button-next')" :callback="checkNodeConfiguration" />
-							</ion-col>
-						</ion-row>
-					</ion-grid>
-				</div>
+<ion-page>
+	<ion-content :fullscreen="true">
+		<div class="wizard">
+			<div class="form">
+				<h1>{{ $t('wizard.welcome-title') }}</h1>
+				<p class="text">{{ $t('wizard.welcome-text') }}</p>
+				<p class="text">{{ $t('wizard.welcome-next') }}</p>
 			</div>
-		</ion-content>
-	</ion-page>
+			<div class="submit">
+				<ion-grid>
+					<ion-row>
+						<ion-col size="6" offset="6">
+							<loading-button :label="$t('wizard.button-next')" :callback="checkNodeConfiguration" />
+						</ion-col>
+					</ion-row>
+				</ion-grid>
+			</div>
+		</div>
+	</ion-content>
+</ion-page>
 </template>
 <style lang="scss" scoped>
 @import "@scss/wizard.scss";
