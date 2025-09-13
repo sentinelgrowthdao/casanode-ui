@@ -7,7 +7,7 @@ http://ionicframework.com/docs/theming/ */
 	--ion-background-color: #000610;
 	
 	/* Set the font family of the entire app */
-	--ion-font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'Roboto', sans-serif;
+	--ion-font-family: 'Lato', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'Roboto', sans-serif;
 	
 	/* Customes colors */
 	--app-background-color-navbar: #191E31;
