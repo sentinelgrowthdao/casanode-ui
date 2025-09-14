@@ -102,7 +102,7 @@ class NetworkService
 		return await ApiService.getNodeConfiguration();
 	}
 
-	public async setNodeConfiguration(config: NetworkConfiguration): Promise<NodeConfigResults> 
+	public async setNodeConfiguration(config: Partial<NetworkConfiguration>): Promise<NodeConfigResults> 
 	{
 		return await ApiService.setNodeConfiguration(config);
 	}
