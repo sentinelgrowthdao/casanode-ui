@@ -386,46 +386,49 @@ class ApiService
 		// Get the node status
 		const data = await this.getRequest("/status");
 		
-		// Get the node status
-		const status : NodeStatus =
+		// Get the node status (safe optional chaining everywhere)
+		const status: NodeStatus =
 		{
-			type: data.status.type ?? null,
-			version: data.status.version ?? null,
-			bandwidth: {
-				download: data.status.bandwidth.download ?? null,
-				upload: data.status.bandwidth.upload ?? null,
+			type: data?.status?.type ?? null,
+			version: data?.status?.version ?? null,
+			bandwidth:
+			{
+				download: data?.status?.bandwidth?.download ?? null,
+				upload: data?.status?.bandwidth?.upload ?? null,
 			},
-			handshake: {
-				enable: data.status.handshake.enable ?? null,
-				peers: data.status.handshake.peers ?? null,
+			handshake:
+			{
+				enable: data?.status?.handshake?.enable ?? null,
+				peers: data?.status?.handshake?.peers ?? null,
 			},
-			location: {
-				city: data.status.location.city ?? null,
-				country: data.status.location.country ?? null,
-				latitude: data.status.location.latitude ?? null,
-				longitude: data.status.location.longitude ?? null,
+			location:
+			{
+				city: data?.status?.location?.city ?? null,
+				country: data?.status?.location?.country ?? null,
+				latitude: data?.status?.location?.latitude ?? null,
+				longitude: data?.status?.location?.longitude ?? null,
 			},
-			peers: data.status.peers ?? null,
-			max_peers: data.status.max_peers ?? null,
+			peers: data?.status?.peers ?? null,
+			max_peers: data?.status?.max_peers ?? null,
 		};
 		
-		// Get the certificate information
-		const certificate : CertificateInfo =
+		// Get the certificate information (certificate may be null on fresh install)
+		const certificate: CertificateInfo =
 		{
-			creationDate: data.certificate.creationDate ?? null,
-			expirationDate: data.certificate.expirationDate ?? null,
-			issuer: data.certificate.issuer ?? null,
-			subject: data.certificate.subject ?? null,
+			creationDate: data?.certificate?.creationDate ?? null,
+			expirationDate: data?.certificate?.expirationDate ?? null,
+			issuer: data?.certificate?.issuer ?? null,
+			subject: data?.certificate?.subject ?? null,
 		};
 		
 		// Return the node status
 		return {
-			version: data.version ?? null,
-			uptime: data.uptime ?? null,
-			nodeLocation: data.nodeLocation ?? null,
-			systemArch: data.systemArch ?? null,
-			systemKernel: data.systemKernel ?? null,
-			systemOs: data.systemOs ?? null,
+			version: data?.version ?? null,
+			uptime: data?.uptime ?? null,
+			nodeLocation: data?.nodeLocation ?? null,
+			systemArch: data?.systemArch ?? null,
+			systemKernel: data?.systemKernel ?? null,
+			systemOs: data?.systemOs ?? null,
 			status: status,
 			certificate: certificate,
 		} as NetworkStatus;
