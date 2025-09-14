@@ -8,57 +8,138 @@ import { useAuthStore } from '@/stores/AuthStore';
 
 const router = useRouter();
 const authStore = useAuthStore();
+
 const loading = ref(false);
+const isConnecting = ref(false);
+const connectingMessage = ref('');
 const error = ref('');
+
 const passphraseFormOpen = ref(false);
 const passphraseInputValue = ref('');
 const passphraseLoading = ref(false);
 const passphraseErrorMessage = ref('');
 
-const proceed = async () => 
+/**
+ * Final step: load node config and route user
+ */
+const finishConnection = async (): Promise<void> =>
 {
-	// Verify installation status
+	// Load node configuration (hydrates stores if needed)
+	await NodeService.loadNodeConfiguration();
+
+	// Re-check installation to decide next screen
 	const install = await NetworkService.checkInstallation();
 	const imageAvailable = !!install.image;
-	const nodeConfig = !!install.nodeConfig;
-	const vpnConfig = !!install.vpnConfig;
-	const certificateKey = !!install.certificateKey;
-	if (!imageAvailable || !nodeConfig || !vpnConfig || !certificateKey)
+	const walletAvailable = !!install.wallet;
+
+	// Clear state
+	connectingMessage.value = '';
+	error.value = '';
+	passphraseErrorMessage.value = '';
+
+	// If container or wallet missing → go to wizard
+	if (!imageAvailable || !walletAvailable)
 	{
-		return router.replace({ name: 'Wizard1Welcome' });
+		router.replace({ name: 'Wizard1Welcome' });
+		return;
 	}
 
-	// Check passphrase requirement
+	// Otherwise go to dashboard
+	router.replace({ name: 'NodeDashboard' });
+};
+
+/**
+ * Ensure Docker image & configs exist, then handle passphrase if required
+ * Only adds missing behavior compared to your current flow.
+ */
+const proceed = async () =>
+{
+	// Initial installation check
+	connectingMessage.value = '';
+	let install = await NetworkService.checkInstallation();
+
+	let imageAvailable = !!install.image;
+	let nodeConfig = !!install.nodeConfig;
+	let vpnConfig = !!install.vpnConfig;
+	let certificateKey = !!install.certificateKey;
+
+	// Install Docker image if missing
+	if (!imageAvailable)
+	{
+		connectingMessage.value = (window as any).$t?.('loading.wait-docker') || 'Preparing environment…';
+		const ok = await NetworkService.installDockerImage();
+		if (!ok)
+		{
+			error.value = (window as any).$t?.('loading.error-message-docker') || 'Failed to install Docker image.';
+			return;
+		}
+		imageAvailable = true;
+	}
+	
+	// Install node/VPN/certificate configs if missing
+	if (!nodeConfig || !vpnConfig || !certificateKey)
+	{
+		connectingMessage.value = (window as any).$t?.('loading.wait-config') || 'Installing configuration…';
+		const cfg = await NetworkService.installNodeConfiguration();
+		if (!cfg?.nodeConfig || !cfg?.vpnConfig || !cfg?.certificate)
+		{
+			error.value = (window as any).$t?.('loading.error-message-config') || 'Failed to install configuration.';
+			return;
+		}
+		nodeConfig = true;
+		vpnConfig = true;
+		certificateKey = true;
+	}
+
+	// If passphrase is required, open form (pause keep-awake while typing)
+	connectingMessage.value = (window as any).$t?.('loading.wait-connection') || 'Connecting to node…';
+	install = await NetworkService.checkInstallation(); // refresh state
 	const pass = await NetworkService.nodePassphrase();
 	if (pass.required && !pass.available)
 	{
+		error.value = '';
 		passphraseFormOpen.value = true;
-		return; // wait user input
+		connectingMessage.value = '';
+		return;
 	}
 
-	// Load config and go to dashboard or wallet flow
-	await NodeService.loadNodeConfiguration();
-	if (!install.wallet)
-		return router.replace({ name: 'Wizard7Wallet' });
-	return router.replace({ name: 'NodeDashboard' });
+	// All good → finalize
+	await finishConnection();
 };
 
+/**
+ * Start: connect → login → proceed
+ * Keeps previous behavior and adds missing checks.
+ */
 const start = async () =>
 {
+	// Prevent double click
+	if (isConnecting.value) return;
+
 	error.value = '';
+	connectingMessage.value = '';
 	loading.value = true;
+	isConnecting.value = true;
+
 	try
 	{
-		// Initialize API base URL (from .env if no ip/port provided)
+		// Connect to API (baseURL from .env if ip/port not provided)
 		const connected = await NetworkService.connect({});
-		if (!connected) throw new Error("Impossible de se connecter à l'API.");
+		if (!connected)
+		{
+			throw new Error("Impossible de se connecter à l'API.");
+		}
 
-		// Authenticate and store JWT
+		// Authenticate and store tokens
 		const res = await NetworkService.login();
-		if (!res || !res.token) throw new Error("Authentification échouée");
+		if (!res || !res.token)
+		{
+			throw new Error('Authentification échouée.');
+		}
 		authStore.setTokens(res.token, res.refreshToken);
 		NetworkService.setAuthToken(res.token);
 
+		// Run installation checks + passphrase flow + routing
 		await proceed();
 	}
 	catch (e: any)
@@ -68,13 +149,19 @@ const start = async () =>
 	finally
 	{
 		loading.value = false;
+		isConnecting.value = false;
+		// keep-awake is disabled inside finishConnection() or when passphrase form opens
 	}
 };
 
+/**
+ * Submit passphrase with reconnect (parity with legacy flow)
+ */
 const submitPassphrase = async () =>
 {
 	passphraseErrorMessage.value = '';
 	passphraseLoading.value = true;
+
 	try
 	{
 		const value = (passphraseInputValue.value || '').trim();
@@ -83,15 +170,27 @@ const submitPassphrase = async () =>
 			passphraseErrorMessage.value = 'La passphrase doit contenir au moins 8 caractères.';
 			return;
 		}
+
+		// Reconnect before sending passphrase (matches original behavior)
+		const reconnected = await (NetworkService.reconnect?.() ?? Promise.resolve(true));
+		if (reconnected === false)
+		{
+			passphraseErrorMessage.value = (window as any).$t?.('loading.passphrase-error') || 'Passphrase validation failed.';
+			return;
+		}
+
 		const ok = await NetworkService.setNodePassphrase(value);
 		if (!ok)
 		{
-			passphraseErrorMessage.value = 'Échec de l’envoi de la passphrase.';
+			passphraseErrorMessage.value = (window as any).$t?.('loading.passphrase-error') || 'Failed to send passphrase.';
 			return;
 		}
+
 		passphraseFormOpen.value = false;
 		loading.value = true;
-		await proceed();
+
+		// Resume automated sequence (will disable keep-awake)
+		await finishConnection();
 	}
 	finally
 	{
@@ -111,24 +210,34 @@ const submitPassphrase = async () =>
 					<img src="@assets/images/casanode-logo.png" alt="Logo" />
 				</p>
 			</div>
+
+			<!-- Main screen -->
 			<div class="welcome" v-if="!passphraseFormOpen">
 				<h2>{{ $t('welcome.start-title') }}</h2>
 				<div class="start">
 					<p class="message">{{ $t('welcome.start-text') }}</p>
 					<p class="button">
-						<ion-button :disabled="loading" @click="start">
-							<ion-spinner v-if="loading" name="crescent" />
-							{{ loading ? 'Connexion…' : $t('welcome.start-button') }}
+						<ion-button :disabled="loading || isConnecting" @click="start">
+							<ion-spinner v-if="loading || isConnecting" name="crescent" />
+							{{ (loading || isConnecting) ? ($t('loading.wait-connection') as string) : ($t('welcome.start-button') as string) }}
 						</ion-button>
 					</p>
+					<p v-if="connectingMessage" class="help">{{ connectingMessage }}</p>
 					<p v-if="error" class="help" style="color:#f66;">{{ error }}</p>
 				</div>
 			</div>
 
-			<div v-else class="passphrase" style="display:flex;flex-direction:column;gap:.75rem;align-items:stretch;max-width:20rem;margin:1rem auto 0;">
+			<!-- Passphrase form -->
+			<div
+				v-else
+				class="passphrase"
+				style="display:flex;flex-direction:column;gap:.75rem;align-items:stretch;max-width:20rem;margin:1rem auto 0;">
 				<p class="message">{{ $t('loading.passphrase-message') }}</p>
 				<ion-item>
-					<ion-input v-model="passphraseInputValue" type="password" :placeholder="$t('loading.passphrase-placeholder')" />
+					<ion-input
+						v-model="passphraseInputValue"
+						type="password"
+						:placeholder="$t('loading.passphrase-placeholder')"/>
 				</ion-item>
 				<p class="button">
 					<ion-button :disabled="passphraseLoading" @click="submitPassphrase">
