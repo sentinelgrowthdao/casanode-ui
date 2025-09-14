@@ -26,10 +26,10 @@ const checkNodeConfiguration = async () =>
 	await NodeService.loadNodeConfiguration();
 	
 	// If node already configured, go to the reset page
-	if(nodeStore.moniker.length > 0
-		|| nodeStore.nodeType.length > 0
-		|| nodeStore.nodeAddress.length > 0
-		|| nodeStore.publicAddress.length > 0)
+	if ((nodeStore.moniker?.length ?? 0) > 0
+		|| (nodeStore.nodeType?.length ?? 0) > 0
+		|| (nodeStore.nodeAddress?.length ?? 0) > 0
+		|| (nodeStore.publicAddress?.length ?? 0) > 0)
 	{
 		// Go to the reset page
 		router.push({ name: 'Wizard1Reset' });
