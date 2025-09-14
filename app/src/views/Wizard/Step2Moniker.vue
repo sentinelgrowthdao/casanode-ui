@@ -41,9 +41,9 @@ const setValueAndNavigate = async () =>
 			moniker: monikerValue,
 			nodeType: 'residential',
 			vpnType: 'v2ray'
-		});
+		} as any);
 		// Check if the change was successful
-		if(result.moniker && result.nodeType && result.vpnType)
+		if(result && result.moniker && result.nodeType && result.vpnType)
 		{
 			// Set the values locally
 			nodeStore.setMoniker(monikerValue);
