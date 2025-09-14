@@ -52,15 +52,17 @@ const IonInput = defineComponent({
 		type: { type: String as PropType<string>, default: 'text' },
 		placeholder: { type: String as PropType<string>, default: '' },
 	},
-	emits: ['update:modelValue'],
-	setup(props, { emit }) 
+	emits: ['update:modelValue', 'ionBlur', 'ionInput'],
+	setup(props, { emit, attrs }) 
 	{
 		return () => h('input', {
 			class: 'ion-input',
 			type: props.type,
 			placeholder: props.placeholder,
 			value: props.modelValue as any,
-			onInput: (e: any) => emit('update:modelValue', e?.target?.value ?? ''),
+			onInput: (e: any) => { emit('update:modelValue', e?.target?.value ?? ''); emit('ionInput', e); },
+			onBlur: (e: any) => emit('ionBlur', e),
+			...attrs,
 		});
 	}
 });
@@ -90,13 +92,15 @@ const IonButton = defineComponent({
 	name: 'IonButton',
 	props: {
 		href: { type: String as PropType<string | undefined>, default: undefined },
+		routerLink: { type: [String, Object] as PropType<any>, default: undefined },
+		routerDirection: { type: String as PropType<string | undefined>, default: undefined },
 		fill: { type: String as PropType<'clear' | 'outline' | 'solid' | 'default' | undefined>, default: undefined },
 		expand: { type: String as PropType<'block' | undefined>, default: undefined },
 		size: { type: String as PropType<'small' | 'default' | undefined>, default: undefined },
 		disabled: { type: Boolean, default: false },
 		color: { type: String as PropType<string | undefined>, default: undefined },
 	},
-	setup(props, { slots }) 
+	setup(props, { slots })
 	{
 		const classes = () => [
 			'ion-button',
@@ -105,10 +109,25 @@ const IonButton = defineComponent({
 			props.size ? `ion-size-${props.size}` : '',
 			props.color ? `ion-color-${props.color}` : '',
 		].filter(Boolean);
-		return () => 
+		return () =>
 		{
 			const content = slots.default && slots.default();
-			if (props.href) 
+			// Prefer routerLink when provided
+			if (props.routerLink)
+			{
+				return h(
+					RouterLink as any,
+					{ to: props.routerLink, custom: true },
+					{
+						default: ({ href, navigate }: any) => h(
+							'a',
+							{ class: classes(), href, 'aria-disabled': props.disabled || undefined, onClick: (e: MouseEvent) => { e.preventDefault(); if (!props.disabled) navigate(e); } },
+							content
+						)
+					}
+				);
+			}
+			if (props.href)
 			{
 				return h('a', { class: classes(), href: props.href, 'aria-disabled': props.disabled || undefined }, content);
 			}
@@ -156,17 +175,26 @@ const IonSegmentButton = defineComponent({
 const IonTabs = defineComponent({ name: 'IonTabs', setup(_, { slots }) { return () => h('div', { class: 'ion-tabs' }, slots.default && slots.default()); } });
 const IonTabBar = defineComponent({ name: 'IonTabBar', setup(_, { slots }) { return () => h('nav', { class: 'ion-tab-bar' }, slots.default && slots.default()); } });
 const IonTabButton = defineComponent({
-    name: 'IonTabButton',
-    props: { tab: { type: String, default: '' }, href: { type: String, default: '#' } },
-    setup(props, { slots }) {
-        return () => h(RouterLink as any, { to: props.href, custom: true }, {
-            default: ({ href, navigate, isActive }: any) => h(
-                'a',
-                { class: ['ion-tab-button', isActive ? 'active' : ''], href, onClick: (e: MouseEvent) => { e.preventDefault(); navigate(e); } },
-                slots.default ? slots.default() : []
-            )
-        });
-    }
+	name: 'IonTabButton',
+	props: { tab: { type: String, default: '' }, href: { type: String, default: '#' } },
+	setup(props, { slots })
+	{
+		return () => h(
+			RouterLink as any,
+			{ to: props.href, custom: true },
+			{
+				default: ({ href, navigate, isActive }: any) => h(
+					'a',
+					{
+						class: ['ion-tab-button', isActive ? 'active' : ''],
+						href,
+						onClick: (e: MouseEvent) => { e.preventDefault(); navigate(e); }
+					},
+					slots.default ? slots.default() : []
+				)
+			}
+		);
+	}
 });
 
 // Controller stubs
