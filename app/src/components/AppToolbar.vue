@@ -46,7 +46,7 @@ const nodeDisconnect = async() =>
 <template>
 <ion-toolbar>
 	<ion-buttons slot="start">
-		<ion-button fill="outline" class="logo" @click="nodeDisconnect">
+		<ion-button fill="clear" class="logo" @click="nodeDisconnect">
 			<img class="logo" src="@assets/images/casanode-logo.png" alt="Casanode" />
 		</ion-button>
 	</ion-buttons>

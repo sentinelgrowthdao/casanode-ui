@@ -27,6 +27,34 @@ body { margin: 0; background: var(--ion-background-color); color: var(--ion-text
 .ion-card-title { font-size: 1.25rem; color: var(--container-label-color, #cbcbcb); }
 .ion-card-content { padding: 1rem; display: flex; flex-direction: column; gap: 1rem; }
 
+/* Items inside card content */
+.ion-card-content .item {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: .75rem;
+	padding: .5rem .75rem;
+	background: var(--app-background-color-secondary-alt, rgba(24,30,49,.6));
+	border: 1px solid var(--app-border-color, #0157FC);
+	border-radius: .5rem;
+	box-sizing: border-box;
+}
+
+.ion-card-content .item + .item {
+	margin-top: .5rem;
+}
+
+.ion-card-content .item .label {
+	color: var(--container-label-color, #cbcbcb);
+	font-size: .9rem;
+}
+
+/* Emphasis text inside card content */
+.ion-card-content strong {
+	font-weight: 700;
+	color: #fff;
+}
+
 /* Grid */
 .ion-grid { display: block; width: 100%; padding: .5rem; }
 .ion-row { display: flex; flex-wrap: wrap; margin: 0 -.5rem; }
@@ -83,6 +111,7 @@ body { margin: 0; background: var(--ion-background-color); color: var(--ion-text
 
 /* Ensure content doesn't hide behind the fixed tab bar when inside tabs */
 .ion-tabs .ion-content {
+	padding-top: .5rem;
 	padding-bottom: calc(var(--ion-tab-bar-height) + var(--ion-safe-area-bottom));
 }
 
