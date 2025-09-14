@@ -265,12 +265,17 @@ class ApiService
 			};
 			
 			const response = await Http.request(options);
-			return response.data;
+			if (typeof response.status === 'number' && (response.status < 200 || response.status >= 300))
+			{
+				console.error(`GET ${endpoint} failed with status ${response.status}`);
+				return null;
+			}
+			return response.data ?? null;
 		}
 		catch (error)
 		{
 			console.error(`GET request failed: ${error}`);
-			throw error;
+			return null;
 		}
 	}
 	
@@ -296,7 +301,12 @@ class ApiService
 			};
 			
 			const response = await Http.request(options);
-			return response.data;
+			if (typeof response.status === 'number' && (response.status < 200 || response.status >= 300))
+			{
+				console.error(`POST ${endpoint} failed with status ${response.status}`);
+				return null;
+			}
+			return response.data ?? null;
 		}
 		catch (error)
 		{
@@ -327,7 +337,12 @@ class ApiService
 			};
 			
 			const response = await Http.request(options);
-			return response.data;
+			if (typeof response.status === 'number' && (response.status < 200 || response.status >= 300))
+			{
+				console.error(`PUT ${endpoint} failed with status ${response.status}`);
+				return null;
+			}
+			return response.data ?? null;
 		}
 		catch (error)
 		{
@@ -357,7 +372,12 @@ class ApiService
 			};
 			
 			const response = await Http.request(options);
-			return response.data;
+			if (typeof response.status === 'number' && (response.status < 200 || response.status >= 300))
+			{
+				console.error(`DELETE ${endpoint} failed with status ${response.status}`);
+				return null;
+			}
+			return response.data ?? null;
 		}
 		catch (error)
 		{
