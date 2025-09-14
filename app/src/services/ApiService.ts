@@ -482,14 +482,14 @@ class ApiService
 	 * @param config NetworkConfiguration
 	 * @returns Promise<NodeConfigResults>
 	 */
-	public async setNodeConfiguration(config: NetworkConfiguration): Promise<NodeConfigResults>
+	public async setNodeConfiguration(config: Partial<NetworkConfiguration>): Promise<NodeConfigResults>
 	{
 		const data = await this.putRequest("/node/configuration", config);
 		const results: NodeConfigResults = {};
 		
 		Object.keys(config).forEach((key) =>
 		{
-			results[key] = data.success ?? false;
+			results[key] = data?.success ?? false;
 		});
 		
 		return results;
