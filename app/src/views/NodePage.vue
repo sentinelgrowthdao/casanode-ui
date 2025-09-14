@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import {
-	IonPage, IonTabs,
-	IonTabBar, IonTabButton, IonLabel
+	IonPage, IonLabel
 } from '@/ui';
 import { startNetworkMonitorHook } from '@/hooks/NetworkMonitorHook';
 
