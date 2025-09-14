@@ -394,7 +394,7 @@ class ApiService
 	{
 		// Get the node status
 		const data = await this.getRequest("/node/status");
-		return data.status ?? 'unknown';
+		return data?.status ?? 'unknown';
 	}
 	
 	/**
@@ -465,15 +465,15 @@ class ApiService
 		
 		// Return the node configuration
 		return {
-			moniker: data.moniker ?? null,
-			backend: data.backend ?? null,
-			nodeType: data.nodeType ?? null,
-			nodeIp: data.nodeIp ?? null,
-			nodePort: data.nodePort ?? null,
-			vpnType: data.vpnType ?? null,
-			vpnPort: data.vpnPort ?? null,
-			maximumPeers: data.maximumPeers ?? null,
-			dockerImage: data.dockerImage ?? null,
+			moniker: data?.moniker ?? null,
+			backend: data?.backend ?? null,
+			nodeType: data?.nodeType ?? null,
+			nodeIp: data?.nodeIp ?? null,
+			nodePort: data?.nodePort ?? null,
+			vpnType: data?.vpnType ?? null,
+			vpnPort: data?.vpnPort ?? null,
+			maximumPeers: data?.maximumPeers ?? null,
+			dockerImage: data?.dockerImage ?? null,
 		} as NetworkConfiguration;
 	}
 	
@@ -505,7 +505,7 @@ class ApiService
 		const data = await this.getRequest("/node/address");
 		
 		// Return the node address
-		return data.address ?? null;
+		return data?.address ?? null;
 	}
 	
 	/**
@@ -518,7 +518,7 @@ class ApiService
 		const data = await this.getRequest("/wallet/address");
 		
 		// Return the wallet address
-		return data.address ?? null;
+		return data?.address ?? null;
 	}
 	
 	/**
@@ -529,7 +529,7 @@ class ApiService
 	{
 		// Get the node balance
 		const data = await this.getRequest("/node/balance");
-		return data.balance ?? null;
+		return data?.balance ?? null;
 	}
 	
 	/**
@@ -543,12 +543,12 @@ class ApiService
 		
 		// Return the installation check
 		return {
-			image: data.image ?? false,
-			containerExists: data.containerExists ?? false,
-			nodeConfig: data.nodeConfig ?? false,
-			vpnConfig: data.vpnConfig ?? false,
-			certificateKey: data.certificateKey ?? false,
-			wallet: data.wallet ?? false,
+			image: data?.image ?? false,
+			containerExists: data?.containerExists ?? false,
+			nodeConfig: data?.nodeConfig ?? false,
+			vpnConfig: data?.vpnConfig ?? false,
+			certificateKey: data?.certificateKey ?? false,
+			wallet: data?.wallet ?? false,
 		};
 	}
 	
@@ -563,7 +563,7 @@ class ApiService
 		
 		// Return the installation status
 		return {
-			imagePull: data.imagePull ?? null,
+			imagePull: data?.imagePull ?? null,
 		};
 	}
 	
@@ -578,9 +578,9 @@ class ApiService
 		
 		// Return the installation status
 		return {
-			nodeConfig: data.nodeConfig ?? false,
-			vpnConfig: data.vpnConfig ?? false,
-			certificate: data.certificate ?? false,
+			nodeConfig: data?.nodeConfig ?? false,
+			vpnConfig: data?.vpnConfig ?? false,
+			certificate: data?.certificate ?? false,
 		};
 	}
 	
@@ -592,7 +592,7 @@ class ApiService
 	public async setPassphrase(passphrase: string): Promise<boolean>
 	{
 		const data = await this.postRequest("/node/passphrase", { passphrase });
-		return data.success ?? false;
+		return data?.success ?? false;
 	}
 	
 	/**
@@ -613,7 +613,7 @@ class ApiService
 	public async startNode(): Promise<boolean>
 	{
 		const data = await this.putRequest("/node/start");
-		return data.start ?? false;
+		return data?.start ?? false;
 	}
 	
 	/**
@@ -623,7 +623,7 @@ class ApiService
 	public async stopNode(): Promise<boolean>
 	{
 		const data = await this.putRequest("/node/stop");
-		return data.stop ?? false;
+		return data?.stop ?? false;
 	}
 	
 	/**
@@ -633,7 +633,7 @@ class ApiService
 	public async restartNode(): Promise<boolean>
 	{
 		const data = await this.putRequest("/node/restart");
-		return data.restart ?? false;
+		return data?.restart ?? false;
 	}
 	
 	/**
@@ -643,7 +643,7 @@ class ApiService
 	public async renewCertificate(): Promise<boolean>
 	{
 		const data = await this.postRequest("/certificate/renew");
-		return data.renew ?? false;
+		return data?.renew ?? false;
 	}
 	
 	/**
@@ -653,7 +653,7 @@ class ApiService
 	public async updateSystem(target: "system" | "sentinel"): Promise<boolean>
 	{
 		const data = await this.postRequest("/system/update", { target });
-		return data.success ?? false;
+		return data?.success ?? false;
 	}
 	
 	/**
@@ -663,7 +663,7 @@ class ApiService
 	public async rebootSystem(): Promise<boolean>
 	{
 		const data = await this.postRequest("/system/reboot");
-		return data.success ?? false;
+		return data?.success ?? false;
 	}
 	
 	/**
@@ -673,7 +673,7 @@ class ApiService
 	public async shutdownSystem(): Promise<boolean>
 	{
 		const data = await this.postRequest("/system/shutdown");
-		return data.success ?? false;
+		return data?.success ?? false;
 	}
 	
 	/**
@@ -683,7 +683,7 @@ class ApiService
 	public async resetSystem(): Promise<boolean>
 	{
 		const data = await this.postRequest("/system/reset");
-		return data.success ?? false;
+		return data?.success ?? false;
 	}
 	
 	
@@ -694,7 +694,7 @@ class ApiService
 	public async createWallet(): Promise<string|null>
 	{
 		const data = await this.postRequest("/wallet/create");
-		return Array.isArray(data.mnemonic) ? data.mnemonic.join(' ') : data.mnemonic ?? null;
+		return Array.isArray(data?.mnemonic) ? data.mnemonic.join(' ') : data?.mnemonic ?? null;
 	}
 	
 	/**
@@ -705,7 +705,7 @@ class ApiService
 	public async restoreWallet(mnemonic: string): Promise<boolean>
 	{
 		const data = await this.postRequest("/wallet/restore", { mnemonic: mnemonic });
-		return data.success ?? false;
+		return data?.success ?? false;
 	}
 	
 	/**
@@ -715,7 +715,7 @@ class ApiService
 	public async removeWallet(): Promise<boolean>
 	{
 		const data = await this.deleteRequest("/wallet/remove");
-		return data.success ?? false;
+		return data?.success ?? false;
 	}
 	
 	/**
@@ -726,7 +726,7 @@ class ApiService
 	public async checkPort(portType: 'node' | 'vpn'): Promise<string|null>
 	{
 		const data = await this.getRequest(`/check/port/${portType}`);
-		const status = data.status ?? -1;
+		const status = data?.status ?? -1;
 		// Return the status
 		return status === '2' ? 'open' : status === '3' ? 'closed' : null;
 	}
