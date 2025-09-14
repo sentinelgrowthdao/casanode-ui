@@ -18,7 +18,7 @@ const props = defineProps({
 const emits = defineEmits(['update:modelValue']);
 
 const inputRef: Ref<InstanceType<typeof IonInput> | null> = ref(null);
-const inputValue: Ref<string | null> = ref(props.modelValue || '');
+const inputValue: Ref<string> = ref(props.modelValue || '');
 const inputType: Ref<string> = ref('text');
 
 const validateIp = (value: string, type: 'ipv4' | 'ipv6'): boolean =>
@@ -59,19 +59,24 @@ const validate = (value: string) =>
 	return isValid;
 };
 
-const handleInput = (event: Event) =>
+const handleInput = (rawValue: string) =>
 {
-	const target = event.target as HTMLInputElement;
-	let value = target.value.trim();
+	let value = (rawValue ?? '').trim();
 
-	if(value === '')
-		return ;
-	
 	if (props.type === 'number')
 	{
 		value = value.replace(/[^0-9]/g, '');
 	}
-	
+
+	if (value === '')
+	{
+		inputRef.value?.$el.classList.remove('ion-valid');
+		inputRef.value?.$el.classList.remove('ion-invalid');
+		inputValue.value = '';
+		emits('update:modelValue', '');
+		return;
+	}
+    
 	if (validate(value))
 	{
 		inputRef.value?.$el.classList.add('ion-valid');
@@ -94,7 +99,7 @@ const markTouched = (/*event: Event*/) =>
 
 watch(() => props.modelValue, (newValue) =>
 {
-	inputValue.value = newValue || '';
+	inputValue.value = (newValue ?? '') as string;
 });
 
 
@@ -117,9 +122,9 @@ onMounted(() =>
 	:type="inputType"
 	:placeholder="placeholder"
 	:aria-label="ariaLabel"
-	:value="inputValue"
+	:modelValue="inputValue"
 	:error-text="props.errorMessage"
-	@ionInput="handleInput"
+	@update:modelValue="handleInput"
 	@ionBlur="markTouched"
 	lines="none"/>
 </template>
