@@ -93,21 +93,27 @@ body { margin: 0; background: var(--ion-background-color); color: var(--ion-text
 
 /* Themed variables for inputs */
 :root {
-	--ion-input-bg: rgba(255,255,255,0.04);
+	--ion-input-bg: rgba(255,255,255,0.05);
+	--ion-input-bg-hover: rgba(255,255,255,0.07);
+	--ion-input-bg-focus: rgba(255,255,255,0.08);
 	--ion-input-border: rgba(255,255,255,0.16);
-	--ion-input-border-hover: rgba(255,255,255,0.26);
+	--ion-input-border-hover: rgba(255,255,255,0.28);
 	--ion-input-border-focus: #0184FC;
 	--ion-input-border-valid: #2ecc71;
 	--ion-input-border-invalid: #ff4d4f;
 	--ion-input-placeholder: rgba(255,255,255,0.55);
+	--ion-input-radius: .625rem; /* 10px */
+	--ion-input-padding-y: .65rem;
+	--ion-input-padding-x: .9rem;
+	--ion-input-height: 2.85rem;
 }
 
 .ion-input, .ion-textarea, .ion-select {
 	width: 100%;
 	max-width: 100%;
 	box-sizing: border-box; /* prevent overflow with padding */
-	padding: .65rem .85rem;
-	border-radius: .5rem;
+	padding: var(--ion-input-padding-y) var(--ion-input-padding-x);
+	border-radius: var(--ion-input-radius);
 	border: 1px solid var(--ion-input-border);
 	background: var(--ion-input-bg);
 	color: var(--ion-text-color);
@@ -115,13 +121,14 @@ body { margin: 0; background: var(--ion-background-color); color: var(--ion-text
 	min-width: 0; /* allow shrink inside flex parents */
 	font-size: 1rem;
 	line-height: 1.25rem;
-	min-height: 2.75rem; /* consistent height for text inputs */
+	min-height: var(--ion-input-height); /* consistent height for text inputs */
 	caret-color: var(--ion-color-primary, #0184FC);
-	transition: border-color .15s ease, box-shadow .15s ease, background-color .15s ease;
+	transition: border-color .15s ease, box-shadow .15s ease, background-color .15s ease, transform .06s ease;
 }
 
 .ion-input:hover, .ion-textarea:hover, .ion-select:hover {
 	border-color: var(--ion-input-border-hover);
+	background: var(--ion-input-bg-hover);
 }
 
 .ion-input::placeholder, .ion-textarea::placeholder {
@@ -129,17 +136,22 @@ body { margin: 0; background: var(--ion-background-color); color: var(--ion-text
 	opacity: 1;
 }
 
-.ion-input:focus, .ion-textarea:focus, .ion-select:focus {
+.ion-input:focus, .ion-textarea:focus, .ion-select:focus, .ion-input:focus-visible, .ion-textarea:focus-visible, .ion-select:focus-visible {
 	outline: none;
 	border-color: var(--ion-input-border-focus);
 	box-shadow: 0 0 0 3px rgba(1, 132, 252, 0.20);
-	background: rgba(255,255,255,0.06);
+	background: var(--ion-input-bg-focus);
 }
 
 /* Valid/invalid states applied by AppInput logic */
 .ion-input.ion-valid, .ion-textarea.ion-valid, .ion-select.ion-valid {
 	border-color: var(--ion-input-border-valid);
 	box-shadow: 0 0 0 3px rgba(46,204,113,0.18);
+}
+/* If invalid but not touched yet, keep it subtle */
+.ion-input.ion-invalid:not(.ion-touched), .ion-textarea.ion-invalid:not(.ion-touched), .ion-select.ion-invalid:not(.ion-touched) {
+	border-color: color-mix(in srgb, var(--ion-input-border-invalid) 40%, var(--ion-input-border));
+	box-shadow: none;
 }
 .ion-input.ion-invalid, .ion-textarea.ion-invalid, .ion-select.ion-invalid {
 	border-color: var(--ion-input-border-invalid);
@@ -157,17 +169,47 @@ body { margin: 0; background: var(--ion-background-color); color: var(--ion-text
 	appearance: none;
 	-webkit-appearance: none;
 	-moz-appearance: none;
-	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24'%3E%3Cpath fill='%23ffffff' fill-opacity='0.7' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24'%3E%3Cpath fill='%23ffffff' fill-opacity='0.78' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
 	background-repeat: no-repeat;
-	background-position: right .65rem center;
-	background-size: 14px 14px;
-	padding-right: 2rem; /* room for arrow */
+	background-position: right .75rem center;
+	background-size: 16px 16px;
+	padding-right: 2.2rem; /* room for arrow */
+}
+
+/* Select arrow should fade when disabled */
+.ion-select:disabled {
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24'%3E%3Cpath fill='%23ffffff' fill-opacity='0.45' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
 }
 
 /* Disabled */
 .ion-input:disabled, .ion-textarea:disabled, .ion-select:disabled {
 	opacity: .6;
 	cursor: not-allowed;
+}
+
+/* Readonly (keep opacity but mute interactions) */
+.ion-input[readonly], .ion-textarea[readonly] {
+	background: var(--ion-input-bg);
+	cursor: default;
+}
+
+/* Autofill (WebKit) */
+input.ion-input:-webkit-autofill,
+textarea.ion-textarea:-webkit-autofill,
+select.ion-select:-webkit-autofill {
+	-webkit-text-fill-color: var(--ion-text-color);
+	transition: background-color 9999s ease-in-out 0s;
+}
+
+/* Remove number input spinners */
+input.ion-input[type=number]::-webkit-outer-spin-button,
+input.ion-input[type=number]::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+input.ion-input[type=number] {
+	appearance: textfield;
+	-moz-appearance: textfield;
 }
 
 /* Helper/error text inside items */

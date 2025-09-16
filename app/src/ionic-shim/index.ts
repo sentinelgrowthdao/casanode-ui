@@ -55,14 +55,17 @@ const IonInput = defineComponent({
 	emits: ['update:modelValue', 'ionBlur', 'ionInput'],
 	setup(props, { emit, attrs }) 
 	{
+		const userClass = (attrs as any)?.class;
+		const rest: any = { ...(attrs as any) };
+		if ('class' in rest) delete rest.class;
 		return () => h('input', {
-			class: 'ion-input',
+			...rest,
+			class: ['ion-input', userClass].filter(Boolean),
 			type: props.type,
 			placeholder: props.placeholder,
 			value: props.modelValue as any,
 			onInput: (e: any) => { emit('update:modelValue', e?.target?.value ?? ''); emit('ionInput', e); },
 			onBlur: (e: any) => emit('ionBlur', e),
-			...attrs,
 		});
 	}
 });
@@ -71,10 +74,14 @@ const IonTextarea = defineComponent({
 	name: 'IonTextarea',
 	props: { modelValue: { type: String, default: '' }, placeholder: { type: String, default: '' } },
 	emits: ['update:modelValue'],
-	setup(props, { emit }) 
+	setup(props, { emit, attrs }) 
 	{
+		const userClass = (attrs as any)?.class;
+		const rest: any = { ...(attrs as any) };
+		if ('class' in rest) delete rest.class;
 		return () => h('textarea', {
-			class: 'ion-textarea',
+			...rest,
+			class: ['ion-textarea', userClass].filter(Boolean),
 			placeholder: props.placeholder,
 			value: props.modelValue,
 			onInput: (e: any) => emit('update:modelValue', e?.target?.value ?? ''),
@@ -82,7 +89,23 @@ const IonTextarea = defineComponent({
 	}
 });
 
-const IonSelect = defineComponent({ name: 'IonSelect', setup(_, { slots }) { return () => h('select', { class: 'ion-select' }, slots.default && slots.default()); } });
+const IonSelect = defineComponent({
+	name: 'IonSelect',
+	props: { modelValue: { type: [String, Number, Boolean] as PropType<any>, default: undefined } },
+	emits: ['update:modelValue'],
+	setup(props, { emit, slots, attrs }) 
+	{
+		const userClass = (attrs as any)?.class;
+		const rest: any = { ...(attrs as any) };
+		if ('class' in rest) delete rest.class;
+		return () => h('select', {
+			...rest,
+			class: ['ion-select', userClass].filter(Boolean),
+			value: props.modelValue as any,
+			onChange: (e: any) => emit('update:modelValue', e?.target?.value),
+		}, slots.default && slots.default());
+	}
+});
 const IonSelectOption = defineComponent({ name: 'IonSelectOption', props: { value: { type: [String, Number, Boolean, Object] as PropType<any>, default: undefined } }, setup(props, { slots }) { return () => h('option', { value: props.value }, slots.default && slots.default()); } });
 const IonNote = defineComponent({ name: 'IonNote', setup(_, { slots }) { return () => h('small', { class: 'ion-note' }, slots.default && slots.default()); } });
 const IonText = defineComponent({ name: 'IonText', setup(_, { slots }) { return () => h('span', { class: 'ion-text' }, slots.default && slots.default()); } });
