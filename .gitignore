@@ -1,4 +1,7 @@
 .env
+/app/dist/
+/package/deb/opt/casanode/www/
+/package/dist/
 
 ######################
 # IDE generated files #
