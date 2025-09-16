@@ -1,6 +1,92 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { RouteRecordRaw } from 'vue-router';
 import NetworkService from '@/services/NetworkService';
+import NodeService from '@/services/NodeService';
+import { useAuthStore } from '@/stores/AuthStore';
+import { useNodeStore } from '@/stores/NodeStore';
+import { getJwtExpiration } from '@/utils/jwt';
+
+const TOKEN_REFRESH_THRESHOLD = 60 * 1000; // 1 minute safety margin
+let nodeHydrationPromise: Promise<boolean> | null = null;
+
+async function ensureAuthenticated(): Promise<boolean>
+{
+	const authStore = useAuthStore();
+	let token = authStore.token;
+	if (!token)
+	{
+		return false;
+	}
+
+	if (NetworkService.getAuthToken() !== token)
+	{
+		NetworkService.setAuthToken(token);
+	}
+
+	let expiresAt = authStore.expiresAt;
+	if (!expiresAt)
+	{
+		expiresAt = getJwtExpiration(token) ?? null;
+		if (expiresAt)
+			authStore.setExpiry(expiresAt);
+	}
+
+	const now = Date.now();
+	if (expiresAt && expiresAt <= now + TOKEN_REFRESH_THRESHOLD)
+	{
+		const refreshed = await NetworkService.refreshAuth(authStore.refreshToken ?? undefined);
+		if (!refreshed || !refreshed.token)
+		{
+			authStore.clear();
+			NetworkService.setAuthToken(null);
+			return false;
+		}
+
+		token = refreshed.token;
+		NetworkService.setAuthToken(token);
+		expiresAt = refreshed.expiresAt ?? getJwtExpiration(token) ?? null;
+		authStore.setTokens(token, refreshed.refreshToken, expiresAt);
+	}
+
+	if (expiresAt && expiresAt <= now)
+	{
+		authStore.clear();
+		NetworkService.setAuthToken(null);
+		return false;
+	}
+
+	return true;
+}
+
+function hasNodeData(): boolean
+{
+	const nodeStore = useNodeStore();
+	return Boolean(nodeStore.nodeIp || nodeStore.moniker);
+}
+
+async function ensureNodeData(): Promise<boolean>
+{
+	if (hasNodeData())
+	{
+		return true;
+	}
+
+	if (!NetworkService.isConnected())
+	{
+		return false;
+	}
+
+	if (!nodeHydrationPromise)
+	{
+		nodeHydrationPromise = (async () =>
+		{
+			await NodeService.loadNodeConfiguration();
+			return hasNodeData();
+		})().finally(() => { nodeHydrationPromise = null; });
+	}
+
+	return await nodeHydrationPromise;
+}
 
 // List of pages that require connection
 export const requiresConnection = [
@@ -124,12 +210,43 @@ router.beforeEach(async (to, from, next) =>
 	// If the page requires a connection to the node
 	if(requiresConnection.includes(to.name as string))
 	{
+		const targetName = typeof to.name === 'string' ? to.name : '';
+		const isAuthenticated = await ensureAuthenticated();
+		if (!isAuthenticated)
+		{
+			return next({ name: 'Home' });
+		}
 		// Check if the node is connected
 		const isConnected = await NetworkService.isConnected();
 		// If not connected, redirect to home
 		if (!isConnected)
 		{
 			return next({ name: 'Home' });
+		}
+		if (targetName.startsWith('Node'))
+		{
+			const ready = await ensureNodeData();
+			if (!ready)
+			{
+				try
+				{
+					const pass = await NetworkService.nodePassphrase();
+					if (pass?.required && !pass?.available)
+					{
+						return next({ name: 'Home' });
+					}
+					const install = await NetworkService.checkInstallation();
+					if (!install?.image || !install?.wallet)
+					{
+						return next({ name: 'Wizard1Welcome' });
+					}
+				}
+				catch (error)
+				{
+					console.error('Unable to hydrate node data after auth:', error);
+				}
+				return next({ name: 'Home' });
+			}
 		}
 	}
 	
