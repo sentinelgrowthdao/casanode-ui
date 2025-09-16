@@ -1,8 +1,4 @@
 {
-	"app-information-title": "Informations sur l'application",
-	"app-version-label": "Version de l'application :",
-	"app-release-date-label": "Date de sortie :",
-
 	"system-information-title": "Informations sur le système",
 	"casanode-version-label": "Version de Casanode :",
 	"operating-system-label": "Système d'exploitation :",
