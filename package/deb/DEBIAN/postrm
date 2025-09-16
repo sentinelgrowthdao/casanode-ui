@@ -1,0 +1,11 @@
+#!/bin/bash
+set -e
+
+if [ "$1" = "purge" ]; then
+	echo "Final cleanup for Casanode UI..."
+	rmdir --ignore-fail-on-non-empty /opt/casanode/www 2>/dev/null || true
+	rmdir --ignore-fail-on-non-empty /opt/casanode/nginx 2>/dev/null || true
+	rmdir --ignore-fail-on-non-empty /opt/casanode 2>/dev/null || true
+fi
+
+echo "Nothing else to do in postrm for UI (Nginx handled by OS)."

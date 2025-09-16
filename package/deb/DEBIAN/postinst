@@ -1,0 +1,24 @@
+#!/bin/bash
+set -e
+
+echo "Ensuring 'casanode' system user exists..."
+if id -u casanode >/dev/null 2>&1; then
+	echo "User 'casanode' already exists."
+else
+	adduser --system --group --home /opt/casanode casanode
+fi
+
+echo "Setting up directories for Casanode UI..."
+mkdir -p /opt/casanode/www
+mkdir -p /opt/casanode/nginx
+
+echo "Setting ownership to casanode:casanode under /opt/casanode..."
+chown -R casanode:casanode /opt/casanode
+
+echo "Ensuring read/execute permissions for nginx and others on UI files..."
+find /opt/casanode/www -type d -exec chmod 755 {} + 2>/dev/null || true
+find /opt/casanode/www -type f -exec chmod 644 {} + 2>/dev/null || true
+chmod 755 /opt/casanode /opt/casanode/www /opt/casanode/nginx
+chmod 644 /opt/casanode/nginx/*.conf 2>/dev/null || true
+
+echo "Post-install complete. Nginx will be handled by the OS configuration."
