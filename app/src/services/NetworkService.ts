@@ -36,9 +36,17 @@ class NetworkService
 	/**
 	 * Authenticate against API and retrieve JWT
 	 */
-	public async login(preSharedToken?: string): Promise<{ token: string; refreshToken?: string } | null>
+	public async login(preSharedToken?: string): Promise<{ token: string; refreshToken?: string; expiresAt?: number | null } | null>
 	{
 		return await ApiService.login(preSharedToken);
+	}
+
+	/**
+	 * Refresh Authorization token
+	 */
+	public async refreshAuth(refreshToken?: string): Promise<{ token: string; refreshToken?: string; expiresAt?: number | null } | null>
+	{
+		return await ApiService.refreshAuth(refreshToken);
 	}
 
 	/**
