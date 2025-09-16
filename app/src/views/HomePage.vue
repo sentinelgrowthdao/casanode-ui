@@ -136,7 +136,7 @@ const start = async () =>
 		{
 			throw new Error('Authentification échouée.');
 		}
-		authStore.setTokens(res.token, res.refreshToken);
+		authStore.setTokens(res.token, res.refreshToken, res.expiresAt ?? null);
 		NetworkService.setAuthToken(res.token);
 
 		// Run installation checks + passphrase flow + routing
