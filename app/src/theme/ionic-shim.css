@@ -90,28 +90,92 @@ body { margin: 0; background: var(--ion-background-color); color: var(--ion-text
 
 /* Inputs */
 .ion-item { display: block; padding: .25rem 0; }
+
+/* Themed variables for inputs */
+:root {
+	--ion-input-bg: rgba(255,255,255,0.04);
+	--ion-input-border: rgba(255,255,255,0.16);
+	--ion-input-border-hover: rgba(255,255,255,0.26);
+	--ion-input-border-focus: #0184FC;
+	--ion-input-border-valid: #2ecc71;
+	--ion-input-border-invalid: #ff4d4f;
+	--ion-input-placeholder: rgba(255,255,255,0.55);
+}
+
 .ion-input, .ion-textarea, .ion-select {
 	width: 100%;
 	max-width: 100%;
 	box-sizing: border-box; /* prevent overflow with padding */
-	padding: .5rem .75rem;
-	border-radius: .35rem;
-	border: 1px solid var(--app-border-color, #0157FC);
-	background: transparent;
+	padding: .65rem .85rem;
+	border-radius: .5rem;
+	border: 1px solid var(--ion-input-border);
+	background: var(--ion-input-bg);
 	color: var(--ion-text-color);
 	display: block;
 	min-width: 0; /* allow shrink inside flex parents */
+	font-size: 1rem;
+	line-height: 1.25rem;
+	min-height: 2.75rem; /* consistent height for text inputs */
+	caret-color: var(--ion-color-primary, #0184FC);
+	transition: border-color .15s ease, box-shadow .15s ease, background-color .15s ease;
 }
 
-.ion-input::placeholder {
-	color: var(--text-color-warning-light, #cbcbcb);
-	opacity: .6;
+.ion-input:hover, .ion-textarea:hover, .ion-select:hover {
+	border-color: var(--ion-input-border-hover);
+}
+
+.ion-input::placeholder, .ion-textarea::placeholder {
+	color: var(--ion-input-placeholder);
+	opacity: 1;
 }
 
 .ion-input:focus, .ion-textarea:focus, .ion-select:focus {
 	outline: none;
-	border-color: #0184FC;
-	box-shadow: 0 0 0 2px rgba(1, 132, 252, 0.25);
+	border-color: var(--ion-input-border-focus);
+	box-shadow: 0 0 0 3px rgba(1, 132, 252, 0.20);
+	background: rgba(255,255,255,0.06);
+}
+
+/* Valid/invalid states applied by AppInput logic */
+.ion-input.ion-valid, .ion-textarea.ion-valid, .ion-select.ion-valid {
+	border-color: var(--ion-input-border-valid);
+	box-shadow: 0 0 0 3px rgba(46,204,113,0.18);
+}
+.ion-input.ion-invalid, .ion-textarea.ion-invalid, .ion-select.ion-invalid {
+	border-color: var(--ion-input-border-invalid);
+	box-shadow: 0 0 0 3px rgba(255,77,79,0.18);
+}
+
+/* Textarea specifics */
+.ion-textarea {
+	resize: vertical;
+	min-height: 4.5rem;
+}
+
+/* Better looking native select */
+.ion-select {
+	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24'%3E%3Cpath fill='%23ffffff' fill-opacity='0.7' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: right .65rem center;
+	background-size: 14px 14px;
+	padding-right: 2rem; /* room for arrow */
+}
+
+/* Disabled */
+.ion-input:disabled, .ion-textarea:disabled, .ion-select:disabled {
+	opacity: .6;
+	cursor: not-allowed;
+}
+
+/* Helper/error text inside items */
+.ion-item .ion-text[color="danger"] {
+	display: block;
+	margin-top: .35rem;
+	font-size: .875rem;
+	line-height: 1.2;
 }
 
 /* Segment */
