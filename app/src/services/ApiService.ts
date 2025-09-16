@@ -132,7 +132,7 @@ class ApiService
 	/**
    * Authenticate and retrieve JWT
    */
-	public async login(preSharedToken?: string): Promise<{ token: string; refreshToken?: string } | null>
+	public async login(preSharedToken?: string): Promise<{ token: string; refreshToken?: string; expiresAt?: number | null } | null>
 	{
 		const env: any = (import.meta as any).env || {};
 		const bodyToken = preSharedToken || env.VITE_API_AUTH || env.VITE_API_TOKEN;
@@ -141,12 +141,13 @@ class ApiService
 		// Try common keys
 		const token = data.token || data.jwt || data.accessToken || data.access_token || null;
 		const refreshToken = data.refreshToken || data.refresh_token || undefined;
+		const expiresAt = typeof data.expiresAt === 'number' ? data.expiresAt : (typeof data.expires_at === 'number' ? data.expires_at : undefined);
 		if (!token) return null;
-		return { token, refreshToken };
+		return { token, refreshToken, expiresAt };
 	}
 
 	/** Refresh JWT (implementation flexible depending on backend) */
-	public async refreshAuth(refreshToken?: string): Promise<{ token: string; refreshToken?: string } | null>
+	public async refreshAuth(refreshToken?: string): Promise<{ token: string; refreshToken?: string; expiresAt?: number | null } | null>
 	{
 		try
 		{
@@ -164,8 +165,9 @@ class ApiService
 			const data = response.data || {};
 			const token = data.token || data.jwt || data.accessToken || data.access_token || null;
 			const newRefresh = data.refreshToken || data.refresh_token || refreshToken;
+			const expiresAt = typeof data.expiresAt === 'number' ? data.expiresAt : (typeof data.expires_at === 'number' ? data.expires_at : undefined);
 			if (!token) return null;
-			return { token, refreshToken: newRefresh };
+			return { token, refreshToken: newRefresh, expiresAt };
 		}
 		catch (error)
 		{
