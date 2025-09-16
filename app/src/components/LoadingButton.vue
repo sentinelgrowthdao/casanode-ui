@@ -52,21 +52,26 @@ ion-button
 	
 	.button-content
 	{
-		display: flex;
+		display: inline-flex;
 		align-items: center;
-		
-		&> ion-spinner
+		justify-content: center;
+		gap: 0.5rem;
+		white-space: nowrap;
+		line-height: 1.2;
+
+		/* Target shim spinner element rendered as <span class="ion-spinner"> */
+		:deep(.ion-spinner)
 		{
-			margin-right: calc(var(--padding-start) * 0.5);
 			width: 1rem;
 			height: 1rem;
-			margin-right: 0.5rem;
+			display: inline-block;
+			vertical-align: middle;
 		}
 	}
 	
 	&.loading .button-content
 	{
-		min-width: 100%;
+		width: 100%;
 		justify-content: center;
 	}
 }
