@@ -5,10 +5,10 @@ Architecture: all
 Maintainer: FoxinouFr <foxinou@foxinodes.net>
 Depends: nginx
 Filename: pool/main/casanode-ui_2.0.0-alpha1_all.deb
-Size: 638648
-MD5sum: 84ef6a10d3d60c88dc6c5cdc27044bcb
-SHA1: 078357f793bef626fdce216af116b557f6fb9e11
-SHA256: f38cf9ee02adc7a05eac04c23a7d6aaf1016279ebb68ccf22181e940d63aa856
+Size: 638628
+MD5sum: dac2e2b7ca398cc2a67ba9db487480f0
+SHA1: 2b36e858077658ce802192b1f1ca55695e518559
+SHA256: 6d87e962b3d1c4ebc72a2aed3a353b4db6c13bda2bb2c84e37df5d098632c17c
 Section: web
 Priority: optional
 Homepage: https://github.com/sentinelgrowthdao/casanode-mobile-app
