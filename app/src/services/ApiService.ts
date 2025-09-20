@@ -57,8 +57,7 @@ class ApiService
 			this.apiIp = ip;
 			this.apiPort = port;
 			this.authToken = token || null;
-			const isWebDev = typeof window !== 'undefined' && typeof import.meta !== 'undefined' && (import.meta as any).env && (import.meta as any).env.DEV && Capacitor.getPlatform() === 'web';
-			this.baseUrl = isWebDev ? `/api/v1` : `https://${this.apiIp}:${this.apiPort}/api/v1`;
+			this.baseUrl = `http://${this.apiIp}:${this.apiPort}/api/v1`;
 			this.connected = true;
 			return true;
 		}
