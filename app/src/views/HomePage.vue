@@ -5,6 +5,7 @@ import { useRouter } from 'vue-router';
 import NetworkService from '@/services/NetworkService';
 import NodeService from '@/services/NodeService';
 import { useAuthStore } from '@/stores/AuthStore';
+import { useConnectionStore } from '@/stores/ConnectionStore';
 
 const router = useRouter();
 const authStore = useAuthStore();
@@ -50,7 +51,6 @@ const finishConnection = async (): Promise<void> =>
 
 /**
  * Ensure Docker image & configs exist, then handle passphrase if required
- * Only adds missing behavior compared to your current flow.
  */
 const proceed = async () =>
 {
@@ -108,8 +108,10 @@ const proceed = async () =>
 };
 
 /**
- * Start: connect → login → proceed
- * Keeps previous behavior and adds missing checks.
+ * Start sequence logic (priority order):
+ * 1. If we already have a JWT + stored endpoint (authStore.lastIp/lastPort) → reuse them (skip login).
+ * 2. Else use ephemeral ConnectionStore values (from /connect URL) and perform login.
+ * 3. Persist endpoint after successful authentication for future automatic reuse.
  */
 const start = async () =>
 {
@@ -123,23 +125,55 @@ const start = async () =>
 
 	try
 	{
-		// Connect to API (baseURL from .env if ip/port not provided)
-		const connected = await NetworkService.connect({});
+		const connectionStore = useConnectionStore();
+
+		// Determine endpoint priority: authStore first (if token & endpoint), else ephemeral
+		let ip: string | undefined = undefined;
+		let port: number | undefined = undefined;
+		let useExistingJwt = false;
+		const tokenPreset = connectionStore.preSharedToken || undefined; // optional pre-shared login token
+
+		if (authStore.token && authStore.lastIp && authStore.lastPort)
+		{
+			ip = authStore.lastIp;
+			port = authStore.lastPort;
+			useExistingJwt = true;
+		}
+		else
+		{
+			ip = connectionStore.ip || authStore.lastIp || undefined;
+			port = connectionStore.port || authStore.lastPort || undefined;
+		}
+
+		console.log(`Connecting to ${ip}:${port} (existing JWT: ${useExistingJwt})`);
+
+		// Connect with resolved endpoint
+		const connected = await NetworkService.connect({ ip, port });
 		if (!connected)
 		{
 			throw new Error("Impossible de se connecter à l'API.");
 		}
 
-		// Authenticate and store tokens
-		const res = await NetworkService.login();
-		if (!res || !res.token)
+		// If no valid JWT yet, perform login (may use pre-shared token)
+		if (!useExistingJwt)
 		{
-			throw new Error('Authentification échouée.');
+			const res = await NetworkService.login(tokenPreset);
+			if (!res || !res.token)
+			{
+				throw new Error('Authentification échouée.');
+			}
+			authStore.setTokens(res.token, res.refreshToken, res.expiresAt ?? null);
+			NetworkService.setAuthToken(res.token);
 		}
-		authStore.setTokens(res.token, res.refreshToken, res.expiresAt ?? null);
-		NetworkService.setAuthToken(res.token);
+		else
+		{
+			// Ensure ApiService has the token loaded (e.g. after reload)
+			NetworkService.setAuthToken(authStore.token);
+		}
 
-		// Run installation checks + passphrase flow + routing
+		// Persist endpoint (always) so we can re-use it next time
+		authStore.setLastEndpoint(ip || null, port || null);
+
 		await proceed();
 	}
 	catch (e: any)
@@ -150,7 +184,6 @@ const start = async () =>
 	{
 		loading.value = false;
 		isConnecting.value = false;
-		// keep-awake is disabled inside finishConnection() or when passphrase form opens
 	}
 };
 
