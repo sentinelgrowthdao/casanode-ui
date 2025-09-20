@@ -103,6 +103,11 @@ const routes: Array<RouteRecordRaw> = [
 		component: () => import('@views/HomePage.vue')
 	},
 	{
+		path: '/connect',
+		name: 'ConnectLink',
+		component: () => import('@views/ConnectLink.vue')
+	},
+	{
 		path: '/node',
 		name: 'Node',
 		component: () => import('@views/NodePage.vue'),
