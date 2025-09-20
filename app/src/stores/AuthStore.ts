@@ -5,11 +5,13 @@ export interface AuthState
 	token: string | null;
 	refreshToken: string | null;
 	expiresAt: number | null;
+	lastIp: string | null;
+	lastPort: number | null;
 }
 
 export const useAuthStore = defineStore('auth', {
 	persist: true,
-	state: (): AuthState => ({ token: null, refreshToken: null, expiresAt: null }),
+	state: (): AuthState => ({ token: null, refreshToken: null, expiresAt: null, lastIp: null, lastPort: null }),
 	actions: {
 		setTokens(token: string, refreshToken?: string | null, expiresAt?: number | null)
 		{
@@ -24,6 +26,11 @@ export const useAuthStore = defineStore('auth', {
 				this.expiresAt = null;
 			}
 		},
+		setLastEndpoint(ip?: string | null, port?: number | null)
+		{
+			if (ip) this.lastIp = ip;
+			if (typeof port === 'number' && port > 0) this.lastPort = port;
+		},
 		setExpiry(expiresAt: number | null)
 		{
 			this.expiresAt = expiresAt;
@@ -33,6 +40,8 @@ export const useAuthStore = defineStore('auth', {
 			this.token = null;
 			this.refreshToken = null;
 			this.expiresAt = null;
+			this.lastIp = null;
+			this.lastPort = null;
 		}
 	}
 });
