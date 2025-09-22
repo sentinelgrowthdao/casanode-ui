@@ -11,6 +11,7 @@ import WalletEn from '@locales/en/wallet.json';
 import ActionsEn from '@locales/en/actions.json';
 import SettingsEn from '@locales/en/settings.json';
 import LoadingEn from '@locales/en/loading.json';
+import ConnectEn from '@locales/en/connect.json';
 
 // French
 import AppFr from '@locales/fr/app.json';
@@ -22,6 +23,7 @@ import WalletFr from '@locales/fr/wallet.json';
 import ActionsFr from '@locales/fr/actions.json';
 import SettingsFr from '@locales/fr/settings.json';
 import LoadingFr from '@locales/fr/loading.json';
+import ConnectFr from '@locales/fr/connect.json';
 
 interface Option
 {
@@ -53,6 +55,7 @@ const messages : MessageFile =
 		"actions": ActionsEn,
 		"settings": SettingsEn,
 		"loading": LoadingEn,
+		"connect": ConnectEn,
 	},
 	fr:
 	{
@@ -65,6 +68,7 @@ const messages : MessageFile =
 		"actions": ActionsFr,
 		"settings": SettingsFr,
 		"loading": LoadingFr,
+		"connect": ConnectFr,
 	},
 };
 

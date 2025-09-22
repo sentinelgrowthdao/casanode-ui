@@ -1,0 +1,12 @@
+{
+  "welcome-title": "Bienvenue",
+  "welcome-intro": "Cette page prépare la connexion sécurisée à votre nœud. Vous pouvez installer l'application ou continuer directement.",
+  "install-button": "Installer l'application",
+  "connect-now": "Se connecter maintenant",
+  "loading-link": "Lecture du lien…",
+  "error-generic": "Échec de connexion.",
+  "privacy-hint": "Les paramètres de connexion sont enregistrés localement pour la session et ne sont jamais affichés."
+  ,"unreachable-hint": "Le nœud est injoignable. Connectez-vous d'abord au hotspot Wi‑Fi du nœud puis réessayez.",
+  "reachability-checking": "Vérification de l'accessibilité…",
+  "hotspot-instruction": "Si vous venez d'installer la PWA, assurez-vous d'être connecté au hotspot dédié de votre Casanode avant de continuer."
+}
