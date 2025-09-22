@@ -7,11 +7,12 @@ export interface AuthState
 	expiresAt: number | null;
 	lastIp: string | null;
 	lastPort: number | null;
+	invalidReason: string | null;
 }
 
 export const useAuthStore = defineStore('auth', {
 	persist: true,
-	state: (): AuthState => ({ token: null, refreshToken: null, expiresAt: null, lastIp: null, lastPort: null }),
+	state: (): AuthState => ({ token: null, refreshToken: null, expiresAt: null, lastIp: null, lastPort: null, invalidReason: null }),
 	actions: {
 		setTokens(token: string, refreshToken?: string | null, expiresAt?: number | null)
 		{
@@ -31,6 +32,13 @@ export const useAuthStore = defineStore('auth', {
 			if (ip) this.lastIp = ip;
 			if (typeof port === 'number' && port > 0) this.lastPort = port;
 		},
+		invalidate(reason?: string)
+		{
+			this.token = null;
+			this.refreshToken = null;
+			this.expiresAt = null;
+			this.invalidReason = reason || 'Session expired. Please rescan the QR code.';
+		},
 		setExpiry(expiresAt: number | null)
 		{
 			this.expiresAt = expiresAt;
@@ -42,6 +50,7 @@ export const useAuthStore = defineStore('auth', {
 			this.expiresAt = null;
 			this.lastIp = null;
 			this.lastPort = null;
+			this.invalidReason = null;
 		}
 	}
 });
