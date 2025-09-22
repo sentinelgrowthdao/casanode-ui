@@ -3,7 +3,7 @@ import {
 	type HttpOptions,
 	type HttpHeaders,
 } from '@capacitor-community/http';
-import { Capacitor } from '@capacitor/core';
+import { useAuthStore } from '@/stores/AuthStore';
 import {
 	type NetworkStatus,
 	type NetworkConfiguration,
@@ -245,146 +245,79 @@ class ApiService
 		};
 	}
 	
-	/**
-	 * Send GET request
-	 * @param endpoint string
-	 * @returns Promise<any>
-	 */
+	/** Unified request handler with 401 invalidation */
+	private async doRequest(options: HttpOptions, expectAuth = true): Promise<any>
+	{
+		const authStore = useAuthStore();
+		try
+		{
+			if (expectAuth && (!this.baseUrl || !this.authToken))
+				throw new Error('API is not initialized. Please set token and baseUrl.');
+			const response = await Http.request(options);
+			if (response.status === 401)
+			{
+				console.warn('JWT invalid or expired. Clearing session.');
+				authStore.invalidate('Session invalide. Merci de rescanner le QR code.');
+				return null;
+			}
+			if (typeof response.status === 'number' && (response.status < 200 || response.status >= 300))
+			{
+				console.error(`${options.method} ${options.url} failed with status ${response.status}`);
+				return null;
+			}
+			return response.data ?? null;
+		}
+		catch (error)
+		{
+			console.error(`Request failed: ${error}`);
+			return null;
+		}
+	}
+
 	private async getRequest(endpoint: string): Promise<any>
 	{
-		try
-		{
-			if (!this.baseUrl || !this.authToken)
-				throw new Error('API is not initialized. Please set token and baseUrl.');
-			
-			// Request options
-			const options: HttpOptions = {
-				url: `${this.baseUrl}${endpoint}`,
-				params: {},
-				method: 'GET',
-				headers: this.getHeaders(),
-			};
-			
-			const response = await Http.request(options);
-			if (typeof response.status === 'number' && (response.status < 200 || response.status >= 300))
-			{
-				console.error(`GET ${endpoint} failed with status ${response.status}`);
-				return null;
-			}
-			return response.data ?? null;
-		}
-		catch (error)
-		{
-			console.error(`GET request failed: ${error}`);
-			return null;
-		}
+		const options: HttpOptions = {
+			url: `${this.baseUrl}${endpoint}`,
+			params: {},
+			method: 'GET',
+			headers: this.getHeaders(),
+		};
+		return this.doRequest(options);
 	}
-	
-	/**
-	 * Send POST request
-	 * @param endpoint string
-	 * @param data any
-	 */
+
 	private async postRequest(endpoint: string, data?: any): Promise<any>
 	{
-		try
-		{
-			if (!this.baseUrl || !this.authToken)
-				throw new Error("API is not initialized. Please set token and baseUrl.");
-			
-			// Request options
-			const options: HttpOptions = {
-				url: `${this.baseUrl}${endpoint}`,
-				params: {},
-				method: 'POST',
-				headers: this.getHeaders(),
-				data: data,
-			};
-			
-			const response = await Http.request(options);
-			if (typeof response.status === 'number' && (response.status < 200 || response.status >= 300))
-			{
-				console.error(`POST ${endpoint} failed with status ${response.status}`);
-				return null;
-			}
-			return response.data ?? null;
-		}
-		catch (error)
-		{
-			console.error(`POST request failed: ${error}`);
-			return null;
-		}
+		const options: HttpOptions = {
+			url: `${this.baseUrl}${endpoint}`,
+			params: {},
+			method: 'POST',
+			headers: this.getHeaders(),
+			data: data,
+		};
+		return this.doRequest(options);
 	}
-	
-	/**
-	 * Send PUT request
-	 * @param endpoint string
-	 * @param data any
-	 */
+
 	private async putRequest(endpoint: string, data?: any): Promise<any>
 	{
-		try
-		{
-			if (!this.baseUrl || !this.authToken)
-				throw new Error("API is not initialized. Please set token and baseUrl.");
-			
-			// Request options
-			const options: HttpOptions = {
-				url: `${this.baseUrl}${endpoint}`,
-				params: {},
-				method: 'PUT',
-				headers: this.getHeaders(),
-				data: data,
-			};
-			
-			const response = await Http.request(options);
-			if (typeof response.status === 'number' && (response.status < 200 || response.status >= 300))
-			{
-				console.error(`PUT ${endpoint} failed with status ${response.status}`);
-				return null;
-			}
-			return response.data ?? null;
-		}
-		catch (error)
-		{
-			console.error(`PUT request failed: ${error}`);
-			return null;
-		}
+		const options: HttpOptions = {
+			url: `${this.baseUrl}${endpoint}`,
+			params: {},
+			method: 'PUT',
+			headers: this.getHeaders(),
+			data: data,
+		};
+		return this.doRequest(options);
 	}
-	
-	/**
-	 * Send DELETE request
-	 * @param endpoint string
-	 * @returns Promise<any>
-	 */
+
 	private async deleteRequest(endpoint: string): Promise<any>
 	{
-		try
-		{
-			if (!this.baseUrl || !this.authToken)
-				throw new Error("API is not initialized. Please set token and baseUrl.");
-			
-			// Request options
-			const options: HttpOptions = {
-				url: `${this.baseUrl}${endpoint}`,
-				params: {},
-				method: 'DELETE',
-				headers: this.getHeaders(),
-			};
-			
-			const response = await Http.request(options);
-			if (typeof response.status === 'number' && (response.status < 200 || response.status >= 300))
-			{
-				console.error(`DELETE ${endpoint} failed with status ${response.status}`);
-				return null;
-			}
-			return response.data ?? null;
-		}
-		catch (error)
-		{
-			console.error(`DELETE request failed: ${error}`);
-			return null;
-		}
+		const options: HttpOptions = {
+			url: `${this.baseUrl}${endpoint}`,
+			params: {},
+			method: 'DELETE',
+			headers: this.getHeaders(),
+		};
+		return this.doRequest(options);
 	}
 	
 	/**
