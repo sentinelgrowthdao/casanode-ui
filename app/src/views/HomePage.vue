@@ -1,14 +1,15 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { IonPage, IonContent, IonButton, IonSpinner, IonItem, IonInput } from '@/ui';
 import { useRouter } from 'vue-router';
 import NetworkService from '@/services/NetworkService';
 import NodeService from '@/services/NodeService';
 import { useAuthStore } from '@/stores/AuthStore';
-import { useConnectionStore } from '@/stores/ConnectionStore';
 
 const router = useRouter();
 const authStore = useAuthStore();
+
+const invalidReason = computed(() => authStore.invalidReason);
 
 const loading = ref(false);
 const isConnecting = ref(false);
@@ -110,13 +111,20 @@ const proceed = async () =>
 /**
  * Start sequence logic (priority order):
  * 1. If we already have a JWT + stored endpoint (authStore.lastIp/lastPort) → reuse them (skip login).
- * 2. Else use ephemeral ConnectionStore values (from /connect URL) and perform login.
+ * 2. Else we cannot proceed: user must go to /connect to scan or input params (ConnectionStore removed).
  * 3. Persist endpoint after successful authentication for future automatic reuse.
  */
 const start = async () =>
 {
 	// Prevent double click
 	if (isConnecting.value) return;
+
+	// If session invalid, force user to /connect
+	if (authStore.invalidReason)
+	{
+		error.value = authStore.invalidReason + ' Please go to the connection page.';
+		return;
+	}
 
 	error.value = '';
 	connectingMessage.value = '';
@@ -125,13 +133,9 @@ const start = async () =>
 
 	try
 	{
-		const connectionStore = useConnectionStore();
-
-		// Determine endpoint priority: authStore first (if token & endpoint), else ephemeral
-		let ip: string | undefined = undefined;
-		let port: number | undefined = undefined;
+		let ip: string | undefined;
+		let port: number | undefined;
 		let useExistingJwt = false;
-		const tokenPreset = connectionStore.preSharedToken || undefined; // optional pre-shared login token
 
 		if (authStore.token && authStore.lastIp && authStore.lastPort)
 		{
@@ -141,44 +145,27 @@ const start = async () =>
 		}
 		else
 		{
-			ip = connectionStore.ip || authStore.lastIp || undefined;
-			port = connectionStore.port || authStore.lastPort || undefined;
+			throw new Error((window as any).$t?.('homepage.no-context') || "No connection context. Please go to /connect to scan the node's QR code.");
 		}
 
-		console.log(`Connecting to ${ip}:${port} (existing JWT: ${useExistingJwt})`);
-
-		// Connect with resolved endpoint
 		const connected = await NetworkService.connect({ ip, port });
 		if (!connected)
 		{
-			throw new Error("Impossible de se connecter à l'API.");
+			throw new Error((window as any).$t?.('homepage.unable-connect-api') || "Unable to connect to the API.");
 		}
-
-		// If no valid JWT yet, perform login (may use pre-shared token)
+		
 		if (!useExistingJwt)
 		{
-			const res = await NetworkService.login(tokenPreset);
-			if (!res || !res.token)
-			{
-				throw new Error('Authentification échouée.');
-			}
-			authStore.setTokens(res.token, res.refreshToken, res.expiresAt ?? null);
-			NetworkService.setAuthToken(res.token);
-		}
-		else
-		{
-			// Ensure ApiService has the token loaded (e.g. after reload)
-			NetworkService.setAuthToken(authStore.token);
+			throw new Error((window as any).$t?.('homepage.missing-jwt') || 'Missing JWT. Please rescan the QR code.');
 		}
 
-		// Persist endpoint (always) so we can re-use it next time
+		NetworkService.setAuthToken(authStore.token);
 		authStore.setLastEndpoint(ip || null, port || null);
-
 		await proceed();
 	}
 	catch (e: any)
 	{
-		error.value = e?.message || 'Une erreur est survenue.';
+		error.value = e?.message || ((window as any).$t?.('homepage.error-generic') || 'An error occurred.');
 	}
 	finally
 	{
@@ -200,7 +187,7 @@ const submitPassphrase = async () =>
 		const value = (passphraseInputValue.value || '').trim();
 		if (!value || value.length < 8)
 		{
-			passphraseErrorMessage.value = 'La passphrase doit contenir au moins 8 caractères.';
+			passphraseErrorMessage.value = (window as any).$t?.('homepage.error-passphrase-length') || 'Passphrase must contain at least 8 characters.';
 			return;
 		}
 
@@ -237,6 +224,27 @@ const submitPassphrase = async () =>
 <ion-page>
 	<ion-content class="homepage" :fullscreen="true">
 		<div class="content">
+			<!-- Invalid session banner -->
+			<div v-if="invalidReason" class="invalid-banner">
+				<p class="text">
+					<!-- Try to translate the reason if it's a key, else display raw -->
+					{{ $te(`errors.${invalidReason}`) ? $t(`errors.${invalidReason}`) : invalidReason }}
+				</p>
+				<div class="actions">
+					<ion-button
+						size="small"
+						fill="outline"
+						@click="() => { authStore.clear(); router.replace({ name: 'ConnectLink' }); }">
+						{{ $t('homepage.invalid-banner-reset') }}
+					</ion-button>
+					<ion-button
+						size="small"
+						color="primary"
+						@click="() => router.replace({ name: 'ConnectLink' })">
+						{{ $t('homepage.invalid-banner-go-connect') }}
+					</ion-button>
+				</div>
+			</div>
 			<div class="header">
 				<h1>{{ $t('app.name') }}</h1>
 				<p class="logo">
@@ -287,4 +295,7 @@ const submitPassphrase = async () =>
 
 <style lang="scss" scoped>
 @import "@scss/homepage.scss";
+.invalid-banner { background:#331; border:1px solid #a55; padding:.75rem 1rem; border-radius:.5rem; display:flex; flex-direction:column; gap:.5rem; margin-bottom:1rem; }
+.invalid-banner .text { color:#f99; font-size:.85rem; margin:0; }
+.invalid-banner .actions { display:flex; gap:.5rem; }
 </style>

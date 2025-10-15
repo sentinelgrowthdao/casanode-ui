@@ -1,0 +1,11 @@
+{
+  "invalid-banner-reset": "Reset session",
+  "invalid-banner-go-connect": "Go to connection page",
+  "error-generic": "An error occurred.",
+  "error-passphrase-length": "Passphrase must contain at least 8 characters.",
+  "invalid-session-generic": "Session expired. Please rescan the QR code.",
+  "invalid-session": "Session invalid. Please rescan the QR code.",
+  "no-context": "No connection context. Please go to /connect to scan the node's QR code.",
+  "unable-connect-api": "Unable to connect to the API.",
+  "missing-jwt": "Missing JWT. Please rescan the QR code."
+}

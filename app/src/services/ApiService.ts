@@ -257,7 +257,7 @@ class ApiService
 			if (response.status === 401)
 			{
 				console.warn('JWT invalid or expired. Clearing session.');
-				authStore.invalidate('Session invalide. Merci de rescanner le QR code.');
+				authStore.invalidate('invalid-session'); // i18n key consumed by HomePage banner
 				return null;
 			}
 			if (typeof response.status === 'number' && (response.status < 200 || response.status >= 300))

@@ -42,7 +42,7 @@ try { NetworkService.connect({}); }
 catch (e) { /* ignore */ }
 setActivePinia(pinia);
 const authStore = useAuthStore();
-if (authStore.token) 
+if (authStore.token)
 {
 	NetworkService.setAuthToken(authStore.token);
 }
@@ -50,4 +50,9 @@ if (authStore.token)
 router.isReady().then(() =>
 {
 	app.mount('#app');
+	// Register service worker (PWA) after app mount
+	if ('serviceWorker' in navigator)
+	{
+		navigator.serviceWorker.register('/service-worker.js').catch(err => console.warn('SW registration failed', err));
+	}
 });

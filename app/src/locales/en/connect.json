@@ -5,8 +5,7 @@
   "connect-now": "Connect now",
   "loading-link": "Reading link…",
   "error-generic": "Connection failed.",
-  "privacy-hint": "Connection parameters are stored locally for this session and never shown."
-  ,"unreachable-hint": "The node is not reachable. Connect to the node's Wi‑Fi hotspot first, then retry.",
+  "unreachable-hint": "The node is not reachable. Connect to the node's Wi‑Fi hotspot first, then retry.",
   "reachability-checking": "Checking node reachability…",
-  "hotspot-instruction": "If you just installed the PWA, ensure your device is connected to the dedicated hotspot of your Casanode before pressing Connect."
+  "hotspot-instruction": "Ensure your device is connected to the dedicated hotspot of your Casanode before pressing Connect."
 }
