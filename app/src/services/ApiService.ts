@@ -480,7 +480,6 @@ class ApiService
 			image: data?.image ?? false,
 			containerExists: data?.containerExists ?? false,
 			nodeConfig: data?.nodeConfig ?? false,
-			vpnConfig: data?.vpnConfig ?? false,
 			certificateKey: data?.certificateKey ?? false,
 			wallet: data?.wallet ?? false,
 		};
@@ -513,7 +512,6 @@ class ApiService
 		// Return the installation status
 		return {
 			nodeConfig: data?.nodeConfig ?? false,
-			vpnConfig: data?.vpnConfig ?? false,
 			certificate: data?.certificate ?? false,
 		};
 	}

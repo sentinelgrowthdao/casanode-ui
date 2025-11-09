@@ -61,7 +61,6 @@ const proceed = async () =>
 
 	let imageAvailable = !!install.image;
 	let nodeConfig = !!install.nodeConfig;
-	let vpnConfig = !!install.vpnConfig;
 	let certificateKey = !!install.certificateKey;
 
 	// Install Docker image if missing
@@ -78,17 +77,16 @@ const proceed = async () =>
 	}
 	
 	// Install node/VPN/certificate configs if missing
-	if (!nodeConfig || !vpnConfig || !certificateKey)
+	if (!nodeConfig || !certificateKey)
 	{
 		connectingMessage.value = (window as any).$t?.('loading.wait-config') || 'Installing configuration…';
 		const cfg = await NetworkService.installNodeConfiguration();
-		if (!cfg?.nodeConfig || !cfg?.vpnConfig || !cfg?.certificate)
+		if (!cfg?.nodeConfig || !cfg?.certificate)
 		{
 			error.value = (window as any).$t?.('loading.error-message-config') || 'Failed to install configuration.';
 			return;
 		}
 		nodeConfig = true;
-		vpnConfig = true;
 		certificateKey = true;
 	}
 

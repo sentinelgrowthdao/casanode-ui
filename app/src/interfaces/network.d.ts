@@ -67,7 +67,6 @@ export interface NetworkInstallationCheck
 	image: boolean;
 	containerExists: boolean;
 	nodeConfig: boolean;
-	vpnConfig: boolean;
 	certificateKey: boolean;
 	wallet: boolean;
 }
@@ -80,7 +79,6 @@ export interface NetworkInstallDocker
 export interface NetworkInstallConfiguration
 {
 	nodeConfig: boolean;
-	vpnConfig: boolean;
 	certificate: boolean;
 }
 
