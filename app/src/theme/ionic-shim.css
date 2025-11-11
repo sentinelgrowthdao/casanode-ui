@@ -4,6 +4,7 @@
 	--ion-background-color: #000610;
 	--ion-text-color: #fff;
 	--ion-color-primary: #0157fc;
+
 	/* Tab bar dimensions and safe-area integration */
 	--ion-tab-bar-height: 56px;
 	--ion-safe-area-bottom: env(safe-area-inset-bottom, 0px);
@@ -18,6 +19,7 @@ ion-app,
 .ion-content {
 	height: 100%;
 }
+
 body {
 	margin: 0;
 	background: var(--ion-background-color);
@@ -30,20 +32,24 @@ body {
 	flex-direction: column;
 	min-height: 100%;
 }
+
 .ion-header {
 	background: var(--app-background-color-navbar, #191e31);
-	border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+	border-bottom: 1px solid rgb(255 255 255 / 8%);
 }
+
 .ion-toolbar {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	padding: 0.5rem 1rem;
 }
+
 .ion-title {
 	font-size: 1.125rem;
 	font-weight: 600;
 }
+
 .ion-buttons {
 	display: flex;
 	gap: 0.5rem;
@@ -53,6 +59,7 @@ body {
 	flex: 1;
 	overflow: auto;
 }
+
 .ion-fullscreen {
 	height: 100%;
 }
@@ -63,13 +70,16 @@ body {
 	border-radius: 0.75rem;
 	margin: 1rem;
 }
+
 .ion-card-header {
-	padding: 1rem 1rem 0 1rem;
+	padding: 1rem 1rem 0;
 }
+
 .ion-card-title {
 	font-size: 1.25rem;
 	color: var(--container-label-color, #cbcbcb);
 }
+
 .ion-card-content {
 	padding: 1rem;
 	display: flex;
@@ -84,7 +94,7 @@ body {
 	justify-content: space-between;
 	gap: 0.75rem;
 	padding: 0.5rem 2.25rem 0.5rem 0.75rem; /* reserve space for right icon */
-	background: var(--app-background-color-secondary-alt, rgba(24, 30, 49, 0.6));
+	background: var(--app-background-color-secondary-alt, rgb(24 30 49 / 60%));
 	border: 1px solid var(--app-border-color, #0157fc);
 	border-radius: 0.5rem;
 	box-sizing: border-box;
@@ -116,10 +126,12 @@ body {
 	cursor: pointer;
 	opacity: 0.9;
 }
+
 .svg-inline--fa.icon-right:hover,
 .fa-copy.icon-right:hover {
 	opacity: 1;
 }
+
 .svg-inline--fa.icon-right:active,
 .fa-copy.icon-right:active {
 	transform: translateY(-50%) scale(0.96);
@@ -131,15 +143,18 @@ body {
 	width: 100%;
 	padding: 0.5rem;
 }
+
 .ion-row {
 	display: flex;
 	flex-wrap: wrap;
 	margin: 0 -0.5rem;
 }
+
 .ion-col {
 	padding: 0 0.5rem;
 	flex: 1 0 0;
 }
+
 .ion-col-6 {
 	flex: 0 0 50%;
 	max-width: 50%;
@@ -160,25 +175,30 @@ body {
 	cursor: pointer;
 	font-weight: 600;
 }
+
 .ion-button:disabled,
 .ion-button[aria-disabled='true'] {
 	opacity: 0.6;
 	cursor: not-allowed;
 }
+
 .ion-fill-clear {
 	background: transparent;
 	color: #0184fc;
 	border-color: transparent;
 }
+
 .ion-fill-outline {
 	background: transparent;
 	color: #fff;
 	border-color: var(--ion-color-primary);
 }
+
 .ion-expand-block {
 	display: flex;
 	width: 100%;
 }
+
 .ion-size-small {
 	padding: 0.4rem 0.75rem;
 	font-size: 0.85rem;
@@ -189,7 +209,7 @@ body {
 	display: inline-block;
 	width: 1em;
 	height: 1em;
-	background: currentColor;
+	background: currentcolor;
 	mask: none;
 	border-radius: 999px;
 	opacity: 0.6;
@@ -203,15 +223,15 @@ body {
 
 /* Themed variables for inputs */
 :root {
-	--ion-input-bg: rgba(255, 255, 255, 0.05);
-	--ion-input-bg-hover: rgba(255, 255, 255, 0.07);
-	--ion-input-bg-focus: rgba(255, 255, 255, 0.08);
-	--ion-input-border: rgba(255, 255, 255, 0.16);
-	--ion-input-border-hover: rgba(255, 255, 255, 0.28);
+	--ion-input-bg: rgb(255 255 255 / 5%);
+	--ion-input-bg-hover: rgb(255 255 255 / 7%);
+	--ion-input-bg-focus: rgb(255 255 255 / 8%);
+	--ion-input-border: rgb(255 255 255 / 16%);
+	--ion-input-border-hover: rgb(255 255 255 / 28%);
 	--ion-input-border-focus: #0184fc;
 	--ion-input-border-valid: #2ecc71;
 	--ion-input-border-invalid: #ff4d4f;
-	--ion-input-placeholder: rgba(255, 255, 255, 0.55);
+	--ion-input-placeholder: rgb(255 255 255 / 55%);
 	--ion-input-radius: 0.625rem; /* 10px */
 	--ion-input-padding-y: 0.65rem;
 	--ion-input-padding-x: 0.9rem;
@@ -263,7 +283,7 @@ body {
 .ion-select:focus-visible {
 	outline: none;
 	border-color: var(--ion-input-border-focus);
-	box-shadow: 0 0 0 3px rgba(1, 132, 252, 0.2);
+	box-shadow: 0 0 0 3px rgb(1 132 252 / 20%);
 	background: var(--ion-input-bg-focus);
 }
 
@@ -272,8 +292,9 @@ body {
 .ion-textarea.ion-valid,
 .ion-select.ion-valid {
 	border-color: var(--ion-input-border-valid);
-	box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.18);
+	box-shadow: 0 0 0 3px rgb(46 204 113 / 18%);
 }
+
 /* If invalid but not touched yet, keep it subtle */
 .ion-input.ion-invalid:not(.ion-touched),
 .ion-textarea.ion-invalid:not(.ion-touched),
@@ -281,11 +302,12 @@ body {
 	border-color: color-mix(in srgb, var(--ion-input-border-invalid) 40%, var(--ion-input-border));
 	box-shadow: none;
 }
+
 .ion-input.ion-invalid,
 .ion-textarea.ion-invalid,
 .ion-select.ion-invalid {
 	border-color: var(--ion-input-border-invalid);
-	box-shadow: 0 0 0 3px rgba(255, 77, 79, 0.18);
+	box-shadow: 0 0 0 3px rgb(255 77 79 / 18%);
 }
 
 /* Textarea specifics */
@@ -297,8 +319,6 @@ body {
 /* Better looking native select */
 .ion-select {
 	appearance: none;
-	-webkit-appearance: none;
-	-moz-appearance: none;
 	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24'%3E%3Cpath fill='%23ffffff' fill-opacity='0.78' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
 	background-repeat: no-repeat;
 	background-position: right 0.75rem center;
@@ -337,12 +357,12 @@ select.ion-select:-webkit-autofill {
 /* Remove number input spinners */
 input.ion-input[type='number']::-webkit-outer-spin-button,
 input.ion-input[type='number']::-webkit-inner-spin-button {
-	-webkit-appearance: none;
+	appearance: none;
 	margin: 0;
 }
+
 input.ion-input[type='number'] {
 	appearance: textfield;
-	-moz-appearance: textfield;
 }
 
 /* Helper/error text inside items */
@@ -360,6 +380,7 @@ input.ion-input[type='number'] {
 	border-radius: 0.5rem;
 	padding: 0.25rem;
 }
+
 .ion-segment-button {
 	background: transparent;
 	border: 0;
@@ -368,6 +389,7 @@ input.ion-input[type='number'] {
 	border-radius: 0.35rem;
 	cursor: pointer;
 }
+
 .ion-segment-button[aria-selected='true'] {
 	background: #0184fc;
 }
@@ -378,6 +400,7 @@ input.ion-input[type='number'] {
 	flex-direction: column;
 	height: 100%;
 }
+
 .ion-tab-bar {
 	position: fixed;
 	left: 0;
@@ -391,11 +414,12 @@ input.ion-input[type='number'] {
 	padding: 0.5rem 0.75rem;
 	padding-bottom: calc(0.5rem + var(--ion-safe-area-bottom));
 	background: var(--app-background-color-footer, #181e31);
-	border-top: 1px solid rgba(255, 255, 255, 0.08);
+	border-top: 1px solid rgb(255 255 255 / 8%);
 	box-sizing: border-box;
 	z-index: 1000;
 	font-size: 0.7rem;
 }
+
 .ion-tab-button {
 	flex: 1;
 	color: #fff;
@@ -422,11 +446,12 @@ input.ion-input[type='number'] {
 	display: inline-block;
 	width: 1em;
 	height: 1em;
-	border: 2px solid rgba(255, 255, 255, 0.2);
+	border: 2px solid rgb(255 255 255 / 20%);
 	border-top-color: #fff;
 	border-radius: 50%;
 	animation: ion-spin 0.8s linear infinite;
 }
+
 @keyframes ion-spin {
 	to {
 		transform: rotate(360deg);

@@ -1,81 +1,65 @@
-.container
-{
-	--background:var(--container-bg-color-default);
-	
-	&.bg-blue
-	{
-		--background:var(--container-bg-color-blue);
+.container {
+	--background: var(--container-bg-color-default);
+
+	&.bg-blue {
+		--background: var(--container-bg-color-blue);
 	}
-	
-	&.nobg
-	{
-		--background:transparent;
+
+	&.nobg {
+		--background: transparent;
 	}
-	
-	.ion-card-header
-	{
-		.ion-card-title
-		{
-			font-size:1.6rem;
-			line-height:2rem;
-			color:var(--container-label-color);
+
+	.ion-card-header {
+		.ion-card-title {
+			font-size: 1.6rem;
+			line-height: 2rem;
+			color: var(--container-label-color);
 		}
 	}
-	
-	.ion-card-content
-	{
+
+	.ion-card-content {
 		display: flex;
 		gap: 1rem;
 		flex-direction: column;
 
-		&> .item
-		{
-			font-size:1.2rem;
-			line-height:1.6rem;
-			color:var(--ion-text-color);
+		& > .item {
+			font-size: 1.2rem;
+			line-height: 1.6rem;
+			color: var(--ion-text-color);
 
-			&> strong
-			{
-				display:block;
-				font-size:0.9rem;
-				line-height:1.1rem;
-				font-weight:400;
-				color:var(--container-label-color);
+			& > strong {
+				display: block;
+				font-size: 0.9rem;
+				line-height: 1.1rem;
+				font-weight: 400;
+				color: var(--container-label-color);
 			}
 		}
-		
-		&> .ion-grid
-		{
-			width:100%;
-			
-			&> .ion-row
-			{
-				&> .ion-col.item
-				{
-					&> .label
-					{
-						margin:0;
-						font-size:1rem;
-						line-height:1.4rem;
-						color:var(--ion-text-color);
+
+		& > .ion-grid {
+			width: 100%;
+
+			& > .ion-row {
+				& > .ion-col.item {
+					& > .label {
+						margin: 0;
+						font-size: 1rem;
+						line-height: 1.4rem;
+						color: var(--ion-text-color);
 					}
-					&> .value
-					{
-						margin:0;
-						font-size:2rem;
+
+					& > .value {
+						margin: 0;
+						font-size: 2rem;
 						line-height: 2.4rem;
-						color:var(--ion-text-color);
+						color: var(--ion-text-color);
 					}
-					
-					&.right
-					{
-						text-align:right;
+
+					&.right {
+						text-align: right;
 					}
 				}
 			}
-			
 		}
 	}
-	
-
 }

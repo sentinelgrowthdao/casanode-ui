@@ -1,150 +1,129 @@
-.homepage
-{
-	--background: transparent url(@assets/images/welcome-background.png) center center / cover no-repeat fixed;
-	
-	&> .content
-	{
+.homepage {
+	--background: transparent url('@assets/images/welcome-background.png') center center / cover
+		no-repeat fixed;
+
+	& > .content {
 		margin: 0;
 		padding: 2rem 0 0;
-		
-		&>.header
-		{
+
+		& > .header {
 			margin: 0 0 3rem;
 			width: 100%;
-			
-			&>h1
-			{
+
+			& > h1 {
 				margin: 0;
 				font-size: 2.5rem;
 				text-align: center;
 			}
-			
-			&>.logo
-			{
+
+			& > .logo {
 				margin: 0 auto;
 				width: 100%;
 				max-width: 13rem;
-				
-				&>img
-				{
+
+				& > img {
 					width: 100%;
 				}
 			}
 		}
-		
-		&>.welcome
-		{
-			&>h2
-			{
+
+		& > .welcome {
+			& > h2 {
 				margin: 0 auto 1rem;
 				max-width: 80%;
 				text-align: center;
 			}
-			
-			&>.start
-			{
+
+			& > .start {
 				margin: var(--content-margin);
 				padding: var(--content-padding);
 				width: var(--content-width);
 				max-width: var(--content-max-width);
 				border-radius: var(--content-radius);
 				background: var(--app-background-color-secondary-alt);
-				
-				&>.message
-				{
+
+				& > .message {
 					margin: 0 0 0.65rem;
 					padding: 0.35rem 1rem;
 					text-align: center;
 				}
-				
-				&>.button
-				{
+
+				& > .button {
 					margin: 0;
 					padding: 0;
 					text-align: center;
 				}
-				
-				&> .help
-				{
+
+				& > .help {
 					margin: 1rem 0 0;
 					padding: 0 1rem;
 					text-align: center;
-					
-					&> .button
-					{
-						&> ion-spinner
-						{
-							margin:0 0.5rem 0 0;
+
+					& > .button {
+						& > ion-spinner {
+							margin: 0 0.5rem 0 0;
 							width: 1rem;
 							height: 1rem;
 						}
 					}
-					
 				}
-				
-				&.device
-				{
-					position:relative;
-					
-					&> .close
-					{
-						position:absolute;
+
+				&.device {
+					position: relative;
+
+					& > .close {
+						position: absolute;
 						top: 0;
 						right: 0;
 						margin: 0;
 						padding: 0;
-						
+
 						ion-icon {
 							color: var(--text-color-normal-light);
 						}
 					}
-					&> .name
-					{
+
+					& > .name {
 						margin: 0 0 0.5rem;
 						text-align: center;
 						font-size: 1.25rem;
 						font-weight: 700;
 					}
-					&> .address
-					{
+
+					& > .address {
 						margin: 0 0 0.5rem;
 						text-align: center;
 						font-size: 0.8rem;
 					}
-					&> .button
-					{
+
+					& > .button {
 						margin: 0 auto;
 						max-width: 8rem;
 					}
-					&> .scan
-					{
+
+					& > .scan {
 						margin: 1rem 0 0;
 						padding: 0 1rem;
 						text-align: center;
 					}
 				}
 			}
-			
-			&.methods
-			{
-				&> ion-grid
-				{
-					&> ion-row
-					{
-						&> ion-col
-						{
-							&> ion-button
-							{
+
+			&.methods {
+				& > ion-grid {
+					& > ion-row {
+						& > ion-col {
+							& > ion-button {
 								width: 100%;
 								height: 100%;
+
 								--padding-bottom: 0;
 								--padding-top: 0;
 								--padding-start: 0;
 								--padding-end: 0;
 								--border-radius: 1rem;
-								
-								&> .content
-								{
+
+								& > .content {
 									display: flex;
 									flex-direction: column;
 									justify-content: center;
@@ -156,9 +135,8 @@
 									background-color: var(--app-background-color-footer);
 									border-radius: 1rem;
 									text-align: center;
-									
-									&> .button
-									{
+
+									& > .button {
 										display: flex;
 										flex-direction: column;
 										width: 100%;
@@ -167,20 +145,17 @@
 										border-radius: 1rem;
 										background-color: var(--container-bg-color-blue);
 										color: var(--ion-color-light-contrast);
-										
-										&> ion-icon
-										{
+
+										& > ion-icon {
 											font-size: 2.5rem;
 										}
-										
-										&> .name
-										{
+
+										& > .name {
 											margin: 1.5rem 0 0;
 										}
 									}
-									
-									&> .desc
-									{
+
+									& > .desc {
 										flex-grow: 1;
 										display: flex;
 										justify-content: center;
@@ -189,105 +164,93 @@
 										padding: 0.75rem 1rem;
 										text-align: center;
 										font-size: 0.8rem;
-										line-height:1rem;
+										line-height: 1rem;
 										font-weight: 300;
 										color: var(--ion-color-light-contrast);
 									}
 								}
-								
 							}
 						}
 					}
 				}
 			}
 		}
-		
-		&> .loading
-		{
-			&> .connecting
-			{
+
+		& > .loading {
+			& > .connecting {
 				margin: 0 auto;
 				width: 100%;
 				max-width: 15rem;
 				text-align: center;
-				
-				&> .spinner
-				{
+
+				& > .spinner {
 					margin: 0 0 1.5rem;
-					text-align:center;
-					
-					&> ion-spinner
-					{
+					text-align: center;
+
+					& > ion-spinner {
 						width: 5rem;
 						height: 5rem;
 					}
 				}
-				
-				&> .message
-				{
+
+				& > .message {
 					margin: 0;
 					font-size: 1.2rem;
-					line-height:1.6rem;
+					line-height: 1.6rem;
 					text-align: center;
 					font-weight: 300;
 				}
 			}
-			&> .error
-			{
+
+			& > .error {
 				margin: var(--content-margin);
 				padding: var(--content-padding);
 				width: var(--content-width);
 				max-width: var(--content-max-width);
 				border-radius: var(--content-radius);
 				background: var(--app-background-color-secondary-alt);
-				
-				&>.message
-				{
+
+				& > .message {
 					margin: 0 0 0.65rem;
 					padding: 0.35rem 1rem;
 					text-align: center;
 					color: var(--app-background-color-alert);
 				}
-				
-				&>.button
-				{
+
+				& > .button {
 					margin: 0;
 					padding: 0;
 					text-align: center;
 				}
 			}
-			
-			&> .passphrase
-			{
+
+			& > .passphrase {
 				margin: var(--content-margin);
 				padding: var(--content-padding);
 				width: var(--content-width);
 				max-width: var(--content-max-width);
 				border-radius: var(--content-radius);
 				background: var(--app-background-color-secondary-alt);
-				
-				&>.message
-				{
+
+				& > .message {
 					margin: 0 0 0.65rem;
 					padding: 0.35rem 1rem;
 					text-align: center;
 				}
-				
-				&> ion-item
-				{
-					--background:transparent;
-					margin:0 2rem 2rem;
+
+				& > ion-item {
+					--background: transparent;
+
+					margin: 0 2rem 2rem;
 				}
-				
-				&>.button
-				{
+
+				& > .button {
 					margin: 0;
 					padding: 0;
 					text-align: center;
 				}
-				
-				&>.error
-				{
+
+				& > .error {
 					margin: 0 0 0.65rem;
 					padding: 0.35rem 1rem;
 					text-align: center;
@@ -295,30 +258,26 @@
 				}
 			}
 		}
-		
-		&>.footer
-		{
-			margin: 3rem 0 0 0;
+
+		& > .footer {
+			margin: 3rem 0 0;
 			padding: var(--content-padding);
 			background: var(--app-background-color-footer);
-			
-			&>.title
-			{
+
+			& > .title {
 				margin: 0 0 0.75rem;
 				text-align: center;
 				font-weight: 700;
 			}
-			
-			&>.message
-			{
+
+			& > .message {
 				margin: 0 auto 0.5rem;
 				width: var(--content-width);
 				max-width: var(--content-max-width);
 				text-align: center;
 			}
-			
-			&>.button
-			{
+
+			& > .button {
 				margin: 0;
 				text-align: center;
 			}

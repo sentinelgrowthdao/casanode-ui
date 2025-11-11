@@ -6,13 +6,14 @@ http://ionicframework.com/docs/theming/ */
 	--ion-background-color: #000610;
 	
 	/* Set the font family of the entire app */
-	--ion-font-family: 'Lato', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'Roboto', sans-serif;
+	--ion-font-family:
+		'Lato', -apple-system, blinkmacsystemfont, 'Helvetica Neue', 'Roboto', sans-serif;
 	
 	/* Customes colors */
 	--app-background-color-navbar: #191e31;
 	--app-background-color-footer: #181e31;
 	--app-background-color-secondary: #262f4c;
-	--app-background-color-secondary-alt: rgba(24, 30, 49, 0.6);
+	--app-background-color-secondary-alt: rgb(24 30 49 / 60%);
 	--app-background-color-block: #0d1f39;
 	--app-background-color-alert: #dc3545;
 	--app-border-color: #0157fc;
@@ -58,6 +59,7 @@ ion-button[fill='default'] {
 	--background: #0157fc;
 	--color: #fff;
 }
+
 ion-button[fill='clear'] {
 	--color: #0184fc;
 }
@@ -65,6 +67,7 @@ ion-button[fill='clear'] {
 ion-segment {
 	--background: #0d1f39;
 }
+
 ion-segment-button {
 	--color-checked: #fff;
 	--indicator-color: #0184fc;
