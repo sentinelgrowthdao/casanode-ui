@@ -19,7 +19,7 @@ const nodeStore = useNodeStore();
  * Remove mnemonic store
  * @returns void
  */
-const removeMnemonicStore = async () => 
+const removeMnemonicStore = async () =>
 {
 	// Clear the store
 	nodeStore.clearMnemonic();
