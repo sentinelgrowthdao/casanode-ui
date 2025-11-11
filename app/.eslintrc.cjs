@@ -1,41 +1,34 @@
+/* eslint-env node */
 module.exports = {
 	root: true,
-	env: {
-		node: true
-	},
-	extends: [
-		'plugin:vue/vue3-essential',
-		'eslint:recommended',
-		'@vue/typescript/recommended',
-	],
-	plugins: [],
+	env: { node: true, es2022: true },
+	parser: '@typescript-eslint/parser',
 	parserOptions: {
-		ecmaVersion: 2020
+		ecmaVersion: 'latest',
+		sourceType: 'module',
 	},
+	extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'prettier'],
 	rules: {
-		'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-		'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-		'vue/no-deprecated-slot-attribute': 'off',
-		'@typescript-eslint/no-explicit-any': 'off',
-		'brace-style': ['error', 'allman', { allowSingleLine: true }]
+		// Force Allman braces (opening brace on its own line) for JS/TS
+		'brace-style': ['error', 'allman', { allowSingleLine: true }],
+		'@typescript-eslint/brace-style': ['error', 'allman', { allowSingleLine: true }],
+		// Use tabs for indentation in JS/TS files
+		indent: 'off',
+		'@typescript-eslint/indent': ['error', 'tab', { SwitchCase: 1 }],
+		// Allow tab characters
+		'no-tabs': 'off',
 	},
 	overrides: [
-		// Indentation for Vue SFCs
 		{
 			files: ['*.vue'],
+			parser: 'vue-eslint-parser',
+			parserOptions: {
+				parser: '@typescript-eslint/parser',
+			},
 			rules: {
-				indent: 'off',
-				'vue/script-indent': ['error', 'tab', { baseIndent: 0, switchCase: 1 }],
-				'vue/html-indent': ['error', 'tab', { baseIndent: 0, alignAttributesVertically: true, ignores: [] }],
-				'vue/html-closing-bracket-newline': ['error', { singleline: 'never', multiline: 'never' }]
-			}
+				'no-undef': 'off', // TypeScript handles undefined variables
+			},
 		},
-		// Indentation for TS/JS
-		{
-			files: ['*.ts', '*.tsx', '*.js', '*.jsx'],
-			rules: {
-				indent: ['error', 'tab', { SwitchCase: 1 }]
-			}
-		}
-	]
+	],
+	ignorePatterns: ['dist', 'node_modules'],
 };
