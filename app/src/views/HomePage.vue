@@ -331,7 +331,8 @@ const submitPassphrase = async () =>
 </template>
 
 <style lang="scss" scoped>
-@import '@scss/homepage.scss';
+@import '@scss/homepage';
+
 .invalid-banner {
 	background: #331;
 	border: 1px solid #a55;
@@ -342,11 +343,13 @@ const submitPassphrase = async () =>
 	gap: 0.5rem;
 	margin-bottom: 1rem;
 }
+
 .invalid-banner .text {
 	color: #f99;
 	font-size: 0.85rem;
 	margin: 0;
 }
+
 .invalid-banner .actions {
 	display: flex;
 	gap: 0.5rem;

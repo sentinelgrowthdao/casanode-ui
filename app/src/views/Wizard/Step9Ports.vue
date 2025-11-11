@@ -121,17 +121,19 @@ const retryTest = () =>
 </ion-page>
 </template>
 <style lang="scss" scoped>
-@import "@scss/wizard.scss";
+@import '@scss/wizard';
 
 // <Transition>
 .v-enter-active, .v-leave-active
 {
 	transition: opacity 0.5s ease;
 }
+
 .v-enter-active
 {
 	transition-delay: 1s;
 }
+
 .v-enter-from, .v-leave-to
 {
 	opacity: 0;

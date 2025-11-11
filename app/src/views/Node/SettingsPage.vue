@@ -255,7 +255,7 @@ const saveSettings = async () =>
 </ion-page>
 </template>
 <style lang="scss" scoped>
-@import "@scss/container.scss";
+@import '@scss/container';
 
 ion-item
 {

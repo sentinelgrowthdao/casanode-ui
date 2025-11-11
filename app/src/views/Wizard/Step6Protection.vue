@@ -91,5 +91,5 @@ const setKeyringBackendValue = async (value: string) =>
 </ion-page>
 </template>
 <style lang="scss" scoped>
-@import "@scss/wizard.scss";
+@import '@scss/wizard';
 </style>

@@ -150,7 +150,7 @@ const removeWallet = async () =>
 </template>
 
 <style lang="scss" scoped>
-@import "@scss/container.scss";
+@import '@scss/container';
 
 
 .container
@@ -187,12 +187,12 @@ const removeWallet = async () =>
 
 	&.addresses
 	{
-
 		.item
 		{
 			display: flex;
 			justify-content: flex-start;
 			align-items: flex-start;
+
 			--padding: 0;
 			--padding-start: 0;
 			--padding-end: 0;
@@ -219,6 +219,7 @@ const removeWallet = async () =>
 					&>ion-icon
 					{
 						margin-left: auto;
+
 						--color: var(--ion-text-color);
 					}
 				}
@@ -242,6 +243,7 @@ const removeWallet = async () =>
 {
 	display: flex;
 	flex-direction: column;
+
 	--padding-start: 0;
 	--inner-padding-end: 0;
 	--background: transparent;
@@ -273,6 +275,7 @@ const removeWallet = async () =>
 		{
 			--padding-start: 0;
 			--padding-end: 0;
+
 			color: var(--container-label-color);
 			align-self: flex-start;
 			margin-top: 5px;

@@ -322,7 +322,7 @@ const systemAction = async(action: string) =>
 </template>
 
 <style lang="scss" scoped>
-@import "@scss/container.scss";
+@import '@scss/container';
 
 .actions
 {
@@ -339,6 +339,7 @@ const systemAction = async(action: string) =>
 		}
 	}
 }
+
 ion-card-content
 {
 	&> p

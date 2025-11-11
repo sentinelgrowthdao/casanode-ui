@@ -67,5 +67,5 @@ const checkNodeConfiguration = async () =>
 	</ion-page>
 </template>
 <style lang="scss" scoped>
-@import '@scss/wizard.scss';
+@import '@scss/wizard';
 </style>

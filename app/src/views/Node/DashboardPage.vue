@@ -148,5 +148,5 @@ const nodeDisconnect = async() =>
 </ion-page>
 </template>
 <style lang="scss" scoped>
-@import "@scss/container.scss";
+@import '@scss/container';
 </style>
