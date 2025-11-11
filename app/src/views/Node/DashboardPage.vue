@@ -149,4 +149,18 @@ const nodeDisconnect = async() =>
 </template>
 <style lang="scss" scoped>
 @import '@scss/container';
+
+.dashboard
+{
+	.bg-blue
+	{
+		.ion-grid
+		{
+			.ion-row
+			{
+				align-items: flex-start;
+			}
+		}
+	}
+}
 </style>
