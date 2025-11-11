@@ -77,27 +77,27 @@ onUnmounted(() =>
 						<ion-card-title>{{ $t('about.system-information-title') }}</ion-card-title>
 					</ion-card-header>
 					<ion-card-content>
-						<p class="item">
+						<p class="item column">
 							<strong>{{ $t('about.casanode-version-label') }}</strong
 							>{{ nodeStore.casanodeVersion }}
 						</p>
-						<p class="item">
+						<p class="item column">
 							<strong>{{ $t('about.operating-system-label') }}</strong
 							>{{ nodeStore.systemOs }}
 						</p>
-						<p class="item">
+						<p class="item column">
 							<strong>{{ $t('about.kernel-version-label') }}</strong
 							>{{ nodeStore.systemKernel }}
 						</p>
-						<p class="item">
+						<p class="item column">
 							<strong>{{ $t('about.architecture-label') }}</strong
 							>{{ nodeStore.systemArch }}
 						</p>
-						<p class="item">
+						<p class="item column">
 							<strong>{{ $t('about.docker-image-label') }}</strong
 							>{{ nodeStore.dockerImage }}
 						</p>
-						<p class="item">
+						<p class="item column">
 							<strong>{{ $t('about.uptime-label') }}</strong
 							>{{ uptime }}
 						</p>
