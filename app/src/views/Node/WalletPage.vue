@@ -157,7 +157,7 @@ const removeWallet = async () =>
 {
 	&.header
 	{
-		&>ion-card-content>ion-grid>ion-row>ion-col
+		&>.ion-card-content > .ion-grid > .ion-row > .ion-col
 		{
 			&>.label
 			{
