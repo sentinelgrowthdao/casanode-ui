@@ -21,6 +21,7 @@ import './scss/theme/variables.scss';
 /* Initialize Pinia */
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
+setActivePinia(pinia);
 
 const app = createApp(App)
 	.use(IonicVue)
@@ -40,7 +41,6 @@ initSentry(app, router);
 // Attempt to auto-connect API from .env and restore JWT from store for deep-links
 try { NetworkService.connect({}); }
 catch (e) { /* ignore */ }
-setActivePinia(pinia);
 const authStore = useAuthStore();
 if (authStore.token)
 {
