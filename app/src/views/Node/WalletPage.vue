@@ -14,7 +14,7 @@ import {
 import { copyToClipboard } from '@/utils/clipboard';
 import { refreshNodeBalance } from '@/utils/node';
 import { useNodeStore } from '@stores/NodeStore';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 
@@ -25,6 +25,9 @@ const { t, locale } = useI18n();
 const router = useRouter();
 // Import the useNodeStore composable function.
 const nodeStore = useNodeStore();
+
+// Loading state for balance refresh
+const isRefreshingBalance = ref(false);
 
 /**
  * Format the amount of the node balance.
@@ -65,6 +68,24 @@ const removeWallet = async () =>
 	}
 };
 
+/**
+ * Refresh the balance with loading state
+ */
+const refreshBalance = async () =>
+{
+	if (isRefreshingBalance.value) return; // Prevent multiple clicks
+	
+	isRefreshingBalance.value = true;
+	try
+	{
+		await refreshNodeBalance();
+	}
+	finally
+	{
+		isRefreshingBalance.value = false;
+	}
+};
+
 </script>
 <template>
 <ion-page>
@@ -81,7 +102,7 @@ const removeWallet = async () =>
 							<p class="label">{{ $t('wallet.node-balance-label') }}</p>
 							<p class="amount">{{ formattedAmount }}<span class="unit">{{ nodeStore.nodeBalance.denom }}</span></p>
 						</div>
-						<ion-button fill="clear" size="large" class="refresh-button" @click="refreshNodeBalance">
+						<ion-button fill="clear" size="large" class="refresh-button" :class="{ 'rotating': isRefreshingBalance }" @click="refreshBalance">
 							<font-awesome-icon :icon="['fas','arrows-rotate']" size="lg" />
 						</ion-button>
 					</div>
@@ -203,6 +224,11 @@ const removeWallet = async () =>
 				{
 					flex-shrink: 0;
 					--color: var(--ion-text-color);
+					
+					&.rotating
+					{
+						animation: spin 1s linear infinite;
+					}
 				}
 			}
 		}
@@ -313,5 +339,11 @@ const removeWallet = async () =>
 			}
 		}
 	}
+}
+
+@keyframes spin
+{
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
 }
 </style>
