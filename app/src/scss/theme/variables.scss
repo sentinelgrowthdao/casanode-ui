@@ -4,11 +4,11 @@ http://ionicframework.com/docs/theming/ */
 :root {
 	/* Set the background of the entire app */
 	--ion-background-color: #000610;
-	
+
 	/* Set the font family of the entire app */
 	--ion-font-family:
 		'Lato', -apple-system, blinkmacsystemfont, 'Helvetica Neue', 'Roboto', sans-serif;
-	
+
 	/* Customes colors */
 	--app-background-color-navbar: #191e31;
 	--app-background-color-footer: #181e31;
@@ -17,26 +17,27 @@ http://ionicframework.com/docs/theming/ */
 	--app-background-color-block: #0d1f39;
 	--app-background-color-alert: #dc3545;
 	--app-border-color: #0157fc;
-	
+	--app-border-color-alt: rgba(1, 87, 252, 0.4);
+
 	/* Margin and padding */
 	--content-margin: 0 auto;
 	--content-padding: 1rem 0;
 	--content-radius: 0.75rem;
 	--content-width: 85%;
 	--content-max-width: 20rem;
-	
+
 	/* Container */
 	--container-bg-color-default: #0d1f39;
 	--container-bg-color-blue: #0157fc;
 	--container-label-color: #cbcbcb;
-	
+
 	/* Wizard */
 	--wizard-margin: 0 auto;
 	--wizard-padding: 1rem;
 	--wizard-width: 80%;
 	--wizard-max-width: 20rem;
 	--wizard-color-error: #dc3545;
-	
+
 	/* Text */
 	--text-color-normal-light: #fff;
 	--text-color-warning-light: #cbcbcb;

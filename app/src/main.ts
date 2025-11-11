@@ -15,8 +15,8 @@ import router from './router';
 import { initSentry } from './utils/sentry';
 
 /* Theme variables */
-import './theme/ionic-shim.css';
-import './theme/variables.css';
+import './scss/theme/ionic-shim.scss';
+import './scss/theme/variables.scss';
 
 /* Initialize Pinia */
 const pinia = createPinia();
