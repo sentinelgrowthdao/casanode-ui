@@ -1,4 +1,3 @@
-import { Device } from '@capacitor/device';
 import { createI18n } from 'vue-i18n';
 
 // English
@@ -83,8 +82,7 @@ const messages : MessageFile =
  */
 export async function localeLanguage(): Promise<string>
 {
-	const systemLocale = await Device.getLanguageCode();
-	return systemLocale.value || 'en';
+	return navigator.language.split('-')[0] || 'en';
 }
 
 // Create a new i18n instance with a default locale
@@ -99,7 +97,7 @@ localeLanguage().then((loc) =>
 {
 	try
 	{
-		(i18n.global as any).locale = loc;
+		i18n.global.locale = loc;
 	}
 	catch (e)
 	{

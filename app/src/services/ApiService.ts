@@ -1,5 +1,4 @@
 import { useAuthStore } from '@/stores/AuthStore';
-import { Http, type HttpHeaders, type HttpOptions } from '@capacitor-community/http';
 import
 {
 	type CertificateInfo,
@@ -12,6 +11,14 @@ import
 	type NodeConfigResults,
 	type NodeStatus,
 } from '@interfaces/network';
+
+type HttpHeaders = Record<string, string>;
+type HttpOptions = {
+	url: string;
+	method: string;
+	headers?: HttpHeaders;
+	data?: any;
+};
 
 export interface ApiInfos
 {
@@ -30,6 +37,25 @@ class ApiService
 	private connected = false;
 
 	private constructor() {}
+
+	/**
+	 * Helper to make HTTP requests using fetch
+	 */
+	private async makeRequest(options: HttpOptions): Promise<unknown>
+	{
+		const response = await fetch(options.url, {
+			method: options.method,
+			headers: options.headers,
+			body: options.data ? JSON.stringify(options.data) : undefined,
+		});
+
+		if (!response.ok) 
+		{
+			throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+		}
+
+		return response.json();
+	}
 
 	public static getInstance(): ApiService
 	{
@@ -113,8 +139,8 @@ class ApiService
 				headers: { 'Content-Type': 'application/json' },
 			};
 
-			const response = await Http.request(options);
-			return response.data;
+			const response = await this.makeRequest(options);
+			return response;
 		}
 		catch (error)
 		{
@@ -163,8 +189,8 @@ class ApiService
 				data: refreshToken ? { token: refreshToken } : {},
 				headers: refreshToken ? { 'Content-Type': 'application/json' } : this.getHeaders(),
 			};
-			const response = await Http.request(options);
-			const data = response.data || {};
+			const response = await this.makeRequest(options);
+			const data = response as any || {};
 			const token = data.token || data.jwt || data.accessToken || data.access_token || null;
 			const newRefresh = data.refreshToken || data.refresh_token || refreshToken;
 			const expiresAt =
@@ -260,25 +286,17 @@ class ApiService
 		{
 			if (expectAuth && (!this.baseUrl || !this.authToken))
 				throw new Error('API is not initialized. Please set token and baseUrl.');
-			const response = await Http.request(options);
-			if (response.status === 401)
+			const response = await this.makeRequest(options);
+			// Response is already parsed JSON data
+			return response;
+		}
+		catch (error: any)
+		{
+			if (error.message.includes('401'))
 			{
 				console.warn('JWT invalid or expired. Clearing session.');
 				authStore.invalidate('invalid-session'); // i18n key consumed by HomePage banner
-				return null;
 			}
-			if (
-				typeof response.status === 'number' &&
-				(response.status < 200 || response.status >= 300)
-			)
-			{
-				console.error(`${options.method} ${options.url} failed with status ${response.status}`);
-				return null;
-			}
-			return response.data ?? null;
-		}
-		catch (error)
-		{
 			console.error(`Request failed: ${error}`);
 			return null;
 		}
@@ -288,7 +306,6 @@ class ApiService
 	{
 		const options: HttpOptions = {
 			url: `${this.baseUrl}${endpoint}`,
-			params: {},
 			method: 'GET',
 			headers: this.getHeaders(),
 		};
@@ -299,7 +316,6 @@ class ApiService
 	{
 		const options: HttpOptions = {
 			url: `${this.baseUrl}${endpoint}`,
-			params: {},
 			method: 'POST',
 			headers: this.getHeaders(),
 			data: data,
@@ -311,7 +327,6 @@ class ApiService
 	{
 		const options: HttpOptions = {
 			url: `${this.baseUrl}${endpoint}`,
-			params: {},
 			method: 'PUT',
 			headers: this.getHeaders(),
 			data: data,
@@ -323,7 +338,6 @@ class ApiService
 	{
 		const options: HttpOptions = {
 			url: `${this.baseUrl}${endpoint}`,
-			params: {},
 			method: 'DELETE',
 			headers: this.getHeaders(),
 		};
