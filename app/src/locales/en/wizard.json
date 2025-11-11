@@ -34,7 +34,7 @@
 	"wallet-create-backup-text": "It's essential for recovering your wallet if you lose access or forget your passphrase. Loss of this phrase means permanent loss of access to your funds and dVPN node. Store it privately and in multiple safe places.",
 
 	"wallet-fund-title": "Fund Your Node Wallet",
-	"wallet-fund-text": "Please deposit at least 10 $DVPN to your wallet at the address below to proceed with starting the node:",
+	"wallet-fund-text": "Please deposit at least 10 $P2P to your wallet at the address below to proceed with starting the node:",
 	"wallet-fund-next": "Once you have transferred the funds, select “Next” to continue.",
 	"wallet-fund-copied": "Copied to clipboard",
 

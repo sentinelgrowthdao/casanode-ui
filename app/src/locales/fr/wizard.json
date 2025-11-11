@@ -34,7 +34,7 @@
 	"wallet-create-backup-text": "C'est essentiel pour récupérer votre portefeuille si vous perdez l'accès ou oubliez votre mot de passe. Perdre cette phrase signifie une perte permanente de l'accès à vos fonds et au nœud dVPN. Conservez-la en privé et dans plusieurs endroits sûrs.",
 
 	"wallet-fund-title": "Alimentez votre portefeuille de nœud",
-	"wallet-fund-text": "Veuillez déposer au moins 10 $DVPN sur votre portefeuille à l'adresse ci-dessous pour continuer le lancement du nœud :",
+	"wallet-fund-text": "Veuillez déposer au moins 10 $P2P sur votre portefeuille à l'adresse ci-dessous pour continuer le lancement du nœud :",
 	"wallet-fund-next": "Une fois que vous avez transféré les fonds, sélectionnez « Suivant » pour continuer.",
 	"wallet-fund-copied": "Copiée dans le presse-papiers",
 
