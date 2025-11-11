@@ -91,11 +91,11 @@ const nodeDisconnect = async() =>
 				<ion-card-content>
 					<ion-grid>
 						<ion-row>
-							<ion-col class="item">
+							<ion-col class="item no-bg column">
 								<p class="label">{{ $t('dashboard.status-title') }}</p>
 								<p class="value">{{ nodeStatus }}</p>
 							</ion-col>
-							<ion-col class="item right">
+							<ion-col class="item no-bg column right">
 								<p class="label">{{ $t('dashboard.status-users') }}</p>
 								<p class="value">{{ nodeStore.onlineUsers }}</p>
 							</ion-col>
