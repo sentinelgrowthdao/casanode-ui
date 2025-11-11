@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 
-export interface ConnectionState {
+export interface ConnectionState 
+{
 	ip: string | null;
 	port: number | null;
 	preSharedToken: string | null;
@@ -16,13 +17,15 @@ export const useConnectionStore = defineStore('connection', {
 	}),
 	actions:
 	{
-		setConnection(ip?: string | null, port?: number | null, token?: string | null): void {
+		setConnection(ip?: string | null, port?: number | null, token?: string | null): void 
+		{
 			this.ip = ip ?? this.ip ?? null;
 			this.port = typeof port === 'number' && port > 0 ? port : (this.port ?? null);
 			if (token !== undefined)
 				this.preSharedToken = token ?? null;
 		},
-		clear(): void {
+		clear(): void 
+		{
 			this.ip = null;
 			this.port = null;
 			this.preSharedToken = null;
