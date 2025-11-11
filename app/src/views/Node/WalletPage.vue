@@ -6,13 +6,10 @@ import {
 	IonCard,
 	IonCardContent,
 	IonCardHeader, IonCardTitle,
-	IonCol,
 	IonContent,
-	IonGrid,
 	IonHeader,
 	IonItem, IonLabel,
-	IonPage,
-	IonRow
+	IonPage
 } from '@/ui';
 import { copyToClipboard } from '@/utils/clipboard';
 import { refreshNodeBalance } from '@/utils/node';
@@ -45,7 +42,12 @@ const formattedAmount = computed(() =>
  */
 function formatNumber(amount: number, locale: string): string
 {
-	return new Intl.NumberFormat(locale).format(amount);
+	// Limit to 3 decimal places maximum
+	const rounded = Math.round(amount * 1000) / 1000;
+	return new Intl.NumberFormat(locale, {
+		minimumFractionDigits: 0,
+		maximumFractionDigits: 3
+	}).format(rounded);
 }
 
 /**
@@ -74,19 +76,15 @@ const removeWallet = async () =>
 			<!-- Node Balance -->
 			<ion-card class="container header bg-blue">
 				<ion-card-content>
-					<ion-grid>
-						<ion-row>
-							<ion-col size="9">
-								<p class="label">{{ $t('wallet.node-balance-label') }}</p>
-								<p class="amount">{{ formattedAmount }}<span class="unit">{{ nodeStore.nodeBalance.denom }}</span></p>
-							</ion-col>
-							<ion-col size="3" class="ion-text-right">
-								<ion-button fill="clear" size="large" class="refresh-button" @click="refreshNodeBalance">
-									<font-awesome-icon :icon="['fas','arrows-rotate']" size="lg" />
-								</ion-button>
-							</ion-col>
-						</ion-row>
-					</ion-grid>
+					<div class="balance-header">
+						<div class="balance-content">
+							<p class="label">{{ $t('wallet.node-balance-label') }}</p>
+							<p class="amount">{{ formattedAmount }}<span class="unit">{{ nodeStore.nodeBalance.denom }}</span></p>
+						</div>
+						<ion-button fill="clear" size="large" class="refresh-button" @click="refreshNodeBalance">
+							<font-awesome-icon :icon="['fas','arrows-rotate']" size="lg" />
+						</ion-button>
+					</div>
 				</ion-card-content>
 			</ion-card>
 
@@ -102,7 +100,7 @@ const removeWallet = async () =>
 							<p class="value">{{ nodeStore.publicAddress }}</p>
 						</div>
 					</ion-button>
-					<ion-button class="item" fill="clear"
+					<ion-button v-if="nodeStore.nodeAddress" class="item" fill="clear"
 						@click="copyToClipboard(t('wallet.clipboard-address'), nodeStore.nodeAddress)">
 						<div class="content">
 							<p class="label">
@@ -157,30 +155,55 @@ const removeWallet = async () =>
 {
 	&.header
 	{
-		&>.ion-card-content > .ion-grid > .ion-row > .ion-col
+		& > .ion-card-content
 		{
-			&>.label
+			padding: 1rem;
+			
+			& > .balance-header
 			{
-				font-size: 0.8rem;
-				color: var(--ion-text-color);
-			}
-
-			&>.amount
-			{
-				font-size: 1.8rem;
-				line-height: 1.8rem;
-				color: var(--ion-text-color);
-
-				&>.unit
+				display: flex;
+				justify-content: space-between;
+				align-items: flex-start;
+				gap: 1rem;
+				
+				& > .balance-content
 				{
-					display: block;
-					font-size: 0.8rem;
-				}
-			}
+					flex: 1;
+					display: flex;
+					flex-direction: column;
+					gap: 0.5rem;
+					
+					& > .label
+					{
+						margin: 0;
+						font-size: 1rem;
+						line-height: 1.2rem;
+						color: var(--ion-text-color);
+					}
 
-			&>.refresh-button
-			{
-				--color: var(--ion-text-color);
+					& > .amount
+					{
+						margin: 0;
+						font-size: 2rem;
+						line-height: 2rem;
+						color: var(--ion-text-color);
+						display: flex;
+						align-items: baseline;
+						gap: 0.35rem;
+
+						& > .unit
+						{
+							font-size: 0.8rem;
+							flex-shrink: 0;
+						}
+					}
+				}
+
+				& > .refresh-button
+				{
+					flex-shrink: 0;
+					--color: var(--ion-text-color);
+				}
 			}
 		}
 	}
