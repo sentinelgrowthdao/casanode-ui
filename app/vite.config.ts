@@ -55,6 +55,9 @@ export default defineConfig({
 				},
 			}
 			: undefined,
+		watch: {
+			usePolling: true,
+		},
 	},
 	// test: {
 	// 	globals: true,
