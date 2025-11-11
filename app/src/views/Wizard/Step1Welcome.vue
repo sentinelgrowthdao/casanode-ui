@@ -24,9 +24,9 @@ const checkNodeConfiguration = async () =>
 	
 	// If node already configured, go to the reset page
 	if (
-		(nodeStore.moniker?.length ?? 0) > 0 ||
-		(nodeStore.nodeType?.length ?? 0) > 0 ||
-		(nodeStore.nodeAddress?.length ?? 0) > 0 ||
+		(nodeStore.moniker?.length ?? 0) > 0 &&
+		(nodeStore.nodeType?.length ?? 0) > 0 &&
+		// (nodeStore.nodeAddress?.length ?? 0) > 0 &&
 		(nodeStore.publicAddress?.length ?? 0) > 0
 	)
 	{
