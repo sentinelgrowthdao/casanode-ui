@@ -2,42 +2,42 @@
 	"welcome-title": "Welcome to Casanode!",
 	"welcome-text": "This wizard will guide you through the setup process step by step,  ensuring a smooth and easy configuration.",
 	"welcome-next": "Click \"Next\" to begin your  journey to decentralized internet access!",
-	
+
 	"reset-title": "Configuration already started",
 	"reset-text": "An installation seems to have been started but not completed.",
 	"reset-question": "Reset node configuration before starting?",
-	
+
 	"moniker-title": "Set Your Node's Moniker",
 	"moniker-text": "Give your node a unique name to identify it within the decentralized VPN  network.",
 	"moniker-explain": "This name will represent your node to others, so choose a  moniker that is memorable and distinctive.",
 	"moniker-placeholder": "Enter your moniker",
 	"moniker-error": "The moniker must be at least 4 characters long.",
-	
+
 	"protection-title": "Wallet Protection",
 	"protection-text": "Do you wish to protect your wallet with a passphrase? This will enhance security, but the passphrase will be required every time the node restarts.",
-	
+
 	"passphrase-title": "Enter Wallet Password",
 	"passphrase-text": "Create a strong password to secure your wallet. It must contain at least 8 characters.",
 	"passphrase-placeholder": "Enter your password",
-	
+
 	"wallet-title": "Wallet Configuration",
 	"wallet-text": "Would you like to restore an existing crypto wallet or create a new one?  Select \"Restore\" to recover a wallet using your seed phrase or backup,  or choose \"Create\" to generate a new wallet with a secure seed phrase.",
-	
+
 	"wallet-restore-title": "Restore Existing Wallet",
 	"wallet-restore-text": "Please enter your recovery mnemonic phrase below to restore your wallet  address. Ensure that the words are entered in the correct order, and  each word is separated by a space.",
 	"wallet-restore-placeholder": "Enter or Paste your recovery phrase",
 	"wallet-restore-warning": "Your mnemonic phrase is sensitive  information, so handle it securely and never share it with anyone.",
-	
+
 	"wallet-create-title": "Create New Wallet",
 	"wallet-create-text": "Your recovery mnemonic for the node wallet is as follows:",
 	"wallet-create-backup-title": "Backup your mnemonic securely",
 	"wallet-create-backup-text": "It's essential for recovering your wallet if you lose access or forget your passphrase. Loss of this phrase means permanent loss of access to your funds and dVPN node. Store it privately and in multiple safe places.",
-	
+
 	"wallet-fund-title": "Fund Your Node Wallet",
 	"wallet-fund-text": "Please deposit at least 10 $DVPN to your wallet at the address below to proceed with starting the node:",
 	"wallet-fund-next": "Once you have transferred the funds, select “Next” to continue.",
 	"wallet-fund-copied": "Copied to clipboard",
-	
+
 	"ports-title": "Configure Port Forwarding",
 	"ports-text": "To enable external access to your node, please ensure the appropriate ports are forwarded in your router settings.",
 	"ports-node-label": "Node Port",
@@ -49,11 +49,11 @@
 	"ports-documentation": "documentation",
 	"ports-error": "It seems that not all ports are accessible on the Internet and this will prevent users from accessing the VPN service.",
 	"ports-retry": "Test Ports Again",
-	
+
 	"congratulations-title": "Congratulations, Your Node is Live!",
 	"congratulations-text": "Your dVPN node is successfully installed and fully operational, accessible from the Internet.",
 	"congratulations-next": "Please allow a few hours for your node to  become visible on the network and for the first users to start connecting.",
-	
+
 	"button-next": "Next",
 	"button-yes": "Yes",
 	"button-no": "No",
@@ -61,7 +61,7 @@
 	"button-restore": "Restore",
 	"button-test-ports": "Test Ports",
 	"button-finish": "Finish",
-	
+
 	"error-occurred": "An error has occurred while sending data to the node.",
 	"error-start-failed": "Failed to start the node.",
 	"error-wallet-creation": "An error occurred while creating the wallet.",

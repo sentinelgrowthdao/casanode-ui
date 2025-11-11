@@ -2,42 +2,42 @@
 	"welcome-title": "Bienvenue sur Casanode !",
 	"welcome-text": "Cet assistant vous guidera tout au long du processus d'installation étape par étape, pour garantir une configuration simple et fluide.",
 	"welcome-next": "Cliquez sur \"Suivant\" pour commencer votre voyage vers un accès Internet décentralisé !",
-	
+
 	"reset-title": "Configuration déjà démarrée",
 	"reset-text": "Une installation semble avoir été démarrée mais pas terminée.",
 	"reset-question": "Réinitialiser la configuration du nœud avant de commencer ?",
-	
+
 	"moniker-title": "Définissez le moniker de votre nœud",
 	"moniker-text": "Donnez à votre nœud un nom unique pour l'identifier au sein du réseau VPN décentralisé.",
 	"moniker-explain": "Ce nom représentera votre nœud auprès des autres, alors choisissez un moniker mémorable et distinctif.",
 	"moniker-placeholder": "Entrez votre moniker",
 	"moniker-error": "Le moniker doit contenir au moins 4 caractères.",
-	
+
 	"protection-title": "Protection du portefeuille",
 	"protection-text": "Souhaitez-vous protéger votre portefeuille avec une phrase secrète ? Cela améliorera la sécurité, mais la phrase secrète sera nécessaire chaque fois que le nœud redémarre.",
-	
+
 	"passphrase-title": "Mot de passe du portefeuille",
 	"passphrase-text": "Créez un mot de passe fort pour sécuriser votre portefeuille. Il doit contenir au moins 8 caractères.",
 	"passphrase-placeholder": "Entrez votre mot de passe",
-	
+
 	"wallet-title": "Configuration du Portefeuille",
 	"wallet-text": "Voulez-vous restaurer un portefeuille crypto existant ou en créer un nouveau ? Sélectionnez \"Restaurer\" pour récupérer un portefeuille en utilisant votre phrase de récupération ou une sauvegarde, ou choisissez \"Créer\" pour générer un nouveau portefeuille avec une phrase de récupération sécurisée.",
-	
+
 	"wallet-restore-title": "Restaurer un portefeuille existant",
 	"wallet-restore-text": "Veuillez saisir votre phrase mnémonic de récupération ci-dessous pour restaurer votre adresse de portefeuille. Assurez-vous que les mots sont entrés dans le bon ordre et que chaque mot est séparé par un espace.",
 	"wallet-restore-placeholder": "Entrez ou collez votre phrase de récupération",
 	"wallet-restore-warning": "Votre phrase mnémonic est une information sensible, manipulez-la en toute sécurité et ne la partagez jamais avec quiconque.",
-	
+
 	"wallet-create-title": "Créer un nouveau portefeuille",
 	"wallet-create-text": "Votre phrase mnémonic pour le portefeuille de nœud est la suivante :",
 	"wallet-create-backup-title": "Sauvegardez votre phrase mnémonic en toute sécurité",
 	"wallet-create-backup-text": "C'est essentiel pour récupérer votre portefeuille si vous perdez l'accès ou oubliez votre mot de passe. Perdre cette phrase signifie une perte permanente de l'accès à vos fonds et au nœud dVPN. Conservez-la en privé et dans plusieurs endroits sûrs.",
-	
+
 	"wallet-fund-title": "Alimentez votre portefeuille de nœud",
 	"wallet-fund-text": "Veuillez déposer au moins 10 $DVPN sur votre portefeuille à l'adresse ci-dessous pour continuer le lancement du nœud :",
 	"wallet-fund-next": "Une fois que vous avez transféré les fonds, sélectionnez « Suivant » pour continuer.",
 	"wallet-fund-copied": "Copiée dans le presse-papiers",
-	
+
 	"ports-title": "Configurer le transfert de port",
 	"ports-text": "Pour permettre l'accès externe à votre nœud, veuillez vous assurer que les ports appropriés sont transférés dans les paramètres de votre routeur.",
 	"ports-node-label": "Port du nœud",
@@ -49,11 +49,11 @@
 	"ports-documentation": "documentation",
 	"ports-error": "Il semble que tous les ports ne sont pas accessible sur Internet et cela va empêcher les utilisateurs d'accéder au service VPN.",
 	"ports-retry": "Tester les ports à nouveau",
-	
+
 	"congratulations-title": "Félicitations, votre nœud est en ligne !",
 	"congratulations-text": "Votre nœud dVPN est installé avec succès et entièrement opérationnel, accessible depuis Internet.",
 	"congratulations-next": "Veuillez attendre quelques heures pour que votre nœud devienne visible sur le réseau et que les premiers utilisateurs commencent à se connecter.",
-	
+
 	"button-next": "Suivant",
 	"button-yes": "Oui",
 	"button-no": "Non",
@@ -61,7 +61,7 @@
 	"button-restore": "Restaurer",
 	"button-test-ports": "Tester les ports",
 	"button-finish": "Terminer",
-	
+
 	"error-occurred": "Une erreur s'est produite lors de l'envoi de données au nœud.",
 	"error-start-failed": "Échec du démarrage du nœud.",
 	"error-wallet-creation": "Une erreur s'est produite lors de la création du portefeuille.",

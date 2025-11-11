@@ -6,7 +6,7 @@
 	"type-residential": "Résidentiel",
 	"type-datacenter": "Datacenter",
 	"type-error": "Veuillez sélectionner un type de noeud valide",
-	
+
 	"network-section-title": "Réseau",
 	"ip-address-label": "Adresse IP",
 	"ip-address-error": "Veuillez entrer une adresse IP ou un domaine valide",
@@ -16,7 +16,7 @@
 	"wireguard-port-error": "Veuillez entrer un port Wireguard valide",
 	"v2ray-port-label": "Port V2Ray (TCP)",
 	"v2ray-port-error": "Veuillez entrer un port V2Ray valide",
-	
+
 	"vpn-section-title": "VPN",
 	"maximum-peers-label": "Pairs maximum",
 	"maximum-peers-error": "Veuillez entrer une valeur de pairs maximum valide",

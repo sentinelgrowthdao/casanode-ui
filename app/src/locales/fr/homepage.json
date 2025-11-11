@@ -1,11 +1,11 @@
 {
-  "invalid-banner-reset": "Réinitialiser la session",
-  "invalid-banner-go-connect": "Aller à la page de connexion",
-  "error-generic": "Une erreur est survenue.",
-  "error-passphrase-length": "La passphrase doit contenir au moins 8 caractères.",
-  "invalid-session-generic": "Session expirée. Merci de rescanner le QR code.",
-  "invalid-session": "Session invalide. Merci de rescanner le QR code.",
-  "no-context": "Pas de contexte de connexion. Allez sur /connect pour scanner le QR code du nœud.",
-  "unable-connect-api": "Impossible de se connecter à l'API.",
-  "missing-jwt": "JWT manquant. Merci de rescanner le QR code."
+	"invalid-banner-reset": "Réinitialiser la session",
+	"invalid-banner-go-connect": "Aller à la page de connexion",
+	"error-generic": "Une erreur est survenue.",
+	"error-passphrase-length": "La passphrase doit contenir au moins 8 caractères.",
+	"invalid-session-generic": "Session expirée. Merci de rescanner le QR code.",
+	"invalid-session": "Session invalide. Merci de rescanner le QR code.",
+	"no-context": "Pas de contexte de connexion. Allez sur /connect pour scanner le QR code du nœud.",
+	"unable-connect-api": "Impossible de se connecter à l'API.",
+	"missing-jwt": "JWT manquant. Merci de rescanner le QR code."
 }
