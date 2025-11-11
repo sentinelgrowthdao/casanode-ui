@@ -1,17 +1,18 @@
-import type { App } from 'vue';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import {
-	faShieldHalved,
-	faGear,
-	faWallet,
-	faPowerOff,
-	faCircleQuestion,
+import
+{
 	faArrowsRotate,
+	faCircleQuestion,
 	faCopy,
-	faLink,
 	faFileLines,
+	faGear,
+	faLink,
+	faPowerOff,
+	faShieldHalved,
+	faWallet,
 } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import type { App } from 'vue';
 
 export function registerFontAwesome(app: App) 
 {

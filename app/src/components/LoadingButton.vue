@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 import { IonButton, IonSpinner } from '@/ui';
+import { ref } from 'vue';
 
 interface Props
 {

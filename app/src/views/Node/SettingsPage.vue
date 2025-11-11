@@ -1,13 +1,13 @@
 <script lang="ts" setup>
-import { IonPage, IonContent, IonHeader, IonItem, IonNote, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonLabel, IonSelect, IonSelectOption, IonInput } from '@/ui';
+import AppToolbar from '@/components/AppToolbar.vue';
+import NetworkService from '@/services/NetworkService';
+import { IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonContent, IonHeader, IonInput, IonItem, IonLabel, IonNote, IonPage, IonSelect, IonSelectOption } from '@/ui';
+import { refreshNodeStatus } from '@/utils/node';
+import LoadingButton from '@components/LoadingButton.vue';
 import { notify } from '@kyvg/vue3-notification';
+import { useNodeStore } from '@stores/NodeStore';
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useNodeStore } from '@stores/NodeStore';
-import NetworkService from '@/services/NetworkService';
-import AppToolbar from '@/components/AppToolbar.vue';
-import LoadingButton from '@components/LoadingButton.vue';
-import { refreshNodeStatus } from '@/utils/node';
 
 // Import the useNodeStore composable function.
 const nodeStore = useNodeStore();

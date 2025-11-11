@@ -1,11 +1,11 @@
 import type { App } from 'vue';
-import IonPage from './IonPage.vue';
-import IonHeader from './IonHeader.vue';
-import IonContent from './IonContent.vue';
 import IonButton from './IonButton.vue';
+import IonCardContent from './IonCardContent.vue';
 import IonCardHeader from './IonCardHeader.vue';
 import IonCardTitle from './IonCardTitle.vue';
-import IonCardContent from './IonCardContent.vue';
+import IonContent from './IonContent.vue';
+import IonHeader from './IonHeader.vue';
+import IonPage from './IonPage.vue';
 
 export function registerUi(app: App) 
 {
@@ -18,4 +18,4 @@ export function registerUi(app: App)
 	app.component('ion-card-content', IonCardContent);
 }
 
-export { IonPage, IonHeader, IonContent, IonButton, IonCardHeader, IonCardTitle, IonCardContent };
+export { IonButton, IonCardContent, IonCardHeader, IonCardTitle, IonContent, IonHeader, IonPage };

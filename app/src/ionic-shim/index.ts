@@ -1,4 +1,4 @@
-import { App, Plugin, defineComponent, h, PropType } from 'vue';
+import { App, defineComponent, h, Plugin, PropType } from 'vue';
 import { RouterLink } from 'vue-router';
 
 // Basic structural wrappers
@@ -13,7 +13,7 @@ const IonLabel = defineComponent({ name: 'IonLabel', setup(_, { slots }) { retur
 const IonContent = defineComponent({
 	name: 'IonContent',
 	props: { fullscreen: { type: Boolean, default: false } },
-	setup(props, { slots }) 
+	setup(props, { slots })
 	{
 		return () => h('main', { class: ['ion-content', props.fullscreen ? 'ion-fullscreen' : ''] }, slots.default && slots.default());
 	}
@@ -34,7 +34,7 @@ const IonRow = defineComponent({ name: 'IonRow', setup(_, { slots }) { return ()
 const IonCol = defineComponent({
 	name: 'IonCol',
 	props: { size: { type: String, default: undefined } },
-	setup(props, { slots }) 
+	setup(props, { slots })
 	{
 		const cls = ['ion-col'];
 		if (props.size) cls.push(`ion-col-${props.size}`);
@@ -53,7 +53,7 @@ const IonInput = defineComponent({
 		placeholder: { type: String as PropType<string>, default: '' },
 	},
 	emits: ['update:modelValue', 'ionBlur', 'ionInput'],
-	setup(props, { emit, attrs }) 
+	setup(props, { emit, attrs })
 	{
 		const userClass = (attrs as any)?.class;
 		const rest: any = { ...(attrs as any) };
@@ -74,7 +74,7 @@ const IonTextarea = defineComponent({
 	name: 'IonTextarea',
 	props: { modelValue: { type: String, default: '' }, placeholder: { type: String, default: '' } },
 	emits: ['update:modelValue'],
-	setup(props, { emit, attrs }) 
+	setup(props, { emit, attrs })
 	{
 		const userClass = (attrs as any)?.class;
 		const rest: any = { ...(attrs as any) };
@@ -93,7 +93,7 @@ const IonSelect = defineComponent({
 	name: 'IonSelect',
 	props: { modelValue: { type: [String, Number, Boolean] as PropType<any>, default: undefined } },
 	emits: ['update:modelValue'],
-	setup(props, { emit, slots, attrs }) 
+	setup(props, { emit, slots, attrs })
 	{
 		const userClass = (attrs as any)?.class;
 		const rest: any = { ...(attrs as any) };
@@ -170,12 +170,12 @@ const IonSegment = defineComponent({
 	name: 'IonSegment',
 	props: { value: { type: String, default: '' } },
 	emits: ['ionChange'],
-	setup(props, { slots, emit }) 
+	setup(props, { slots, emit })
 	{
-		const onClick = (e: MouseEvent) => 
+		const onClick = (e: MouseEvent) =>
 		{
 			const target = (e.target as HTMLElement).closest('.ion-segment-button') as HTMLElement | null;
-			if (target) 
+			if (target)
 			{
 				const val = target.dataset.value || '';
 				emit('ionChange', { detail: { value: val } });
@@ -188,7 +188,7 @@ const IonSegment = defineComponent({
 const IonSegmentButton = defineComponent({
 	name: 'IonSegmentButton',
 	props: { value: { type: String, required: true } },
-	setup(props, { slots }) 
+	setup(props, { slots })
 	{
 		return () => h('button', { class: 'ion-segment-button', 'data-value': props.value }, slots.default && slots.default());
 	}
@@ -222,10 +222,10 @@ const IonTabButton = defineComponent({
 
 // Controller stubs
 export const toastController = {
-	async create(options: { message: string; duration?: number; position?: string }) 
+	async create(options: { message: string; duration?: number; position?: string })
 	{
 		return {
-			async present() 
+			async present()
 			{
 				if (import.meta.env.DEV) console.info('[toast]', options.message);
 			}
@@ -234,7 +234,7 @@ export const toastController = {
 };
 
 export const modalController = {
-	async create(/* options: { component: any; componentProps?: Record<string, any> } */) 
+	async create(/* options: { component: any; componentProps?: Record<string, any> } */)
 	{
 		return {
 			async present() { /* no-op in shim */ },
@@ -246,7 +246,7 @@ export const modalController = {
 
 // Plugin to register kebab-case tags used in templates
 export const IonicVue: Plugin = {
-	install(app: App) 
+	install(app: App)
 	{
 		const register = (name: string, comp: any) => app.component(name, comp);
 		register('ion-app', IonApp);
@@ -290,12 +290,9 @@ export const IonicVue: Plugin = {
 	}
 };
 
-export {
-	IonApp, IonRouterOutlet, IonPage, IonContent, IonHeader, IonToolbar, IonTitle, IonButtons,
-	IonCard, IonCardHeader, IonCardTitle, IonCardContent,
-	IonGrid, IonRow, IonCol,
-	IonItem, IonList, IonInput, IonTextarea, IonSelect, IonSelectOption, IonNote, IonText, IonLabel,
-	IonButton, IonIcon, IonSpinner,
-	IonSegment, IonSegmentButton,
-	IonTabs, IonTabBar, IonTabButton,
+export
+{
+	IonApp, IonButton, IonButtons,
+	IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonNote, IonPage, IonRouterOutlet, IonRow, IonSegment, IonSegmentButton, IonSelect, IonSelectOption, IonSpinner, IonTabBar, IonTabButton, IonTabs, IonText, IonTextarea, IonTitle, IonToolbar
 };
+

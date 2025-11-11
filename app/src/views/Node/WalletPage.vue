@@ -1,17 +1,25 @@
 <script lang="ts" setup>
+import AppToolbar from '@/components/AppToolbar.vue';
+import NetworkService from '@/services/NetworkService';
 import {
-	IonPage, IonContent, IonHeader,
-	IonCard, IonCardHeader, IonCardTitle, IonCardContent,
-	IonButton, IonGrid, IonRow, IonCol, IonItem, IonLabel
+	IonButton,
+	IonCard,
+	IonCardContent,
+	IonCardHeader, IonCardTitle,
+	IonCol,
+	IonContent,
+	IonGrid,
+	IonHeader,
+	IonItem, IonLabel,
+	IonPage,
+	IonRow
 } from '@/ui';
+import { copyToClipboard } from '@/utils/clipboard';
+import { refreshNodeBalance } from '@/utils/node';
+import { useNodeStore } from '@stores/NodeStore';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
-import AppToolbar from '@/components/AppToolbar.vue';
-import NetworkService from '@/services/NetworkService';
-import { copyToClipboard } from '@/utils/clipboard';
-import { useNodeStore } from '@stores/NodeStore';
-import { refreshNodeBalance } from '@/utils/node';
 
 // Import the useI18n composable function.
 const { t, locale } = useI18n();

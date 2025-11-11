@@ -1,31 +1,31 @@
-import { createI18n } from 'vue-i18n';
 import { Device } from '@capacitor/device';
+import { createI18n } from 'vue-i18n';
 
 // English
+import AboutEn from '@locales/en/about.json';
+import ActionsEn from '@locales/en/actions.json';
 import AppEn from '@locales/en/app.json';
+import ConnectEn from '@locales/en/connect.json';
+import DashboardEn from '@locales/en/dashboard.json';
+import HomepageEn from '@locales/en/homepage.json';
+import LoadingEn from '@locales/en/loading.json';
+import SettingsEn from '@locales/en/settings.json';
+import WalletEn from '@locales/en/wallet.json';
 import WelcomeEn from '@locales/en/welcome.json';
 import WizardEn from '@locales/en/wizard.json';
-import DashboardEn from '@locales/en/dashboard.json';
-import AboutEn from '@locales/en/about.json';
-import WalletEn from '@locales/en/wallet.json';
-import ActionsEn from '@locales/en/actions.json';
-import SettingsEn from '@locales/en/settings.json';
-import LoadingEn from '@locales/en/loading.json';
-import ConnectEn from '@locales/en/connect.json';
-import HomepageEn from '@locales/en/homepage.json';
 
 // French
+import AboutFr from '@locales/fr/about.json';
+import ActionsFr from '@locales/fr/actions.json';
 import AppFr from '@locales/fr/app.json';
+import ConnectFr from '@locales/fr/connect.json';
+import DashboardFr from '@locales/fr/dashboard.json';
+import HomepageFr from '@locales/fr/homepage.json';
+import LoadingFr from '@locales/fr/loading.json';
+import SettingsFr from '@locales/fr/settings.json';
+import WalletFr from '@locales/fr/wallet.json';
 import WelcomeFr from '@locales/fr/welcome.json';
 import WizardFr from '@locales/fr/wizard.json';
-import DashboardFr from '@locales/fr/dashboard.json';
-import AboutFr from '@locales/fr/about.json';
-import WalletFr from '@locales/fr/wallet.json';
-import ActionsFr from '@locales/fr/actions.json';
-import SettingsFr from '@locales/fr/settings.json';
-import LoadingFr from '@locales/fr/loading.json';
-import ConnectFr from '@locales/fr/connect.json';
-import HomepageFr from '@locales/fr/homepage.json';
 
 interface Option
 {

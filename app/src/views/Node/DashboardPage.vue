@@ -1,16 +1,23 @@
 <script lang="ts" setup>
-import { 
-	IonPage, IonContent, IonHeader, IonButton,
-	IonGrid, IonRow, IonCol,
-	IonCard, IonCardHeader, IonCardTitle, IonCardContent
+import AppToolbar from '@/components/AppToolbar.vue';
+import NetworkService from '@/services/NetworkService';
+import {
+	IonButton,
+	IonCard,
+	IonCardContent,
+	IonCardHeader, IonCardTitle,
+	IonCol,
+	IonContent,
+	IonGrid,
+	IonHeader,
+	IonPage,
+	IonRow
 } from '@/ui';
-import { useRouter } from 'vue-router';
+import { useDeviceStore, type DeviceEntry } from '@stores/DeviceStore';
+import { useNodeStore } from '@stores/NodeStore';
 import { computed, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
-import AppToolbar from '@/components/AppToolbar.vue';
-import { useNodeStore } from '@stores/NodeStore';
-import { useDeviceStore, type DeviceEntry } from '@stores/DeviceStore';
-import NetworkService from '@/services/NetworkService';
+import { useRouter } from 'vue-router';
 
 // Router
 const router = useRouter();

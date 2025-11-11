@@ -1,10 +1,9 @@
-import { createRouter, createWebHistory } from 'vue-router';
-import { RouteRecordRaw } from 'vue-router';
 import NetworkService from '@/services/NetworkService';
 import NodeService from '@/services/NodeService';
 import { useAuthStore } from '@/stores/AuthStore';
 import { useNodeStore } from '@/stores/NodeStore';
 import { getJwtExpiration } from '@/utils/jwt';
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 
 const TOKEN_REFRESH_THRESHOLD = 60 * 1000; // 1 minute safety margin
 let nodeHydrationPromise: Promise<boolean> | null = null;

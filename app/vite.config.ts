@@ -1,12 +1,14 @@
-import legacy from '@vitejs/plugin-legacy'
-import vue from '@vitejs/plugin-vue'
-import path from 'path'
+import legacy from '@vitejs/plugin-legacy';
+import vue from '@vitejs/plugin-vue';
 import fs from 'fs';
-import { defineConfig } from 'vite'
+import path from 'path';
+import { defineConfig } from 'vite';
 
 // Check if the qrdata.json file exists
 const qrcodePath = path.resolve(__dirname, './src/assets/qrcode.json');
-const qrcodeAliasPath = fs.existsSync(qrcodePath) ? qrcodePath : path.resolve(__dirname, './src/assets/qrcode.example.json');
+const qrcodeAliasPath = fs.existsSync(qrcodePath)
+	? qrcodePath
+	: path.resolve(__dirname, './src/assets/qrcode.example.json');
 let proxyTarget: string | undefined = undefined;
 try 
 {
@@ -26,10 +28,7 @@ catch (e)
 
 // https://vitejs.dev/config/
 export default defineConfig({
-	plugins: [
-		vue(),
-		legacy()
-	],
+	plugins: [vue(), legacy()],
 	resolve: {
 		alias: {
 			'@': path.resolve(__dirname, './src'),
@@ -63,4 +62,4 @@ export default defineConfig({
 	// 	globals: true,
 	// 	environment: 'jsdom'
 	// }
-})
+});

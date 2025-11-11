@@ -1,14 +1,16 @@
 // src/services/NodeService.ts
-import NetworkService from './NetworkService';
 import { useNodeStore } from '@/stores/NodeStore';
-import {
-	refreshPublicAddress,
+import
+{
 	refreshNodeAddress,
-	refreshNodeBalance
+	refreshNodeBalance,
+	refreshPublicAddress
 } from '@/utils/node';
-import {
+import
+{
 	type NetworkStatus,
 } from '@interfaces/network';
+import NetworkService from './NetworkService';
 
 class NodeService
 {

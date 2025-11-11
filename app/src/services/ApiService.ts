@@ -1,26 +1,23 @@
-import {
-	Http,
-	type HttpOptions,
-	type HttpHeaders,
-} from '@capacitor-community/http';
 import { useAuthStore } from '@/stores/AuthStore';
-import {
-	type NetworkStatus,
-	type NetworkConfiguration,
+import { Http, type HttpHeaders, type HttpOptions } from '@capacitor-community/http';
+import
+{
 	type CertificateInfo,
-	type NodeStatus,
+	type NetworkConfiguration,
 	type NetworkInstallationCheck,
-	type NetworkInstallDocker,
 	type NetworkInstallConfiguration,
-	type NodeConfigResults,
+	type NetworkInstallDocker,
 	type NetworkPassphrase,
+	type NetworkStatus,
+	type NodeConfigResults,
+	type NodeStatus,
 } from '@interfaces/network';
 
 export interface ApiInfos
 {
-	ip: string | null,
-	port: number | null,
-	token: string | null,
+	ip: string | null;
+	port: number | null;
+	token: string | null;
 }
 
 class ApiService
@@ -31,13 +28,12 @@ class ApiService
 	private apiPort: number | null = null;
 	private baseUrl: string | null = null;
 	private connected = false;
-	
+
 	private constructor() {}
-	
+
 	public static getInstance(): ApiService
 	{
-		if (!ApiService.instance)
-			ApiService.instance = new ApiService();
+		if (!ApiService.instance) ApiService.instance = new ApiService();
 		
 		return ApiService.instance;
 	}
@@ -52,7 +48,7 @@ class ApiService
 	public connect(ip: string, port: number, token: string): boolean
 	{
 		// If explicit host/port are provided, use them
-		if (ip && port) 
+		if (ip && port)
 		{
 			this.apiIp = ip;
 			this.apiPort = port;
@@ -65,7 +61,7 @@ class ApiService
 		// Fallback to .env configuration
 		const env: any = (import.meta as any).env || {};
 		const envBaseUrl = env.VITE_API_BASE_URL as string | undefined;
-		if (envBaseUrl) 
+		if (envBaseUrl)
 		{
 			this.baseUrl = envBaseUrl;
 			// Do not set Authorization here; JWT will be obtained via /auth/login
@@ -84,9 +80,9 @@ class ApiService
 	}
 
 	/**
-   * Manually set the Authorization token
-   */
-	public setAuthToken(token: string | null) 
+	 * Manually set the Authorization token
+	 */
+	public setAuthToken(token: string | null)
 	{
 		this.authToken = token;
 		// Set connection state only if both baseUrl and token exist
@@ -94,22 +90,21 @@ class ApiService
 	}
 
 	/**
-   * Read current Authorization token
-   */
-	public getAuthToken(): string | null 
+	 * Read current Authorization token
+	 */
+	public getAuthToken(): string | null
 	{
 		return this.authToken;
 	}
 
 	/**
-   * Send POST without Authorization header (e.g., /auth/login)
-   */
+	 * Send POST without Authorization header (e.g., /auth/login)
+	 */
 	private async postNoAuth(endpoint: string, body?: any): Promise<any>
 	{
 		try
 		{
-			if (!this.baseUrl)
-				throw new Error("API baseUrl is not initialized.");
+			if (!this.baseUrl) throw new Error('API baseUrl is not initialized.');
 
 			const options: HttpOptions = {
 				url: `${this.baseUrl}${endpoint}`,
@@ -129,9 +124,11 @@ class ApiService
 	}
 
 	/**
-   * Authenticate and retrieve JWT
-   */
-	public async login(preSharedToken?: string): Promise<{ token: string; refreshToken?: string; expiresAt?: number | null } | null>
+	 * Authenticate and retrieve JWT
+	 */
+	public async login(
+		preSharedToken?: string
+	): Promise<{ token: string; refreshToken?: string; expiresAt?: number | null } | null>
 	{
 		const env: any = (import.meta as any).env || {};
 		const bodyToken = preSharedToken || env.VITE_API_AUTH || env.VITE_API_TOKEN;
@@ -140,18 +137,24 @@ class ApiService
 		// Try common keys
 		const token = data.token || data.jwt || data.accessToken || data.access_token || null;
 		const refreshToken = data.refreshToken || data.refresh_token || undefined;
-		const expiresAt = typeof data.expiresAt === 'number' ? data.expiresAt : (typeof data.expires_at === 'number' ? data.expires_at : undefined);
+		const expiresAt =
+			typeof data.expiresAt === 'number'
+				? data.expiresAt
+				: typeof data.expires_at === 'number'
+					? data.expires_at
+					: undefined;
 		if (!token) return null;
 		return { token, refreshToken, expiresAt };
 	}
 
 	/** Refresh JWT (implementation flexible depending on backend) */
-	public async refreshAuth(refreshToken?: string): Promise<{ token: string; refreshToken?: string; expiresAt?: number | null } | null>
+	public async refreshAuth(
+		refreshToken?: string
+	): Promise<{ token: string; refreshToken?: string; expiresAt?: number | null } | null>
 	{
 		try
 		{
-			if (!this.baseUrl)
-				throw new Error('API baseUrl is not initialized.');
+			if (!this.baseUrl) throw new Error('API baseUrl is not initialized.');
 
 			// If refreshToken provided, send in body; otherwise try with current Authorization
 			const options: HttpOptions = {
@@ -164,7 +167,12 @@ class ApiService
 			const data = response.data || {};
 			const token = data.token || data.jwt || data.accessToken || data.access_token || null;
 			const newRefresh = data.refreshToken || data.refresh_token || refreshToken;
-			const expiresAt = typeof data.expiresAt === 'number' ? data.expiresAt : (typeof data.expires_at === 'number' ? data.expires_at : undefined);
+			const expiresAt =
+				typeof data.expiresAt === 'number'
+					? data.expiresAt
+					: typeof data.expires_at === 'number'
+						? data.expires_at
+						: undefined;
 			if (!token) return null;
 			return { token, refreshToken: newRefresh, expiresAt };
 		}
@@ -202,8 +210,7 @@ class ApiService
 	 */
 	public getDeviceUuid(): string | undefined
 	{
-		if(!this.connected || !this.baseUrl)
-			return undefined;
+		if (!this.connected || !this.baseUrl) return undefined;
 		
 		// Hash the base url to generate a unique UUID
 		const uuid = btoa(this.baseUrl);
@@ -240,8 +247,8 @@ class ApiService
 	private getHeaders(): HttpHeaders
 	{
 		return {
-			"Authorization": `Bearer ${this.authToken}`,
-			"Content-Type": "application/json",
+			Authorization: `Bearer ${this.authToken}`,
+			'Content-Type': 'application/json',
 		};
 	}
 	
@@ -260,7 +267,10 @@ class ApiService
 				authStore.invalidate('invalid-session'); // i18n key consumed by HomePage banner
 				return null;
 			}
-			if (typeof response.status === 'number' && (response.status < 200 || response.status >= 300))
+			if (
+				typeof response.status === 'number' &&
+				(response.status < 200 || response.status >= 300)
+			)
 			{
 				console.error(`${options.method} ${options.url} failed with status ${response.status}`);
 				return null;
@@ -273,7 +283,7 @@ class ApiService
 			return null;
 		}
 	}
-
+	
 	private async getRequest(endpoint: string): Promise<any>
 	{
 		const options: HttpOptions = {
@@ -284,7 +294,7 @@ class ApiService
 		};
 		return this.doRequest(options);
 	}
-
+	
 	private async postRequest(endpoint: string, data?: any): Promise<any>
 	{
 		const options: HttpOptions = {
@@ -296,7 +306,7 @@ class ApiService
 		};
 		return this.doRequest(options);
 	}
-
+	
 	private async putRequest(endpoint: string, data?: any): Promise<any>
 	{
 		const options: HttpOptions = {
@@ -308,7 +318,7 @@ class ApiService
 		};
 		return this.doRequest(options);
 	}
-
+	
 	private async deleteRequest(endpoint: string): Promise<any>
 	{
 		const options: HttpOptions = {
@@ -327,7 +337,7 @@ class ApiService
 	public async getNodeStatus(): Promise<string>
 	{
 		// Get the node status
-		const data = await this.getRequest("/node/status");
+		const data = await this.getRequest('/node/status');
 		return data?.status ?? 'unknown';
 	}
 	
@@ -338,25 +348,21 @@ class ApiService
 	public async getStatus(): Promise<NetworkStatus>
 	{
 		// Get the node status
-		const data = await this.getRequest("/status");
+		const data = await this.getRequest('/status');
 		
 		// Get the node status (safe optional chaining everywhere)
-		const status: NodeStatus =
-		{
+		const status: NodeStatus = {
 			type: data?.status?.type ?? null,
 			version: data?.status?.version ?? null,
-			bandwidth:
-			{
+			bandwidth: {
 				download: data?.status?.bandwidth?.download ?? null,
 				upload: data?.status?.bandwidth?.upload ?? null,
 			},
-			handshake:
-			{
+			handshake: {
 				enable: data?.status?.handshake?.enable ?? null,
 				peers: data?.status?.handshake?.peers ?? null,
 			},
-			location:
-			{
+			location: {
 				city: data?.status?.location?.city ?? null,
 				country: data?.status?.location?.country ?? null,
 				latitude: data?.status?.location?.latitude ?? null,
@@ -367,8 +373,7 @@ class ApiService
 		};
 		
 		// Get the certificate information (certificate may be null on fresh install)
-		const certificate: CertificateInfo =
-		{
+		const certificate: CertificateInfo = {
 			creationDate: data?.certificate?.creationDate ?? null,
 			expirationDate: data?.certificate?.expirationDate ?? null,
 			issuer: data?.certificate?.issuer ?? null,
@@ -395,7 +400,7 @@ class ApiService
 	public async getNodeConfiguration(): Promise<NetworkConfiguration>
 	{
 		// Get the node configuration
-		const data = await this.getRequest("/node/configuration");
+		const data = await this.getRequest('/node/configuration');
 		
 		// Return the node configuration
 		return {
@@ -416,9 +421,11 @@ class ApiService
 	 * @param config NetworkConfiguration
 	 * @returns Promise<NodeConfigResults>
 	 */
-	public async setNodeConfiguration(config: Partial<NetworkConfiguration>): Promise<NodeConfigResults>
+	public async setNodeConfiguration(
+		config: Partial<NetworkConfiguration>
+	): Promise<NodeConfigResults>
 	{
-		const data = await this.putRequest("/node/configuration", config);
+		const data = await this.putRequest('/node/configuration', config);
 		const results: NodeConfigResults = {};
 		
 		Object.keys(config).forEach((key) =>
@@ -433,10 +440,10 @@ class ApiService
 	 * Get the node address
 	 * @returns Promise<string|null>
 	 */
-	public async getNodeAddress(): Promise<string|null>
+	public async getNodeAddress(): Promise<string | null>
 	{
 		// Get the node address
-		const data = await this.getRequest("/node/address");
+		const data = await this.getRequest('/node/address');
 		
 		// Return the node address
 		return data?.address ?? null;
@@ -446,10 +453,10 @@ class ApiService
 	 * Get the wallet address
 	 * @returns Promise<string|null>
 	 */
-	public async getWalletAddress(): Promise<string|null>
+	public async getWalletAddress(): Promise<string | null>
 	{
 		// Get the wallet address
-		const data = await this.getRequest("/wallet/address");
+		const data = await this.getRequest('/wallet/address');
 		
 		// Return the wallet address
 		return data?.address ?? null;
@@ -459,10 +466,10 @@ class ApiService
 	 * Get the node balance
 	 * @returns Promise<string|null>
 	 */
-	public async getNodeBalance(): Promise<string|null>
+	public async getNodeBalance(): Promise<string | null>
 	{
 		// Get the node balance
-		const data = await this.getRequest("/node/balance");
+		const data = await this.getRequest('/node/balance');
 		return data?.balance ?? null;
 	}
 	
@@ -473,7 +480,7 @@ class ApiService
 	public async checkInstallation(): Promise<NetworkInstallationCheck>
 	{
 		// Get the installation check
-		const data = await this.getRequest("/check/installation");
+		const data = await this.getRequest('/check/installation');
 		
 		// Return the installation check
 		return {
@@ -492,7 +499,7 @@ class ApiService
 	public async installDockerImage(): Promise<NetworkInstallDocker>
 	{
 		// Install the Docker image
-		const data = await this.postRequest("/install/docker-image");
+		const data = await this.postRequest('/install/docker-image');
 		
 		// Return the installation status
 		return {
@@ -507,7 +514,7 @@ class ApiService
 	public async installNodeConfiguration(): Promise<NetworkInstallConfiguration>
 	{
 		// Install the node configuration
-		const data = await this.postRequest("/install/configuration");
+		const data = await this.postRequest('/install/configuration');
 		
 		// Return the installation status
 		return {
@@ -523,7 +530,7 @@ class ApiService
 	 */
 	public async setPassphrase(passphrase: string): Promise<boolean>
 	{
-		const data = await this.postRequest("/node/passphrase", { passphrase });
+		const data = await this.postRequest('/node/passphrase', { passphrase });
 		return data?.success ?? false;
 	}
 	
@@ -534,7 +541,7 @@ class ApiService
 	public async nodePassphrase(): Promise<NetworkPassphrase>
 	{
 		// Get the passphrase availability and return the result
-		const data: NetworkPassphrase = await this.getRequest("/node/passphrase");
+		const data: NetworkPassphrase = await this.getRequest('/node/passphrase');
 		return data;
 	}
 	
@@ -544,7 +551,7 @@ class ApiService
 	 */
 	public async startNode(): Promise<boolean>
 	{
-		const data = await this.putRequest("/node/start");
+		const data = await this.putRequest('/node/start');
 		return data?.start ?? false;
 	}
 	
@@ -554,7 +561,7 @@ class ApiService
 	 */
 	public async stopNode(): Promise<boolean>
 	{
-		const data = await this.putRequest("/node/stop");
+		const data = await this.putRequest('/node/stop');
 		return data?.stop ?? false;
 	}
 	
@@ -564,7 +571,7 @@ class ApiService
 	 */
 	public async restartNode(): Promise<boolean>
 	{
-		const data = await this.putRequest("/node/restart");
+		const data = await this.putRequest('/node/restart');
 		return data?.restart ?? false;
 	}
 	
@@ -574,7 +581,7 @@ class ApiService
 	 */
 	public async renewCertificate(): Promise<boolean>
 	{
-		const data = await this.postRequest("/certificate/renew");
+		const data = await this.postRequest('/certificate/renew');
 		return data?.renew ?? false;
 	}
 	
@@ -582,9 +589,9 @@ class ApiService
 	 * Update the system
 	 * @returns Promise<boolean>
 	 */
-	public async updateSystem(target: "system" | "sentinel"): Promise<boolean>
+	public async updateSystem(target: 'system' | 'sentinel'): Promise<boolean>
 	{
-		const data = await this.postRequest("/system/update", { target });
+		const data = await this.postRequest('/system/update', { target });
 		return data?.success ?? false;
 	}
 	
@@ -594,7 +601,7 @@ class ApiService
 	 */
 	public async rebootSystem(): Promise<boolean>
 	{
-		const data = await this.postRequest("/system/reboot");
+		const data = await this.postRequest('/system/reboot');
 		return data?.success ?? false;
 	}
 	
@@ -604,7 +611,7 @@ class ApiService
 	 */
 	public async shutdownSystem(): Promise<boolean>
 	{
-		const data = await this.postRequest("/system/shutdown");
+		const data = await this.postRequest('/system/shutdown');
 		return data?.success ?? false;
 	}
 	
@@ -614,19 +621,18 @@ class ApiService
 	 */
 	public async resetSystem(): Promise<boolean>
 	{
-		const data = await this.postRequest("/system/reset");
+		const data = await this.postRequest('/system/reset');
 		return data?.success ?? false;
 	}
-	
 	
 	/**
 	 * Create a new wallet
 	 * @returns Promise<string|null>
 	 */
-	public async createWallet(): Promise<string|null>
+	public async createWallet(): Promise<string | null>
 	{
-		const data = await this.postRequest("/wallet/create");
-		return Array.isArray(data?.mnemonic) ? data.mnemonic.join(' ') : data?.mnemonic ?? null;
+		const data = await this.postRequest('/wallet/create');
+		return Array.isArray(data?.mnemonic) ? data.mnemonic.join(' ') : (data?.mnemonic ?? null);
 	}
 	
 	/**
@@ -636,7 +642,7 @@ class ApiService
 	 */
 	public async restoreWallet(mnemonic: string): Promise<boolean>
 	{
-		const data = await this.postRequest("/wallet/restore", { mnemonic: mnemonic });
+		const data = await this.postRequest('/wallet/restore', { mnemonic: mnemonic });
 		return data?.success ?? false;
 	}
 	
@@ -646,7 +652,7 @@ class ApiService
 	 */
 	public async removeWallet(): Promise<boolean>
 	{
-		const data = await this.deleteRequest("/wallet/remove");
+		const data = await this.deleteRequest('/wallet/remove');
 		return data?.success ?? false;
 	}
 	
@@ -655,14 +661,13 @@ class ApiService
 	 * @param portType: 'node' | 'vpn'
 	 * @returns Promise<string|null>
 	 */
-	public async checkPort(portType: 'node' | 'vpn'): Promise<string|null>
+	public async checkPort(portType: 'node' | 'vpn'): Promise<string | null>
 	{
 		const data = await this.getRequest(`/check/port/${portType}`);
 		const status = data?.status ?? -1;
 		// Return the status
 		return status === '2' ? 'open' : status === '3' ? 'closed' : null;
 	}
-
 }
 
 export default ApiService.getInstance();

@@ -1,17 +1,21 @@
 <script lang="ts" setup>
-import { type Ref, ref } from 'vue';
-import {
-	IonPage, IonContent,
-	IonGrid, IonCol, IonRow,
-	IonItem, IonText
-} from '@/ui';
-import { useRouter } from 'vue-router';
-import { useI18n } from 'vue-i18n';
-import { copyToClipboard } from '@/utils/clipboard';
-import { useNodeStore } from '@/stores/NodeStore';
 import NetworkService from '@/services/NetworkService';
+import { useNodeStore } from '@/stores/NodeStore';
+import {
+	IonCol,
+	IonContent,
+	IonGrid,
+	IonItem,
+	IonPage,
+	IonRow,
+	IonText
+} from '@/ui';
+import { copyToClipboard } from '@/utils/clipboard';
+import { refreshNodeBalance, refreshNodeStatus } from '@/utils/node';
 import LoadingButton from '@components/LoadingButton.vue';
-import { refreshNodeStatus, refreshNodeBalance } from '@/utils/node';
+import { type Ref, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router';
 
 // Router
 const router = useRouter();

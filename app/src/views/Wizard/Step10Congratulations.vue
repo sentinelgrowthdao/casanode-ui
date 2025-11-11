@@ -1,11 +1,14 @@
 <script lang="ts" setup>
-import {
-	IonPage, IonContent,
-	IonGrid, IonCol, IonRow
-} from '@/ui';
-import { useRouter } from 'vue-router';
 import NodeService from '@/services/NodeService';
+import {
+	IonCol,
+	IonContent,
+	IonGrid,
+	IonPage,
+	IonRow
+} from '@/ui';
 import LoadingButton from '@components/LoadingButton.vue';
+import { useRouter } from 'vue-router';
 
 // Router
 const router = useRouter();
@@ -14,7 +17,7 @@ const router = useRouter();
  * Refresh the store and navigate to the next step
  * @returns void
  */
-const refreshStoreAndNavigate = async () =>
+const refreshStoreAndNavigate = async () => 
 {
 	// Load the node configuration
 	await NodeService.loadNodeConfiguration();

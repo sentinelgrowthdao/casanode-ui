@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import { ref, computed } from 'vue';
-import { IonPage, IonContent, IonButton, IonSpinner, IonItem, IonInput } from '@/ui';
-import { useRouter } from 'vue-router';
 import NetworkService from '@/services/NetworkService';
 import NodeService from '@/services/NodeService';
 import { useAuthStore } from '@/stores/AuthStore';
+import { IonButton, IonContent, IonInput, IonItem, IonPage, IonSpinner } from '@/ui';
+import { computed, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 const router = useRouter();
 const authStore = useAuthStore();
@@ -66,24 +66,28 @@ const proceed = async () =>
 	// Install Docker image if missing
 	if (!imageAvailable)
 	{
-		connectingMessage.value = (window as any).$t?.('loading.wait-docker') || 'Preparing environment…';
+		connectingMessage.value =
+			(window as any).$t?.('loading.wait-docker') || 'Preparing environment…';
 		const ok = await NetworkService.installDockerImage();
-		if (!ok)
+		if (!ok) 
 		{
-			error.value = (window as any).$t?.('loading.error-message-docker') || 'Failed to install Docker image.';
+			error.value =
+				(window as any).$t?.('loading.error-message-docker') || 'Failed to install Docker image.';
 			return;
 		}
 		imageAvailable = true;
 	}
 	
 	// Install node/VPN/certificate configs if missing
-	if (!nodeConfig || !certificateKey)
+	if (!nodeConfig || !certificateKey) 
 	{
-		connectingMessage.value = (window as any).$t?.('loading.wait-config') || 'Installing configuration…';
+		connectingMessage.value =
+			(window as any).$t?.('loading.wait-config') || 'Installing configuration…';
 		const cfg = await NetworkService.installNodeConfiguration();
-		if (!cfg?.nodeConfig || !cfg?.certificate)
+		if (!cfg?.nodeConfig || !cfg?.certificate) 
 		{
-			error.value = (window as any).$t?.('loading.error-message-config') || 'Failed to install configuration.';
+			error.value =
+				(window as any).$t?.('loading.error-message-config') || 'Failed to install configuration.';
 			return;
 		}
 		nodeConfig = true;
@@ -91,10 +95,11 @@ const proceed = async () =>
 	}
 
 	// If passphrase is required, open form (pause keep-awake while typing)
-	connectingMessage.value = (window as any).$t?.('loading.wait-connection') || 'Connecting to node…';
+	connectingMessage.value =
+		(window as any).$t?.('loading.wait-connection') || 'Connecting to node…';
 	install = await NetworkService.checkInstallation(); // refresh state
 	const pass = await NetworkService.nodePassphrase();
-	if (pass.required && !pass.available)
+	if (pass.required && !pass.available) 
 	{
 		error.value = '';
 		passphraseFormOpen.value = true;
@@ -143,18 +148,25 @@ const start = async () =>
 		}
 		else
 		{
-			throw new Error((window as any).$t?.('homepage.no-context') || "No connection context. Please go to /connect to scan the node's QR code.");
+			throw new Error(
+				(window as any).$t?.('homepage.no-context') ||
+					"No connection context. Please go to /connect to scan the node's QR code."
+			);
 		}
 
 		const connected = await NetworkService.connect({ ip, port });
 		if (!connected)
 		{
-			throw new Error((window as any).$t?.('homepage.unable-connect-api') || "Unable to connect to the API.");
+			throw new Error(
+				(window as any).$t?.('homepage.unable-connect-api') || 'Unable to connect to the API.'
+			);
 		}
-		
+
 		if (!useExistingJwt)
 		{
-			throw new Error((window as any).$t?.('homepage.missing-jwt') || 'Missing JWT. Please rescan the QR code.');
+			throw new Error(
+				(window as any).$t?.('homepage.missing-jwt') || 'Missing JWT. Please rescan the QR code.'
+			);
 		}
 
 		NetworkService.setAuthToken(authStore.token);
@@ -163,7 +175,8 @@ const start = async () =>
 	}
 	catch (e: any)
 	{
-		error.value = e?.message || ((window as any).$t?.('homepage.error-generic') || 'An error occurred.');
+		error.value =
+			e?.message || (window as any).$t?.('homepage.error-generic') || 'An error occurred.';
 	}
 	finally
 	{
@@ -185,7 +198,9 @@ const submitPassphrase = async () =>
 		const value = (passphraseInputValue.value || '').trim();
 		if (!value || value.length < 8)
 		{
-			passphraseErrorMessage.value = (window as any).$t?.('homepage.error-passphrase-length') || 'Passphrase must contain at least 8 characters.';
+			passphraseErrorMessage.value =
+				(window as any).$t?.('homepage.error-passphrase-length') ||
+				'Passphrase must contain at least 8 characters.';
 			return;
 		}
 
@@ -193,14 +208,16 @@ const submitPassphrase = async () =>
 		const reconnected = await (NetworkService.reconnect?.() ?? Promise.resolve(true));
 		if (reconnected === false)
 		{
-			passphraseErrorMessage.value = (window as any).$t?.('loading.passphrase-error') || 'Passphrase validation failed.';
+			passphraseErrorMessage.value =
+				(window as any).$t?.('loading.passphrase-error') || 'Passphrase validation failed.';
 			return;
 		}
 
 		const ok = await NetworkService.setNodePassphrase(value);
 		if (!ok)
 		{
-			passphraseErrorMessage.value = (window as any).$t?.('loading.passphrase-error') || 'Failed to send passphrase.';
+			passphraseErrorMessage.value =
+				(window as any).$t?.('loading.passphrase-error') || 'Failed to send passphrase.';
 			return;
 		}
 
@@ -219,81 +236,119 @@ const submitPassphrase = async () =>
 </script>
 
 <template>
-<ion-page>
-	<ion-content class="homepage" :fullscreen="true">
-		<div class="content">
-			<!-- Invalid session banner -->
-			<div v-if="invalidReason" class="invalid-banner">
-				<p class="text">
-					<!-- Try to translate the reason if it's a key, else display raw -->
-					{{ $te(`errors.${invalidReason}`) ? $t(`errors.${invalidReason}`) : invalidReason }}
-				</p>
-				<div class="actions">
-					<ion-button
-						size="small"
-						fill="outline"
-						@click="() => { authStore.clear(); router.replace({ name: 'ConnectLink' }); }">
-						{{ $t('homepage.invalid-banner-reset') }}
-					</ion-button>
-					<ion-button
-						size="small"
-						color="primary"
-						@click="() => router.replace({ name: 'ConnectLink' })">
-						{{ $t('homepage.invalid-banner-go-connect') }}
-					</ion-button>
+	<ion-page>
+		<ion-content class="homepage" :fullscreen="true">
+			<div class="content">
+				<!-- Invalid session banner -->
+				<div v-if="invalidReason" class="invalid-banner">
+					<p class="text">
+						<!-- Try to translate the reason if it's a key, else display raw -->
+						{{ $te(`errors.${invalidReason}`) ? $t(`errors.${invalidReason}`) : invalidReason }}
+					</p>
+					<div class="actions">
+						<ion-button
+							size="small"
+							fill="outline"
+							@click="
+								() => {
+									authStore.clear();
+									router.replace({ name: 'ConnectLink' });
+								}
+							"
+						>
+							{{ $t('homepage.invalid-banner-reset') }}
+						</ion-button>
+						<ion-button
+							size="small"
+							color="primary"
+							@click="() => router.replace({ name: 'ConnectLink' })"
+						>
+							{{ $t('homepage.invalid-banner-go-connect') }}
+						</ion-button>
+					</div>
 				</div>
-			</div>
-			<div class="header">
-				<h1>{{ $t('app.name') }}</h1>
-				<p class="logo">
-					<img src="@assets/images/casanode-logo.png" alt="Logo" />
-				</p>
-			</div>
+				<div class="header">
+					<h1>{{ $t('app.name') }}</h1>
+					<p class="logo">
+						<img src="@assets/images/casanode-logo.png" alt="Logo" />
+					</p>
+				</div>
 
-			<!-- Main screen -->
-			<div class="welcome" v-if="!passphraseFormOpen">
-				<h2>{{ $t('welcome.start-title') }}</h2>
-				<div class="start">
-					<p class="message">{{ $t('welcome.start-text') }}</p>
+				<!-- Main screen -->
+				<div class="welcome" v-if="!passphraseFormOpen">
+					<h2>{{ $t('welcome.start-title') }}</h2>
+					<div class="start">
+						<p class="message">{{ $t('welcome.start-text') }}</p>
+						<p class="button">
+							<ion-button :disabled="loading || isConnecting" @click="start">
+								<ion-spinner v-if="loading || isConnecting" name="crescent" />
+								{{
+									loading || isConnecting
+										? ($t('loading.wait-connection') as string)
+										: ($t('welcome.start-button') as string)
+								}}
+							</ion-button>
+						</p>
+						<p v-if="connectingMessage" class="help">{{ connectingMessage }}</p>
+						<p v-if="error" class="help" style="color: #f66">{{ error }}</p>
+					</div>
+				</div>
+
+				<!-- Passphrase form -->
+				<div
+					v-else
+					class="passphrase"
+					style="
+						display: flex;
+						flex-direction: column;
+						gap: 0.75rem;
+						align-items: stretch;
+						max-width: 20rem;
+						margin: 1rem auto 0;
+					"
+				>
+					<p class="message">{{ $t('loading.passphrase-message') }}</p>
+					<ion-item>
+						<ion-input
+							v-model="passphraseInputValue"
+							type="password"
+							:placeholder="$t('loading.passphrase-placeholder')"
+						/>
+					</ion-item>
 					<p class="button">
-						<ion-button :disabled="loading || isConnecting" @click="start">
-							<ion-spinner v-if="loading || isConnecting" name="crescent" />
-							{{ (loading || isConnecting) ? ($t('loading.wait-connection') as string) : ($t('welcome.start-button') as string) }}
+						<ion-button :disabled="passphraseLoading" @click="submitPassphrase">
+							<ion-spinner v-if="passphraseLoading" name="crescent" />
+							{{ $t('loading.passphrase-button') }}
 						</ion-button>
 					</p>
-					<p v-if="connectingMessage" class="help">{{ connectingMessage }}</p>
-					<p v-if="error" class="help" style="color:#f66;">{{ error }}</p>
+					<p v-if="passphraseErrorMessage" class="error" style="color: #f66">
+						{{ passphraseErrorMessage }}
+					</p>
 				</div>
 			</div>
-
-			<!-- Passphrase form -->
-			<div
-				v-else
-				class="passphrase"
-				style="display:flex;flex-direction:column;gap:.75rem;align-items:stretch;max-width:20rem;margin:1rem auto 0;">
-				<p class="message">{{ $t('loading.passphrase-message') }}</p>
-				<ion-item>
-					<ion-input
-						v-model="passphraseInputValue"
-						type="password"
-						:placeholder="$t('loading.passphrase-placeholder')"/>
-				</ion-item>
-				<p class="button">
-					<ion-button :disabled="passphraseLoading" @click="submitPassphrase">
-						<ion-spinner v-if="passphraseLoading" name="crescent" />
-						{{ $t('loading.passphrase-button') }}
-					</ion-button>
-				</p>
-				<p v-if="passphraseErrorMessage" class="error" style="color:#f66;">{{ passphraseErrorMessage }}</p>
-			</div>
-		</div>
-	</ion-content>
-</ion-page>
+		</ion-content>
+	</ion-page>
 </template>
 
 <style lang="scss" scoped>
-@import "@scss/homepage.scss";
-.invalid-banner { background:#331; border:1px solid #a55; padding:.75rem 1rem; border-radius:.5rem; display:flex; flex-direction:column; gap:.5rem; margin-bottom:1rem; }
-.invalid-banner .text { color:#f99; font-size:.85rem; margin:0; }
-.invalid-banner .actions { display:flex; gap:.5rem; }
+@import '@scss/homepage.scss';
+.invalid-banner {
+	background: #331;
+	border: 1px solid #a55;
+	padding: 0.75rem 1rem;
+	border-radius: 0.5rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	margin-bottom: 1rem;
+}
+.invalid-banner .text {
+	color: #f99;
+	font-size: 0.85rem;
+	margin: 0;
+}
+.invalid-banner .actions {
+	display: flex;
+	gap: 0.5rem;
+}
 </style>

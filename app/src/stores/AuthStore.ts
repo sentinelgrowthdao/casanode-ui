@@ -12,7 +12,14 @@ export interface AuthState
 
 export const useAuthStore = defineStore('auth', {
 	persist: true,
-	state: (): AuthState => ({ token: null, refreshToken: null, expiresAt: null, lastIp: null, lastPort: null, invalidReason: null }),
+	state: (): AuthState => ({
+		token: null,
+		refreshToken: null,
+		expiresAt: null,
+		lastIp: null,
+		lastPort: null,
+		invalidReason: null,
+	}),
 	actions: {
 		setTokens(token: string, refreshToken?: string | null, expiresAt?: number | null)
 		{
@@ -51,6 +58,6 @@ export const useAuthStore = defineStore('auth', {
 			this.lastIp = null;
 			this.lastPort = null;
 			this.invalidReason = null;
-		}
-	}
+		},
+	},
 });

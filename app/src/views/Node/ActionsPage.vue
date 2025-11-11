@@ -1,15 +1,15 @@
 <script lang="ts" setup>
-import { type Ref, ref } from 'vue';
-import { IonPage, IonContent, IonHeader, IonSegment, IonSegmentButton, IonCard, IonCardContent } from '@/ui';
-import { notify } from '@kyvg/vue3-notification';
 import AppToolbar from '@/components/AppToolbar.vue';
 import NetworkService from '@/services/NetworkService';
-import { useRouter } from 'vue-router';
-import { useI18n } from 'vue-i18n';
-import { useNodeStore } from '@stores/NodeStore';
-import { useDeviceStore } from '@stores/DeviceStore';
+import { IonCard, IonCardContent, IonContent, IonHeader, IonPage, IonSegment, IonSegmentButton } from '@/ui';
 import { refreshNodeStatus } from '@/utils/node';
 import LoadingButton from '@components/LoadingButton.vue';
+import { notify } from '@kyvg/vue3-notification';
+import { useDeviceStore } from '@stores/DeviceStore';
+import { useNodeStore } from '@stores/NodeStore';
+import { type Ref, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router';
 
 // Variable to store the selected segment
 const segmentSelected: Ref<string> = ref('node');
@@ -56,7 +56,7 @@ const redirectToHome = () =>
  * @param action Action to perform
  * @returns Promise<void>
  */
-const nodeAction = async(action: string) => 
+const nodeAction = async(action: string) =>
 {
 	// Toast message
 	let message = '';

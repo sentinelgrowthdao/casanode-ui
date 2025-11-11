@@ -66,7 +66,7 @@ function onClick(evt: MouseEvent)
 	emit('click', evt);
 }
 
-function onRouterClick(evt: MouseEvent, navigate: (e: MouseEvent) => void)
+function onRouterClick(evt: MouseEvent, navigate: (e: MouseEvent) => void) 
 {
 	if (props.disabled)
 	{

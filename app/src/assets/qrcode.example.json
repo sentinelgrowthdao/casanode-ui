@@ -1,10 +1,10 @@
 {
-	"device":"casanode",
-	"os":"Debian 12",
-	"kernel":"6.6.51+rpt-rpi-2712",
-	"architecture":"aarch64",
-	"ip":"x.x.x.x",
-	"webPort":"8080",
-	"apiPort":"8081",
-	"authToken":""
+	"device": "casanode",
+	"os": "Debian 12",
+	"kernel": "6.6.51+rpt-rpi-2712",
+	"architecture": "aarch64",
+	"ip": "x.x.x.x",
+	"webPort": "8080",
+	"apiPort": "8081",
+	"authToken": ""
 }

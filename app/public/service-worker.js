@@ -5,26 +5,30 @@ const CORE_ASSETS = [
 	'/index.html',
 	'/site.webmanifest',
 	'/favicon-32x32.png',
-	'/favicon-16x16.png'
+	'/favicon-16x16.png',
 ];
 
 self.addEventListener('install', (event) => 
 {
-	event.waitUntil((async () => 
-	{
-		const cache = await caches.open(CACHE_NAME);
-		await cache.addAll(CORE_ASSETS);
-	})());
+	event.waitUntil(
+		(async () => 
+		{
+			const cache = await caches.open(CACHE_NAME);
+			await cache.addAll(CORE_ASSETS);
+		})()
+	);
 });
 
 self.addEventListener('activate', (event) => 
 {
-	event.waitUntil((async () => 
-	{
-		const keys = await caches.keys();
-		await Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)));
-		self.clients.claim();
-	})());
+	event.waitUntil(
+		(async () => 
+		{
+			const keys = await caches.keys();
+			await Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)));
+			self.clients.claim();
+		})()
+	);
 });
 
 // Cache-first for same-origin static, network-first fallback
@@ -39,17 +43,19 @@ self.addEventListener('fetch', (event) =>
 		{
 			return; // default fetch
 		}
-		event.respondWith((async () => 
-		{
-			const cache = await caches.open(CACHE_NAME);
-			const cached = await cache.match(req);
-			if (cached) return cached;
-			const res = await fetch(req);
-			if (res.ok && req.method === 'GET') 
+		event.respondWith(
+			(async () => 
 			{
-				cache.put(req, res.clone());
-			}
-			return res;
-		})());
+				const cache = await caches.open(CACHE_NAME);
+				const cached = await cache.match(req);
+				if (cached) return cached;
+				const res = await fetch(req);
+				if (res.ok && req.method === 'GET') 
+				{
+					cache.put(req, res.clone());
+				}
+				return res;
+			})()
+		);
 	}
 });

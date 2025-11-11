@@ -1,11 +1,14 @@
 <script lang="ts" setup>
-import {
-	IonPage, IonContent,
-	IonGrid, IonCol, IonRow
-} from '@/ui';
-import { useRouter } from 'vue-router';
 import { useNodeStore } from '@/stores/NodeStore';
+import {
+	IonCol,
+	IonContent,
+	IonGrid,
+	IonPage,
+	IonRow
+} from '@/ui';
 import LoadingButton from '@components/LoadingButton.vue';
+import { useRouter } from 'vue-router';
 
 // Router
 const router = useRouter();
@@ -16,7 +19,7 @@ const nodeStore = useNodeStore();
  * Remove mnemonic store
  * @returns void
  */
-const removeMnemonicStore = async () =>
+const removeMnemonicStore = async () => 
 {
 	// Clear the store
 	nodeStore.clearMnemonic();

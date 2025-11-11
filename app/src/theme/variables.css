@@ -1,8 +1,7 @@
 /* For information on how to create your own theme, please see:
 http://ionicframework.com/docs/theming/ */
 
-:root
-{
+:root {
 	/* Set the background of the entire app */
 	--ion-background-color: #000610;
 	
@@ -10,13 +9,13 @@ http://ionicframework.com/docs/theming/ */
 	--ion-font-family: 'Lato', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'Roboto', sans-serif;
 	
 	/* Customes colors */
-	--app-background-color-navbar: #191E31;
-	--app-background-color-footer: #181E31;
-	--app-background-color-secondary: #262F4C;
-	--app-background-color-secondary-alt: rgba(24, 30, 49, 0.60);
-	--app-background-color-block: #0D1F39;
-	--app-background-color-alert: #DC3545;
-	--app-border-color: #0157FC;
+	--app-background-color-navbar: #191e31;
+	--app-background-color-footer: #181e31;
+	--app-background-color-secondary: #262f4c;
+	--app-background-color-secondary-alt: rgba(24, 30, 49, 0.6);
+	--app-background-color-block: #0d1f39;
+	--app-background-color-alert: #dc3545;
+	--app-border-color: #0157fc;
 	
 	/* Margin and padding */
 	--content-margin: 0 auto;
@@ -26,8 +25,8 @@ http://ionicframework.com/docs/theming/ */
 	--content-max-width: 20rem;
 	
 	/* Container */
-	--container-bg-color-default: #0D1F39;
-	--container-bg-color-blue: #0157FC;
+	--container-bg-color-default: #0d1f39;
+	--container-bg-color-blue: #0157fc;
 	--container-label-color: #cbcbcb;
 	
 	/* Wizard */
@@ -35,7 +34,7 @@ http://ionicframework.com/docs/theming/ */
 	--wizard-padding: 1rem;
 	--wizard-width: 80%;
 	--wizard-max-width: 20rem;
-	--wizard-color-error: #DC3545;
+	--wizard-color-error: #dc3545;
 	
 	/* Text */
 	--text-color-normal-light: #fff;
@@ -43,40 +42,34 @@ http://ionicframework.com/docs/theming/ */
 }
 
 /* Set text color of the entire app for iOS only */
-:root.ios
-{
+:root.ios {
 	--ion-text-color: #fff;
 }
 
 /* Set text color of the entire app for Material Design only */
-:root.md
-{
+:root.md {
 	--ion-text-color: #fff;
 }
 
 /* Set the color on all ion-button elements */
-ion-button:not([fill]), ion-button[fill="solid"], ion-button[fill="default"]
-{
-	--background: #0157FC;
+ion-button:not([fill]),
+ion-button[fill='solid'],
+ion-button[fill='default'] {
+	--background: #0157fc;
 	--color: #fff;
 }
-ion-button[fill="clear"]
-{
-	--color: #0184FC;
+ion-button[fill='clear'] {
+	--color: #0184fc;
 }
 
-ion-segment
-{
-	--background: #0D1F39;
-
+ion-segment {
+	--background: #0d1f39;
 }
-ion-segment-button
-{
+ion-segment-button {
 	--color-checked: #fff;
-	--indicator-color: #0184FC;
+	--indicator-color: #0184fc;
 }
 
-ion-segment-button:checked
-{
-	--background: #0184FC;
+ion-segment-button:checked {
+	--background: #0184fc;
 }

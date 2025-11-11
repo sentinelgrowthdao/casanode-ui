@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import { IonPage, IonContent, IonButton, IonSpinner } from '@/ui';
-import { useAuthStore } from '@/stores/AuthStore';
 import NetworkService from '@/services/NetworkService';
+import { useAuthStore } from '@/stores/AuthStore';
+import { IonButton, IonContent, IonPage, IonSpinner } from '@/ui';
+import { onMounted, ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
 const route = useRoute();
 const router = useRouter();
@@ -211,14 +211,15 @@ async function connectNow(): Promise<void>
 </template>
 
 <style scoped>
-.wrapper { max-width:480px; margin:2.5rem auto; padding:0 1.25rem; display:flex; flex-direction:column; gap:1.25rem; text-align:center; }
-.logo img { max-width:140px; display:block; margin:0 auto 1rem; }
+.wrapper { display:flex; flex-direction:column; gap:1.25rem; margin:2.5rem auto; max-width:480px; padding:0 1.25rem; text-align:center; }
+.logo img { display:block; margin:0 auto 1rem; max-width:140px; }
 h1 { font-size:1.9rem; margin:0; }
 .intro { color:#bbb; font-size:.95rem; line-height:1.4; }
 .actions { display:flex; flex-direction:column; gap:.75rem; margin-top:.5rem; }
-@media (min-width:460px){ .actions { flex-direction:row; justify-content:center; } }
-.hint { font-size:.8rem; color:#888; }
+
+@media (width >=460px){ .actions { flex-direction:row; justify-content:center; } }
+.hint { color:#888; font-size:.8rem; }
 .error { color:#f77; font-size:.85rem; }
 .warn { color:#ffb347; font-size:.85rem; }
-.hotspot-help { font-size:.65rem; color:#555; margin-top:1.5rem; line-height:1.3; }
+.hotspot-help { color:#555; font-size:.65rem; line-height:1.3; margin-top:1.5rem; }
 </style>

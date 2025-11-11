@@ -1,5 +1,5 @@
-import { BarcodeScanner, BarcodeFormat } from '@capacitor-mlkit/barcode-scanning';
 import { parseClaimUrl, type ClaimPayload } from '@/utils/claim';
+import { BarcodeFormat, BarcodeScanner } from '@capacitor-mlkit/barcode-scanning';
 
 /**
  * Install Google Barcode Scanner module

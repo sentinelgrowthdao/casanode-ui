@@ -57,16 +57,16 @@ watch(
 
 .checkmark-check
 {
+	animation: checkAnimate 1s forwards cubic-bezier(0.895, 0.03, 0.685, 0.22);
 	stroke-dasharray: 80px 80px;
 	stroke-dashoffset: -80px;
-	animation: checkAnimate 1s forwards cubic-bezier(0.895, 0.03, 0.685, 0.22);
 }
 
 .cross-line
 {
+	animation: checkAnimate 1s forwards cubic-bezier(0.895, 0.03, 0.685, 0.22);
 	stroke-dasharray: 80px 80px;
 	stroke-dashoffset: -80px;
-	animation: checkAnimate 1s forwards cubic-bezier(0.895, 0.03, 0.685, 0.22);
 	
 	&:nth-child(2)
 	{
@@ -79,8 +79,9 @@ watch(
 	0% {
 		stroke-dashoffset: -80px;
 	}
+
 	100% {
-		stroke-dashoffset: 0px;
+		stroke-dashoffset: 0;
 	}
 }
 </style>

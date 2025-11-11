@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { IonToolbar, IonTitle, IonButtons, IonButton } from '@/ui';
-import { useRouter } from 'vue-router';
+import NetworkService from '@/services/NetworkService';
+import { IonButton, IonButtons, IonTitle, IonToolbar } from '@/ui';
+import { refreshNodeStatus } from '@/utils/node';
 import { useNodeStore } from '@stores/NodeStore';
 import { computed } from 'vue';
-import NetworkService from '@/services/NetworkService';
-import { refreshNodeStatus } from '@/utils/node';
+import { useRouter } from 'vue-router';
 
 // Import pictures
+import statusError from '@assets/icons/status-error.svg';
 import statusRunning from '@assets/icons/status-running.svg';
 import statusStopped from '@assets/icons/status-stopped.svg';
-import statusError from '@assets/icons/status-error.svg';
 
 // Use the router and the node store
 const router = useRouter();

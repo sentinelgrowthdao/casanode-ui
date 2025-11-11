@@ -1,12 +1,17 @@
 <script lang="ts" setup>
-import {
-	IonPage, IonContent, IonHeader,
-	IonCard, IonCardHeader, IonCardTitle, IonCardContent,
-	IonButton
-} from '@/ui';
-import { ref, onMounted, onUnmounted } from 'vue';
 import AppToolbar from '@/components/AppToolbar.vue';
+import {
+	IonButton,
+	IonCard,
+	IonCardContent,
+	IonCardHeader,
+	IonCardTitle,
+	IonContent,
+	IonHeader,
+	IonPage,
+} from '@/ui';
 import { useNodeStore } from '@stores/NodeStore';
+import { onMounted, onUnmounted, ref } from 'vue';
 
 // Import the useNodeStore composable function.
 const nodeStore = useNodeStore();
@@ -41,7 +46,7 @@ function updateUptime()
 // Define the uptime value
 const uptime = ref(formatDuration(Math.floor(Date.now() / 1000) - nodeStore.uptime));
 // Refresh the uptime value every second
-let intervalId: NodeJS.Timeout|null = null;
+let intervalId: NodeJS.Timeout | null = null;
 
 /**
  * Lifecycle hook to run when the component is mounted
@@ -59,60 +64,73 @@ onUnmounted(() =>
 	if(intervalId)
 		clearInterval(intervalId);
 });
-
 </script>
 <template>
-<ion-page>
-	<ion-header>
-		<app-toolbar />
-	</ion-header>
-	<ion-content>
-		<div class="about">
-			<ion-card class="container">
-				<ion-card-header>
-					<ion-card-title>{{ $t('about.system-information-title') }}</ion-card-title>
-				</ion-card-header>
-				<ion-card-content>
-					<p class="item">
-						<strong>{{ $t('about.casanode-version-label') }}</strong>{{ nodeStore.casanodeVersion }}
-					</p>
-					<p class="item">
-						<strong>{{ $t('about.operating-system-label') }}</strong>{{ nodeStore.systemOs }}
-					</p>
-					<p class="item">
-						<strong>{{ $t('about.kernel-version-label') }}</strong>{{ nodeStore.systemKernel }}
-					</p>
-					<p class="item">
-						<strong>{{ $t('about.architecture-label') }}</strong>{{ nodeStore.systemArch }}
-					</p>
-					<p class="item">
-						<strong>{{ $t('about.docker-image-label') }}</strong>{{ nodeStore.dockerImage }}
-					</p>
-					<p class="item">
-						<strong>{{ $t('about.uptime-label') }}</strong>{{ uptime }}
-					</p>
-				</ion-card-content>
-			</ion-card>
+	<ion-page>
+		<ion-header>
+			<app-toolbar />
+		</ion-header>
+		<ion-content>
+			<div class="about">
+				<ion-card class="container">
+					<ion-card-header>
+						<ion-card-title>{{ $t('about.system-information-title') }}</ion-card-title>
+					</ion-card-header>
+					<ion-card-content>
+						<p class="item">
+							<strong>{{ $t('about.casanode-version-label') }}</strong
+							>{{ nodeStore.casanodeVersion }}
+						</p>
+						<p class="item">
+							<strong>{{ $t('about.operating-system-label') }}</strong
+							>{{ nodeStore.systemOs }}
+						</p>
+						<p class="item">
+							<strong>{{ $t('about.kernel-version-label') }}</strong
+							>{{ nodeStore.systemKernel }}
+						</p>
+						<p class="item">
+							<strong>{{ $t('about.architecture-label') }}</strong
+							>{{ nodeStore.systemArch }}
+						</p>
+						<p class="item">
+							<strong>{{ $t('about.docker-image-label') }}</strong
+							>{{ nodeStore.dockerImage }}
+						</p>
+						<p class="item">
+							<strong>{{ $t('about.uptime-label') }}</strong
+							>{{ uptime }}
+						</p>
+					</ion-card-content>
+				</ion-card>
 
-			<ion-card class="container">
-				<ion-card-header>
-					<ion-card-title>{{ $t('about.legal-title') }}</ion-card-title>
-				</ion-card-header>
-				<ion-card-content>
-					<ion-button fill="outline" target="_system" href="https://www.sentinel.co/terms-of-service">
-						<font-awesome-icon :icon="['fas','file-lines']" />
-						{{ $t('about.terms-of-service') }}
-					</ion-button>
-					<ion-button fill="outline" target="_system" href="https://www.sentinel.co/privacy-policy">
-						<font-awesome-icon :icon="['fas','file-lines']" />
-						{{ $t('about.privacy-policy') }}
-					</ion-button>
-				</ion-card-content>
-			</ion-card>
-		</div>
-	</ion-content>
-</ion-page>
+				<ion-card class="container">
+					<ion-card-header>
+						<ion-card-title>{{ $t('about.legal-title') }}</ion-card-title>
+					</ion-card-header>
+					<ion-card-content>
+						<ion-button
+							fill="outline"
+							target="_system"
+							href="https://www.sentinel.co/terms-of-service"
+						>
+							<font-awesome-icon :icon="['fas', 'file-lines']" />
+							{{ $t('about.terms-of-service') }}
+						</ion-button>
+						<ion-button
+							fill="outline"
+							target="_system"
+							href="https://www.sentinel.co/privacy-policy"
+						>
+							<font-awesome-icon :icon="['fas', 'file-lines']" />
+							{{ $t('about.privacy-policy') }}
+						</ion-button>
+					</ion-card-content>
+				</ion-card>
+			</div>
+		</ion-content>
+	</ion-page>
 </template>
 <style lang="scss" scoped>
-@import "@scss/container.scss";
+@import '@scss/container.scss';
 </style>

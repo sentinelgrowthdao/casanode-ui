@@ -17,7 +17,7 @@ export interface NodeBalance
  * The initial state of the node store
  * @returns The initial state of the node store
  */
-function createDefaultState() 
+function createDefaultState()
 {
 	return {
 		// Node Status

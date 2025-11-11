@@ -1,22 +1,22 @@
-import { createApp } from 'vue'
-import { createPinia, setActivePinia } from 'pinia';
-import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
-import App from './App.vue'
-import router from './router';
-import i18n from './locales';
-import { initSentry } from './utils/sentry';
-import { IonicVue } from '@/ui';
-import NetworkService from '@/services/NetworkService';
 import { registerFontAwesome } from '@/plugins/fontawesome';
+import NetworkService from '@/services/NetworkService';
+import { useAuthStore } from '@/stores/AuthStore';
+import { IonicVue } from '@/ui';
 import { registerUi } from '@/ui/register';
 import '@fontsource/lato/400.css';
 import '@fontsource/lato/700.css';
 import Notifications from '@kyvg/vue3-notification';
-import { useAuthStore } from '@/stores/AuthStore';
+import { createPinia, setActivePinia } from 'pinia';
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
+import { createApp } from 'vue';
+import App from './App.vue';
+import i18n from './locales';
+import router from './router';
+import { initSentry } from './utils/sentry';
 
 /* Theme variables */
-import './theme/variables.css';
 import './theme/ionic-shim.css';
+import './theme/variables.css';
 
 /* Initialize Pinia */
 const pinia = createPinia();

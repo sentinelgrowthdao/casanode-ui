@@ -1,6 +1,5 @@
 import NetworkService from '@/services/NetworkService';
-import { useNodeStore } from '@stores/NodeStore';
-import { type NodeBalance } from '@stores/NodeStore';
+import { useNodeStore, type NodeBalance } from '@stores/NodeStore';
 
 /**
  * Refresh the node status.

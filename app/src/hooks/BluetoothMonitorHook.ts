@@ -1,11 +1,11 @@
-import { onMounted, onUnmounted } from 'vue';
-import { App } from '@capacitor/app';
-import { useRouter } from 'vue-router';
 import { requiresConnection } from '@/router';
 import NetworkService from '@/services/NetworkService';
 import { refreshNodeStatus } from '@/utils/node';
+import { App } from '@capacitor/app';
+import { onMounted, onUnmounted } from 'vue';
+import { useRouter } from 'vue-router';
 
-export function startNetworkMonitorHook() 
+export function startNetworkMonitorHook()
 {
 	const router = useRouter();
 	let intervalId: number | null = null;
@@ -15,7 +15,7 @@ export function startNetworkMonitorHook()
 	 * Check the current Network status and redirect to the Home page if the user is not connected
 	 * @returns {Promise<void>}
 	 */
-	const checkNetworkStatus = async () => 
+	const checkNetworkStatus = async () =>
 	{
 		// Check if the current route requires connection to the Network device
 		if(!requiresConnection.includes(router.currentRoute.value.name as string))
@@ -29,11 +29,11 @@ export function startNetworkMonitorHook()
 		// If the user is connected, read the node status
 		if(connected)
 		{
-			try 
+			try
 			{
 				status = await refreshNodeStatus();
 			}
-			catch (e) 
+			catch (e)
 			{
 				status = null;
 			}
@@ -54,9 +54,9 @@ export function startNetworkMonitorHook()
 	 * @param state
 	 * @returns {Promise<void>}
 	 */
-	const handleAppStateChange = async (state: { isActive: boolean }) => 
+	const handleAppStateChange = async (state: { isActive: boolean }) =>
 	{
-		if (state.isActive) 
+		if (state.isActive)
 		{
 			await checkNetworkStatus();
 		}
@@ -65,7 +65,7 @@ export function startNetworkMonitorHook()
 	/**
 	 * On mounted hook
 	 */
-	onMounted(async () => 
+	onMounted(async () =>
 	{
 		intervalId = window.setInterval(checkNetworkStatus, 15000);
 		await checkNetworkStatus();
@@ -77,14 +77,14 @@ export function startNetworkMonitorHook()
 	/**
 	 * On unmounted hook
 	 */
-	onUnmounted(() => 
+	onUnmounted(() =>
 	{
 		// Clear the interval if it exists
-		if (intervalId !== null) 
+		if (intervalId !== null)
 			clearInterval(intervalId);
 		
 		// Remove the listener if it exists
-		if (appStateChangeListener && appStateChangeListener.remove) 
+		if (appStateChangeListener && appStateChangeListener.remove)
 			appStateChangeListener.remove();
 	});
 	

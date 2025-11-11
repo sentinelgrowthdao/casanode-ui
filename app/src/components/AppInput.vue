@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { type Ref, ref, watch, onMounted } from 'vue';
 import { IonInput } from '@/ui';
+import { onMounted, type Ref, ref, watch } from 'vue';
 
 const props = defineProps({
 	placeholder: String,
@@ -76,7 +76,7 @@ const handleInput = (rawValue: string) =>
 		emits('update:modelValue', '');
 		return;
 	}
-    
+   
 	if (validate(value))
 	{
 		inputRef.value?.$el.classList.add('ion-valid');
