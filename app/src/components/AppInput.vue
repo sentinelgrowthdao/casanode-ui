@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { IonInput } from '@/ui';
+import { IonInput, IonSpinner } from '@/ui';
 import { onMounted, type Ref, ref, watch } from 'vue';
 
 const props = defineProps({
@@ -13,6 +13,10 @@ const props = defineProps({
 	maxLength: Number,
 	modelValue: String,
 	ariaLabel: String,
+	loading: {
+		type: Boolean,
+		default: false,
+	},
 });
 
 const emits = defineEmits(['update:modelValue']);
@@ -126,5 +130,7 @@ onMounted(() =>
 	:error-text="props.errorMessage"
 	@update:modelValue="handleInput"
 	@ionBlur="markTouched"
-	lines="none"/>
+	lines="none">
+	<ion-spinner v-if="loading" name="crescent" slot="end" />
+</ion-input>
 </template>
