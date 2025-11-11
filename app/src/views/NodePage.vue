@@ -1,11 +1,8 @@
 <script setup lang="ts">
 import {
-	IonPage, IonLabel
+	IonLabel,
+	IonPage
 } from '@/ui';
-import { startNetworkMonitorHook } from '@/hooks/NetworkMonitorHook';
-
-// Start the network monitor hook
-startNetworkMonitorHook();
 </script>
 
 <template>

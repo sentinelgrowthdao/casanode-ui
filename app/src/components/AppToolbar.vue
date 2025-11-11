@@ -3,7 +3,7 @@ import NetworkService from '@/services/NetworkService';
 import { IonButton, IonButtons, IonTitle, IonToolbar } from '@/ui';
 import { refreshNodeStatus } from '@/utils/node';
 import { useNodeStore } from '@stores/NodeStore';
-import { computed } from 'vue';
+import { computed, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 
 // Import pictures
@@ -14,6 +14,9 @@ import statusStopped from '@assets/icons/status-stopped.svg';
 // Use the router and the node store
 const router = useRouter();
 const nodeStore = useNodeStore();
+
+// Status update interval ID
+let statusUpdateTimeout: number | null = null;
 
 // Computed the status image
 const statusImage = computed(() =>
@@ -27,6 +30,56 @@ const statusImage = computed(() =>
 		default:
 			return statusError;
 	}
+});
+
+/**
+ * Start periodic status updates
+ */
+const startStatusUpdate = () =>
+{
+	const updateStatus = async () =>
+	{
+		try
+		{
+			await refreshNodeStatus();
+		}
+		catch (error)
+		{
+			console.error('Failed to update node status:', error);
+		}
+		finally
+		{
+			// Schedule next update in 30 seconds
+			statusUpdateTimeout = window.setTimeout(updateStatus, 30000);
+		}
+	};
+
+	// Start first update
+	updateStatus();
+};
+
+/**
+ * Stop periodic status updates
+ */
+const stopStatusUpdate = () =>
+{
+	if (statusUpdateTimeout)
+	{
+		clearTimeout(statusUpdateTimeout);
+		statusUpdateTimeout = null;
+	}
+};
+
+// Start status updates when component is mounted
+onMounted(() =>
+{
+	startStatusUpdate();
+});
+
+// Stop status updates when component is unmounted
+onUnmounted(() =>
+{
+	stopStatusUpdate();
 });
 
 /**
