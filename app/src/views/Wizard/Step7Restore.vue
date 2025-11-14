@@ -1,16 +1,7 @@
 <script lang="ts" setup>
 import NetworkService from '@/services/NetworkService';
 import { useNodeStore } from '@/stores/NodeStore';
-import {
-	IonCol,
-	IonContent,
-	IonGrid,
-	IonItem,
-	IonPage,
-	IonRow,
-	IonText,
-	IonTextarea,
-} from '@/ui';
+import { AppGrid, AppGridCol, AppGridRow, IonContent, IonItem, IonPage, IonText } from '@/ui';
 import { refreshNodeAddress, refreshPublicAddress } from '@/utils/node';
 import LoadingButton from '@components/LoadingButton.vue';
 import { onMounted, type Ref, ref } from 'vue';
@@ -98,24 +89,24 @@ const requestRestoreWallet = async () =>
 				<h1>{{ $t('wizard.wallet-restore-title') }}</h1>
 				<p class="text">{{ $t('wizard.wallet-restore-text') }}</p>
 				<div class="mnemonic">
-					<ion-textarea v-model="mnemonic" aria-label="Mnemonic" fill="outline"
-						:rows="5" :placeholder="$t('wizard.wallet-restore-placeholder')" class="mnemonic"></ion-textarea>
+					<textarea v-model="mnemonic" aria-label="Mnemonic" :rows="5"
+						:placeholder="$t('wizard.wallet-restore-placeholder')" class="ui-textarea-field mnemonic"></textarea>
 				</div>
 				<p class="caption">{{ $t('wizard.wallet-restore-warning') }}</p>
 			</div>
 			<div class="submit">
-				<ion-grid>
-					<ion-row v-if="errorMessage">
+				<AppGrid>
+					<AppGridRow v-if="errorMessage">
 						<ion-item lines="none">
 							<ion-text color="danger">{{ errorMessage }}</ion-text>
 						</ion-item>
-					</ion-row>
-					<ion-row>
-						<ion-col size="6" offset="6">
+					</AppGridRow>
+					<AppGridRow>
+						<AppGridCol size="6" offset="6">
 							<loading-button :label="$t('wizard.button-next')" :callback="requestRestoreWallet" />
-						</ion-col>
-					</ion-row>
-				</ion-grid>
+						</AppGridCol>
+					</AppGridRow>
+				</AppGrid>
 			</div>
 		</div>
 	</ion-content>

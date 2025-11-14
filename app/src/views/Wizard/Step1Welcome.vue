@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import NodeService from '@/services/NodeService';
-import { IonCol, IonContent, IonGrid, IonPage, IonRow } from '@/ui';
+import { AppGrid, AppGridCol, AppGridRow, IonContent, IonPage } from '@/ui';
 import LoadingButton from '@components/LoadingButton.vue';
 import { useNodeStore } from '@stores/NodeStore';
 import { useRouter } from 'vue-router';
@@ -51,16 +51,16 @@ const checkNodeConfiguration = async () =>
 					<p class="text">{{ $t('wizard.welcome-next') }}</p>
 				</div>
 				<div class="submit">
-					<ion-grid>
-						<ion-row>
-							<ion-col size="6" offset="6">
+					<AppGrid>
+						<AppGridRow>
+							<AppGridCol size="6" offset="6">
 								<loading-button
 									:label="$t('wizard.button-next')"
 									:callback="checkNodeConfiguration"
 								/>
-							</ion-col>
-						</ion-row>
-					</ion-grid>
+							</AppGridCol>
+						</AppGridRow>
+					</AppGrid>
 				</div>
 			</div>
 		</ion-content>

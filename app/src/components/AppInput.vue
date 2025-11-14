@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { IonInput, IonSpinner } from '@/ui';
-import { onMounted, type Ref, ref, watch } from 'vue';
+import { IonSpinner, UiInputField } from '@/ui';
+import { computed, onMounted, ref, watch } from 'vue';
 
 const props = defineProps({
 	placeholder: String,
@@ -21,9 +21,10 @@ const props = defineProps({
 
 const emits = defineEmits(['update:modelValue']);
 
-const inputRef: Ref<InstanceType<typeof IonInput> | null> = ref(null);
-const inputValue: Ref<string> = ref(props.modelValue || '');
-const inputType: Ref<string> = ref('text');
+const inputValue = ref(props.modelValue || '');
+const inputType = ref('text');
+const touched = ref(false);
+const validity = ref<'default' | 'valid' | 'invalid'>('default');
 
 const validateIp = (value: string, type: 'ipv4' | 'ipv6'): boolean =>
 {
@@ -74,36 +75,38 @@ const handleInput = (rawValue: string) =>
 
 	if (value === '')
 	{
-		inputRef.value?.$el.classList.remove('ion-valid');
-		inputRef.value?.$el.classList.remove('ion-invalid');
+		validity.value = 'default';
 		inputValue.value = '';
 		emits('update:modelValue', '');
 		return;
 	}
-   
+
 	if (validate(value))
 	{
-		inputRef.value?.$el.classList.add('ion-valid');
-		inputRef.value?.$el.classList.remove('ion-invalid');
+		validity.value = 'valid';
 	}
 	else
 	{
-		inputRef.value?.$el.classList.add('ion-invalid');
-		inputRef.value?.$el.classList.remove('ion-valid');
+		validity.value = 'invalid';
 	}
 
 	inputValue.value = value;
 	emits('update:modelValue', value);
 };
 
-const markTouched = (/*event: Event*/) =>
+const markTouched = () =>
 {
-	inputRef.value?.$el.classList.add('ion-touched');
+	touched.value = true;
 };
 
 watch(() => props.modelValue, (newValue) =>
 {
 	inputValue.value = (newValue ?? '') as string;
+	if (!newValue)
+	{
+		validity.value = 'default';
+		touched.value = false;
+	}
 });
 
 
@@ -118,19 +121,29 @@ onMounted(() =>
 		inputType.value = props.type;
 	}
 });
+
+const inputClasses = computed(() =>
+{
+	return {
+		'ui-input-field--valid': validity.value === 'valid',
+		'ui-input-field--invalid': validity.value === 'invalid',
+		'ui-input-field--touched': touched.value,
+	};
+});
 </script>
 
 <template>
-<ion-input
-	ref="inputRef"
+<ui-input-field
 	:type="inputType"
 	:placeholder="placeholder"
 	:aria-label="ariaLabel"
 	:modelValue="inputValue"
 	:error-text="props.errorMessage"
+	:class="inputClasses"
 	@update:modelValue="handleInput"
-	@ionBlur="markTouched"
-	lines="none">
-	<ion-spinner v-if="loading" name="crescent" slot="end" />
-</ion-input>
+	@blur="markTouched">
+	<template #end>
+		<ion-spinner v-if="loading" name="crescent" />
+	</template>
+</ui-input-field>
 </template>

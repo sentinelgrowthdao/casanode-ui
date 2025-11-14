@@ -1,16 +1,7 @@
 <script lang="ts" setup>
 import NetworkService from '@/services/NetworkService';
 import { useNodeStore } from '@/stores/NodeStore';
-import {
-	IonButton,
-	IonCol,
-	IonContent,
-	IonGrid,
-	IonItem,
-	IonPage,
-	IonRow,
-	IonText,
-} from '@/ui';
+import { AppGrid, AppGridCol, AppGridRow, IonButton, IonContent, IonItem, IonPage, IonText } from '@/ui';
 import { refreshNodeAddress, refreshPublicAddress } from '@/utils/node';
 import LoadingButton from '@components/LoadingButton.vue';
 import { onMounted, type Ref, ref } from 'vue';
@@ -86,24 +77,24 @@ const requestCreateWallet = async () =>
 				<p class="text">{{ $t('wizard.wallet-text') }}</p>
 			</div>
 			<div class="submit">
-				<ion-grid>
-					<ion-row v-if="errorMessage">
+				<AppGrid>
+					<AppGridRow v-if="errorMessage">
 						<ion-item lines="none">
 							<ion-text color="danger">{{ errorMessage }}</ion-text>
 						</ion-item>
-					</ion-row>
-					<ion-row>
-						<ion-col size="6">
+					</AppGridRow>
+					<AppGridRow>
+						<AppGridCol size="6">
 							<loading-button :label="$t('wizard.button-create')" :callback="requestCreateWallet" />
-						</ion-col>
-						<ion-col size="6">
+						</AppGridCol>
+						<AppGridCol size="6">
 							<ion-button expand="block" :router-link="{ name: 'Wizard7Restore' }"
 								router-direction="forward" fill="outline">
 								{{ $t('wizard.button-restore') }}
 							</ion-button>
-						</ion-col>
-					</ion-row>
-				</ion-grid>
+						</AppGridCol>
+					</AppGridRow>
+				</AppGrid>
 			</div>
 		</div>
 	</ion-content>

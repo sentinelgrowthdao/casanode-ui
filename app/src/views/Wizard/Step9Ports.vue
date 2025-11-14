@@ -1,12 +1,6 @@
 <script lang="ts" setup>
 import NetworkService from '@/services/NetworkService';
-import {
-	IonCol,
-	IonContent,
-	IonGrid,
-	IonPage,
-	IonRow
-} from '@/ui';
+import { AppGrid, AppGridCol, AppGridRow, IonContent, IonPage } from '@/ui';
 import CheckMarkCross from '@components/CheckMarkCross.vue';
 import LoadingButton from '@components/LoadingButton.vue';
 import { useNodeStore } from '@stores/NodeStore';
@@ -106,15 +100,15 @@ const retryTest = () =>
 				</Transition>
 			</div>
 			<div class="submit">
-				<ion-grid>
-					<ion-row>
-						<ion-col size="6" offset="6">
+				<AppGrid>
+					<AppGridRow>
+						<AppGridCol size="6" offset="6">
 							<loading-button ref="loadingButtonRef"
 								:label="$t(testPerformed ? 'wizard.button-next' : 'wizard.button-test-ports')"
 								:callback="checkPorts" />
-						</ion-col>
-					</ion-row>
-				</ion-grid>
+						</AppGridCol>
+					</AppGridRow>
+				</AppGrid>
 			</div>
 		</div>
 	</ion-content>

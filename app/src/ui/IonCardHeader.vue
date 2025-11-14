@@ -1,9 +1,8 @@
 <template>
-<div class="ion-card-header">
+<div class="app-card-header">
 	<slot />
 </div>
 </template>
 
 <script setup lang="ts">
 </script>
-

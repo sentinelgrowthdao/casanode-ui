@@ -1,12 +1,6 @@
 <script lang="ts" setup>
 import { useNodeStore } from '@/stores/NodeStore';
-import {
-	IonCol,
-	IonContent,
-	IonGrid,
-	IonPage,
-	IonRow
-} from '@/ui';
+import { AppGrid, AppGridCol, AppGridRow, IonContent, IonPage } from '@/ui';
 import LoadingButton from '@components/LoadingButton.vue';
 import { useRouter } from 'vue-router';
 
@@ -44,13 +38,13 @@ const removeMnemonicStore = async () =>
 				</div>
 			</div>
 			<div class=" submit">
-				<ion-grid>
-					<ion-row>
-						<ion-col size="6" offset="6">
+				<AppGrid>
+					<AppGridRow>
+						<AppGridCol size="6" offset="6">
 							<loading-button :label="$t('wizard.button-next')" :callback="removeMnemonicStore" />
-						</ion-col>
-					</ion-row>
-				</ion-grid>
+						</AppGridCol>
+					</AppGridRow>
+				</AppGrid>
 			</div>
 		</div>
 	</ion-content>

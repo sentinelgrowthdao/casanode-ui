@@ -14,9 +14,9 @@ html,
 body,
 #app,
 ion-app,
-.ion-app,
-.ion-page,
-.ion-content {
+.app-shell,
+.app-page,
+.app-content {
 	height: 100%;
 }
 
@@ -27,45 +27,45 @@ body {
 	font-family: var(--ion-font-family);
 }
 
-.ion-page {
+.app-page {
 	display: flex;
 	flex-direction: column;
 	min-height: 100%;
 }
 
-.ion-header {
+.app-header {
 	background: var(--app-background-color-navbar, #191e31);
 	border-bottom: 1px solid rgb(255 255 255 / 8%);
 }
 
-.ion-toolbar {
+.app-toolbar {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	padding: 0.5rem 1rem;
 }
 
-.ion-title {
+.app-title {
 	font-size: 1.125rem;
 	font-weight: 600;
 }
 
-.ion-buttons {
+.app-buttons {
 	display: flex;
 	gap: 0.5rem;
 }
 
-.ion-content {
+.app-content {
 	flex: 1;
 	overflow: auto;
 }
 
-.ion-fullscreen {
+.app-fullscreen {
 	height: 100%;
 }
 
 /* Cards */
-.ion-card {
+.app-card {
 	background: var(--container-bg-color-default, #0d1f39);
 	border-radius: 0.75rem;
 	margin: 1rem;
@@ -75,16 +75,16 @@ body {
 	}
 }
 
-.ion-card-header {
+.app-card-header {
 	padding: 1rem 1rem 0;
 }
 
-.ion-card-title {
+.app-card-title {
 	font-size: 1.25rem;
 	color: var(--container-label-color, #cbcbcb);
 }
 
-.ion-card-content {
+.app-card-content {
 	padding: 1rem;
 	display: flex;
 	flex-direction: column;
@@ -92,7 +92,7 @@ body {
 }
 
 /* Items inside card content */
-.ion-card-content .item {
+.app-card-content .item {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -114,13 +114,13 @@ body {
 	}
 }
 
-.ion-card-content .item .label {
+.app-card-content .item .label {
 	color: var(--container-label-color, #cbcbcb);
 	font-size: 0.9rem;
 }
 
 /* Emphasis text inside card content */
-.ion-card-content strong {
+.app-card-content strong {
 	font-weight: 700;
 	color: #fff;
 }
@@ -147,31 +147,39 @@ body {
 }
 
 /* Grid */
-.ion-grid {
+.app-grid {
 	display: block;
 	width: 100%;
 	padding: 0.5rem;
 }
 
-.ion-row {
+.app-grid__row {
 	display: flex;
 	flex-wrap: wrap;
 	margin: 0 -0.5rem;
 }
 
-.ion-col {
+.app-grid__col {
 	padding: 0 0.5rem;
 	flex: 1 0 0;
 	box-sizing: border-box;
 }
 
-.ion-col-6 {
+.app-grid__col--6 {
 	flex: 0 0 50%;
 	max-width: 50%;
 }
 
+.app-grid__col--offset-6 {
+	margin-left: 50%;
+}
+
+.app-grid__col--no-grow {
+	flex: 0 0 auto;
+}
+
 /* Buttons */
-.ion-button {
+.app-button {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
@@ -188,52 +196,52 @@ body {
 	line-height: 1.2rem;
 }
 
-.ion-button:disabled,
-.ion-button[aria-disabled='true'] {
+.app-button:disabled,
+.app-button[aria-disabled='true'] {
 	opacity: 0.6;
 	cursor: not-allowed;
 }
 
 /* Spinner alignment in buttons and inputs */
-.ion-button.loading {
+.app-button.loading {
 	& > .button-content {
 		display: flex;
 		flex-direction: row;
 		align-items: center;
 		justify-content: center;
 		gap: 0.55rem;
-		& > .ion-spinner {
+		& > .app-spinner {
 			width: 1rem;
 			height: 1rem;
 		}
 	}
 }
 
-.ion-fill-clear {
+.app-fill-clear {
 	background: transparent;
 	color: #0184fc;
 	border-color: transparent;
 }
 
-.ion-fill-outline {
+.app-fill-outline {
 	background: transparent;
 	color: #fff;
 	border-color: var(--ion-color-primary);
 }
 
-.ion-expand-block {
+.app-expand-block {
 	display: flex;
 	width: 100%;
 	box-sizing: border-box;
 }
 
-.ion-size-small {
+.app-size-small {
 	padding: 0.4rem 0.75rem;
 	font-size: 0.85rem;
 }
 
 /* Icons placeholder */
-.ion-icon {
+.app-icon {
 	display: inline-block;
 	width: 1em;
 	height: 1em;
@@ -244,7 +252,7 @@ body {
 }
 
 /* Inputs */
-.ion-item {
+.app-item {
 	display: flex;
 	flex-direction: column;
 	gap: 0.75rem;
@@ -268,135 +276,146 @@ body {
 	--ion-input-height: 2.85rem;
 }
 
-.ion-input,
-.ion-textarea,
-.ion-select {
+/* Inputs */
+.ui-input-field,
+.ui-textarea-field,
+.ui-select-field {
 	width: 100%;
 	max-width: 100%;
-	box-sizing: border-box; /* prevent overflow with padding */
-	padding: var(--ion-input-padding-y) var(--ion-input-padding-x);
+	box-sizing: border-box;
 	border-radius: var(--ion-input-radius);
 	border: 1px solid var(--ion-input-border);
 	background: var(--ion-input-bg);
 	color: var(--ion-text-color);
-	display: block;
-	min-width: 0; /* allow shrink inside flex parents */
 	font-size: 1rem;
 	line-height: 1.25rem;
-	min-height: var(--ion-input-height); /* consistent height for text inputs */
+	min-height: var(--ion-input-height);
 	caret-color: var(--ion-color-primary, #0184fc);
 	transition:
 		border-color 0.15s ease,
 		box-shadow 0.15s ease,
-		background-color 0.15s ease,
-		transform 0.06s ease;
+		background-color 0.15s ease;
 }
 
-.ion-input:hover,
-.ion-textarea:hover,
-.ion-select:hover {
-	border-color: var(--ion-input-border-hover);
-	background: var(--ion-input-bg-hover);
+.ui-input-field {
+	display: flex;
+	align-items: center;
+	padding: 0;
 }
 
-.ion-input::placeholder,
-.ion-textarea::placeholder {
+.ui-input-field__control {
+	border: 0;
+	background: transparent;
+	color: inherit;
+	font: inherit;
+	padding: var(--ion-input-padding-y) var(--ion-input-padding-x);
+	width: 100%;
+	min-height: var(--ion-input-height);
+	outline: none;
+}
+
+.ui-input-field__control::placeholder,
+.ui-textarea-field::placeholder {
 	color: var(--ion-input-placeholder);
 	opacity: 1;
 }
 
-.ion-input:focus,
-.ion-textarea:focus,
-.ion-select:focus,
-.ion-input:focus-visible,
-.ion-textarea:focus-visible,
-.ion-select:focus-visible {
+.ui-input-field__addon {
+	display: inline-flex;
+	align-items: center;
+	padding: 0 var(--ion-input-padding-x);
+	gap: 0.35rem;
+	color: inherit;
+}
+
+.ui-input-field:hover,
+.ui-textarea-field:hover,
+.ui-select-field:hover {
+	border-color: var(--ion-input-border-hover);
+	background: var(--ion-input-bg-hover);
+}
+
+.ui-input-field:focus-within,
+.ui-textarea-field:focus,
+.ui-textarea-field:focus-visible,
+.ui-select-field:focus,
+.ui-select-field:focus-visible {
 	outline: none;
 	border-color: var(--ion-input-border-focus);
 	box-shadow: 0 0 0 3px rgb(1 132 252 / 20%);
 	background: var(--ion-input-bg-focus);
 }
 
-/* Valid/invalid states applied by AppInput logic */
-.ion-input.ion-valid,
-.ion-textarea.ion-valid,
-.ion-select.ion-valid {
+.ui-input-field--valid,
+.ui-textarea-field--valid,
+.ui-select-field--valid {
 	border-color: var(--ion-input-border-valid);
 	box-shadow: 0 0 0 3px rgb(46 204 113 / 18%);
 }
 
-/* If invalid but not touched yet, keep it subtle */
-.ion-input.ion-invalid:not(.ion-touched),
-.ion-textarea.ion-invalid:not(.ion-touched),
-.ion-select.ion-invalid:not(.ion-touched) {
+.ui-input-field--invalid:not(.ui-input-field--touched) {
 	border-color: color-mix(in srgb, var(--ion-input-border-invalid) 40%, var(--ion-input-border));
 	box-shadow: none;
 }
 
-.ion-input.ion-invalid,
-.ion-textarea.ion-invalid,
-.ion-select.ion-invalid {
+.ui-input-field--invalid,
+.ui-textarea-field--invalid,
+.ui-select-field--invalid {
 	border-color: var(--ion-input-border-invalid);
 	box-shadow: 0 0 0 3px rgb(255 77 79 / 18%);
 }
 
-/* Textarea specifics */
-.ion-textarea {
+.ui-textarea-field {
 	resize: vertical;
+	padding: var(--ion-input-padding-y) var(--ion-input-padding-x);
 	min-height: 4.5rem;
 }
 
-/* Better looking native select */
-.ion-select {
+.ui-select-field {
 	appearance: none;
+	padding: var(--ion-input-padding-y) calc(var(--ion-input-padding-x) * 1.25) var(--ion-input-padding-y) var(--ion-input-padding-x);
 	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24'%3E%3Cpath fill='%23ffffff' fill-opacity='0.78' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
 	background-repeat: no-repeat;
 	background-position: right 0.75rem center;
 	background-size: 16px 16px;
-	padding-right: 2.2rem; /* room for arrow */
 }
 
-/* Select arrow should fade when disabled */
-.ion-select:disabled {
+.ui-select-field:disabled {
 	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24'%3E%3Cpath fill='%23ffffff' fill-opacity='0.45' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
 }
 
-/* Disabled */
-.ion-input:disabled,
-.ion-textarea:disabled,
-.ion-select:disabled {
+.ui-input-field--disabled,
+.ui-textarea-field:disabled,
+.ui-select-field:disabled {
 	opacity: 0.6;
 	cursor: not-allowed;
 }
 
-/* Readonly (keep opacity but mute interactions) */
-.ion-input[readonly],
-.ion-textarea[readonly] {
+.ui-input-field--readonly,
+.ui-textarea-field[readonly] {
 	background: var(--ion-input-bg);
 	cursor: default;
 }
 
-/* Autofill (WebKit) */
-input.ion-input:-webkit-autofill,
-textarea.ion-textarea:-webkit-autofill,
-select.ion-select:-webkit-autofill {
+input.ui-input-field__control:-webkit-autofill,
+textarea.ui-textarea-field:-webkit-autofill,
+select.ui-select-field:-webkit-autofill {
 	-webkit-text-fill-color: var(--ion-text-color);
 	transition: background-color 9999s ease-in-out 0s;
 }
 
-/* Remove number input spinners */
-input.ion-input[type='number']::-webkit-outer-spin-button,
-input.ion-input[type='number']::-webkit-inner-spin-button {
+.ui-input-field__control[type='number']::-webkit-outer-spin-button,
+.ui-input-field__control[type='number']::-webkit-inner-spin-button {
 	appearance: none;
 	margin: 0;
 }
 
-input.ion-input[type='number'] {
+.ui-input-field__control[type='number'] {
 	appearance: textfield;
 }
 
 /* Helper/error text inside items */
-.ion-item .ion-text[color='danger'] {
+.app-item .app-text[color='danger'] {
 	display: block;
 	margin-top: 0.35rem;
 	font-size: 0.875rem;
@@ -404,14 +423,14 @@ input.ion-input[type='number'] {
 }
 
 /* Segment */
-.ion-segment {
+.app-segment {
 	display: inline-flex;
 	background: var(--app-background-color-secondary, #262f4c);
 	border-radius: 0.5rem;
 	padding: 0.25rem;
 }
 
-.ion-segment-button {
+.app-segment-button {
 	background: transparent;
 	border: 0;
 	color: #fff;
@@ -420,18 +439,18 @@ input.ion-input[type='number'] {
 	cursor: pointer;
 }
 
-.ion-segment-button[aria-selected='true'] {
+.app-segment-button[aria-selected='true'] {
 	background: #0184fc;
 }
 
 /* Tabs */
-.ion-tabs {
+.app-tabs {
 	display: flex;
 	flex-direction: column;
 	height: 100%;
 }
 
-.ion-tab-bar {
+.app-tab-bar {
 	position: fixed;
 	left: 0;
 	right: 0;
@@ -446,33 +465,32 @@ input.ion-input[type='number'] {
 	background: var(--app-background-color-footer, #181e31);
 	border-top: 1px solid rgb(255 255 255 / 8%);
 	box-sizing: border-box;
-	z-index: 1000;
-	font-size: 0.7rem;
+	font-size: 0.75rem;
 }
 
-.ion-tab-button {
+.app-tab-button {
 	flex: 1;
 	color: #fff;
 	text-decoration: none;
 	display: inline-flex;
 	flex-direction: column;
-	align-items: center;
 	gap: 0.25rem;
 	padding: 0.25rem 0.5rem;
 	text-align: center;
 	white-space: nowrap;
 	text-overflow: ellipsis;
-	overflow: hidden;
+	font-weight: 600;
+	border-radius: 0.65rem;
 }
 
 /* Ensure content doesn't hide behind the fixed tab bar when inside tabs */
-.ion-tabs .ion-content {
+.app-tabs .app-content {
 	padding-top: 0.5rem;
 	padding-bottom: calc(var(--ion-tab-bar-height) + var(--ion-safe-area-bottom));
 }
 
 /* Spinner */
-.ion-spinner {
+.app-spinner {
 	display: inline-block;
 	width: 1em;
 	height: 1em;

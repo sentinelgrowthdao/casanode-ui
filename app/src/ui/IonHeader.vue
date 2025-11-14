@@ -1,9 +1,8 @@
 <template>
-<header class="ion-header">
+<header class="app-header">
 	<slot />
 </header>
 </template>
 
 <script setup lang="ts">
 </script>
-

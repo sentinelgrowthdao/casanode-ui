@@ -1,16 +1,7 @@
 <script lang="ts" setup>
 import NetworkService from '@/services/NetworkService';
 import { useNodeStore } from '@/stores/NodeStore';
-import {
-	IonButton,
-	IonCol,
-	IonContent,
-	IonGrid,
-	IonItem,
-	IonPage,
-	IonRow,
-	IonText,
-} from '@/ui';
+import { AppGrid, AppGridCol, AppGridRow, IonButton, IonContent, IonItem, IonPage, IonText } from '@/ui';
 import LoadingButton from '@components/LoadingButton.vue';
 import { onMounted, type Ref, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -60,24 +51,24 @@ const resetConfiguration = async () =>
 				<p class="text">{{ $t('wizard.reset-question') }}</p>
 			</div>
 			<div class="submit">
-				<ion-grid>
-					<ion-row>
+				<AppGrid>
+					<AppGridRow>
 						<ion-item lines="none" v-if="errorMessage">
 							<ion-text color="danger">{{ errorMessage }}</ion-text>
 						</ion-item>
-					</ion-row>
-					<ion-row>
-						<ion-col size="6">
+					</AppGridRow>
+					<AppGridRow>
+						<AppGridCol size="6">
 							<loading-button :label="$t('wizard.button-yes')" :callback="resetConfiguration" />
-						</ion-col>
-						<ion-col size="6">
+						</AppGridCol>
+						<AppGridCol size="6">
 							<ion-button expand="block" :router-link="{ name: 'Wizard2Moniker' }"
 								router-direction="forward">
 								{{ $t('wizard.button-no') }}
 							</ion-button>
-						</ion-col>
-					</ion-row>
-				</ion-grid>
+						</AppGridCol>
+					</AppGridRow>
+				</AppGrid>
 			</div>
 		</div>
 	</ion-content>

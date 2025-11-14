@@ -7,26 +7,26 @@ import {
 
 <template>
 <ion-page>
-	<div class="ion-tabs">
+	<div class="app-tabs">
 		<router-view />
-		<nav class="ion-tab-bar">
-			<router-link class="ion-tab-button" :to="{ name: 'NodeDashboard' }">
+		<nav class="app-tab-bar">
+			<router-link class="app-tab-button" :to="{ name: 'NodeDashboard' }">
 				<font-awesome-icon :icon="['fas','shield-halved']" />
 				<ion-label>{{ $t('app.tab-dashboard') }}</ion-label>
 			</router-link>
-			<router-link class="ion-tab-button" :to="{ name: 'NodeSettings' }">
+			<router-link class="app-tab-button" :to="{ name: 'NodeSettings' }">
 				<font-awesome-icon :icon="['fas','gear']" />
 				<ion-label>{{ $t('app.tab-settings') }}</ion-label>
 			</router-link>
-			<router-link class="ion-tab-button" :to="{ name: 'NodeWallet' }">
+			<router-link class="app-tab-button" :to="{ name: 'NodeWallet' }">
 				<font-awesome-icon :icon="['fas','wallet']" />
 				<ion-label>{{ $t('app.tab-wallet') }}</ion-label>
 			</router-link>
-			<router-link class="ion-tab-button" :to="{ name: 'NodeActions' }">
+			<router-link class="app-tab-button" :to="{ name: 'NodeActions' }">
 				<font-awesome-icon :icon="['fas','power-off']" />
 				<ion-label>{{ $t('app.tab-actions') }}</ion-label>
 			</router-link>
-			<router-link class="ion-tab-button" :to="{ name: 'NodeAbout' }">
+			<router-link class="app-tab-button" :to="{ name: 'NodeAbout' }">
 				<font-awesome-icon :icon="['fas','circle-question']" />
 				<ion-label>{{ $t('app.tab-about') }}</ion-label>
 			</router-link>

@@ -1,15 +1,7 @@
 <script lang="ts" setup>
 import NetworkService from '@/services/NetworkService';
 import { useNodeStore } from '@/stores/NodeStore';
-import {
-	IonCol,
-	IonContent,
-	IonGrid,
-	IonItem,
-	IonPage,
-	IonRow,
-	IonText
-} from '@/ui';
+import { AppGrid, AppGridCol, AppGridRow, IonContent, IonItem, IonPage, IonText } from '@/ui';
 import { copyToClipboard } from '@/utils/clipboard';
 import { refreshNodeBalance, refreshNodeStatus } from '@/utils/node';
 import LoadingButton from '@components/LoadingButton.vue';
@@ -85,13 +77,13 @@ const checkWalletBalance = async () =>
 				</ion-item>
 			</div>
 			<div class="submit">
-				<ion-grid>
-					<ion-row>
-						<ion-col size="6" offset="6">
+				<AppGrid>
+					<AppGridRow>
+						<AppGridCol size="6" offset="6">
 							<loading-button :label="$t('wizard.button-next')" :callback="checkWalletBalance" />
-						</ion-col>
-					</ion-row>
-				</ion-grid>
+						</AppGridCol>
+					</AppGridRow>
+				</AppGrid>
 			</div>
 		</div>
 	</ion-content>

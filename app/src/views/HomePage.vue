@@ -2,7 +2,7 @@
 import NetworkService from '@/services/NetworkService';
 import NodeService from '@/services/NodeService';
 import { useAuthStore } from '@/stores/AuthStore';
-import { IonButton, IonContent, IonInput, IonItem, IonPage, IonSpinner } from '@/ui';
+import { IonButton, IonContent, IonItem, IonPage, IonSpinner, UiInputField } from '@/ui';
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
@@ -309,7 +309,7 @@ const submitPassphrase = async () =>
 				>
 					<p class="message">{{ $t('loading.passphrase-message') }}</p>
 					<ion-item>
-						<ion-input
+						<UiInputField
 							v-model="passphraseInputValue"
 							type="password"
 							:placeholder="$t('loading.passphrase-placeholder')"

@@ -42,7 +42,7 @@ ion-button
 	justify-content: center;
 	align-items: center;
 	
-	&.ion-color-danger
+	&.app-color-danger
 	{
 		&> .button-content > span
 		{
@@ -59,8 +59,8 @@ ion-button
 		white-space: nowrap;
 		line-height: 1.2;
 
-		/* Target shim spinner element rendered as <span class="ion-spinner"> */
-		:deep(.ion-spinner)
+		/* Target shim spinner element rendered as <span class="app-spinner"> */
+		:deep(.app-spinner)
 		{
 			width: 1rem;
 			height: 1rem;

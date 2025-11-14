@@ -9,15 +9,15 @@
 		--background: transparent;
 	}
 
-	.ion-card-header {
-		.ion-card-title {
+	.app-card-header {
+		.app-card-title {
 			font-size: 1.6rem;
 			line-height: 2rem;
 			color: var(--container-label-color);
 		}
 	}
 
-	.ion-card-content {
+	.app-card-content {
 		display: flex;
 		gap: 1rem;
 		flex-direction: column;
@@ -38,11 +38,11 @@
 			}
 		}
 
-		& > .ion-grid {
+		& > .app-grid {
 			width: 100%;
 
-			& > .ion-row {
-				& > .ion-col.item {
+			& > .app-grid__row {
+				& > .app-grid__col.item {
 					& > .label {
 						margin: 0;
 						font-size: 1rem;

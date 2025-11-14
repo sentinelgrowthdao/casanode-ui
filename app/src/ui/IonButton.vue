@@ -48,11 +48,11 @@ const props = defineProps({
 const emit = defineEmits<{ (e: 'click', evt: MouseEvent): void }>();
 
 const classes = computed(() => [
-	'ion-button',
-	props.fill ? `ion-fill-${props.fill}` : '',
-	props.expand ? `ion-expand-${props.expand}` : '',
-	props.size && props.size !== 'default' ? `ion-size-${props.size}` : '',
-	props.color ? `ion-color-${props.color}` : '',
+	'app-button',
+	props.fill ? `app-fill-${props.fill}` : '',
+	props.expand ? `app-expand-${props.expand}` : '',
+	props.size && props.size !== 'default' ? `app-size-${props.size}` : '',
+	props.color ? `app-color-${props.color}` : '',
 ].filter(Boolean));
 
 function onClick(evt: MouseEvent) 
@@ -79,4 +79,3 @@ function onRouterClick(evt: MouseEvent, navigate: (e: MouseEvent) => void)
 	navigate(evt);
 }
 </script>
-

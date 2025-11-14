@@ -1,9 +1,8 @@
 <template>
-<div class="ion-page">
+<div class="app-page">
 	<slot />
 </div>
 </template>
 
 <script setup lang="ts">
 </script>
-

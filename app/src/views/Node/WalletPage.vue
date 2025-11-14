@@ -170,13 +170,14 @@ const refreshBalance = async () =>
 
 <style lang="scss" scoped>
 @import '@scss/container';
+@import '@scss/container';
 
 
 .container
 {
 	&.header
 	{
-		& > .ion-card-content
+		& > .app-card-content
 		{
 			padding: 1rem;
 			

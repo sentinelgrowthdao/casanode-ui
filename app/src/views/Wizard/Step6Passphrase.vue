@@ -1,17 +1,7 @@
 <script lang="ts" setup>
 import NetworkService from '@/services/NetworkService';
 import { useNodeStore } from '@/stores/NodeStore';
-import {
-	IonCol,
-	IonContent,
-	IonGrid,
-	IonInput,
-	IonItem,
-	IonList,
-	IonPage,
-	IonRow,
-	IonText
-} from '@/ui';
+import { AppGrid, AppGridCol, AppGridRow, IonContent, IonItem, IonList, IonPage, IonText, UiInputField } from '@/ui';
 import LoadingButton from '@components/LoadingButton.vue';
 import { onMounted, type Ref, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
@@ -75,7 +65,7 @@ const setPassphraseAndNavigate = async () =>
 				<p class="text">{{ $t('wizard.passphrase-text') }}</p>
 				<ion-list class="input">
 					<ion-item>
-						<ion-input
+						<UiInputField
 							aria-label="Passphrase"
 							type="password"
 							v-model="passphrase"
@@ -87,13 +77,13 @@ const setPassphraseAndNavigate = async () =>
 				</ion-list>
 			</div>
 			<div class="submit">
-				<ion-grid>
-					<ion-row>
-						<ion-col size="6" offset="6">
+				<AppGrid>
+					<AppGridRow>
+						<AppGridCol size="6" offset="6">
 							<loading-button :label="$t('wizard.button-next')" :callback="setPassphraseAndNavigate" />
-						</ion-col>
-					</ion-row>
-				</ion-grid>
+						</AppGridCol>
+					</AppGridRow>
+				</AppGrid>
 			</div>
 		</div>
 	</ion-content>

@@ -2,20 +2,20 @@ import { App, defineComponent, h, Plugin, PropType } from 'vue';
 import { RouterLink } from 'vue-router';
 
 // Basic structural wrappers
-const IonApp = defineComponent({ name: 'IonApp', setup(_, { slots }) { return () => h('div', { class: 'ion-app' }, slots.default && slots.default()); } });
-const IonPage = defineComponent({ name: 'IonPage', setup(_, { slots }) { return () => h('div', { class: 'ion-page' }, slots.default && slots.default()); } });
-const IonHeader = defineComponent({ name: 'IonHeader', setup(_, { slots }) { return () => h('header', { class: 'ion-header' }, slots.default && slots.default()); } });
-const IonToolbar = defineComponent({ name: 'IonToolbar', setup(_, { slots }) { return () => h('div', { class: 'ion-toolbar' }, slots.default && slots.default()); } });
-const IonTitle = defineComponent({ name: 'IonTitle', setup(_, { slots }) { return () => h('div', { class: 'ion-title' }, slots.default && slots.default()); } });
-const IonButtons = defineComponent({ name: 'IonButtons', setup(_, { slots }) { return () => h('div', { class: 'ion-buttons' }, slots.default && slots.default()); } });
-const IonLabel = defineComponent({ name: 'IonLabel', setup(_, { slots }) { return () => h('span', { class: 'ion-label' }, slots.default && slots.default()); } });
+const IonApp = defineComponent({ name: 'IonApp', setup(_, { slots }) { return () => h('div', { class: 'app-shell' }, slots.default && slots.default()); } });
+const IonPage = defineComponent({ name: 'IonPage', setup(_, { slots }) { return () => h('div', { class: 'app-page' }, slots.default && slots.default()); } });
+const IonHeader = defineComponent({ name: 'IonHeader', setup(_, { slots }) { return () => h('header', { class: 'app-header' }, slots.default && slots.default()); } });
+const IonToolbar = defineComponent({ name: 'IonToolbar', setup(_, { slots }) { return () => h('div', { class: 'app-toolbar' }, slots.default && slots.default()); } });
+const IonTitle = defineComponent({ name: 'IonTitle', setup(_, { slots }) { return () => h('div', { class: 'app-title' }, slots.default && slots.default()); } });
+const IonButtons = defineComponent({ name: 'IonButtons', setup(_, { slots }) { return () => h('div', { class: 'app-buttons' }, slots.default && slots.default()); } });
+const IonLabel = defineComponent({ name: 'IonLabel', setup(_, { slots }) { return () => h('span', { class: 'app-label' }, slots.default && slots.default()); } });
 
 const IonContent = defineComponent({
 	name: 'IonContent',
 	props: { fullscreen: { type: Boolean, default: false } },
 	setup(props, { slots })
 	{
-		return () => h('main', { class: ['ion-content', props.fullscreen ? 'ion-fullscreen' : ''] }, slots.default && slots.default());
+		return () => h('main', { class: ['app-content', props.fullscreen ? 'app-fullscreen' : ''] }, slots.default && slots.default());
 	}
 });
 
@@ -23,28 +23,28 @@ const IonContent = defineComponent({
 const IonRouterOutlet = defineComponent({ name: 'IonRouterOutlet', setup() { return () => h('router-view'); } });
 
 // Cards
-const IonCard = defineComponent({ name: 'IonCard', setup(_, { slots }) { return () => h('div', { class: 'ion-card' }, slots.default && slots.default()); } });
-const IonCardHeader = defineComponent({ name: 'IonCardHeader', setup(_, { slots }) { return () => h('div', { class: 'ion-card-header' }, slots.default && slots.default()); } });
-const IonCardTitle = defineComponent({ name: 'IonCardTitle', setup(_, { slots }) { return () => h('div', { class: 'ion-card-title' }, slots.default && slots.default()); } });
-const IonCardContent = defineComponent({ name: 'IonCardContent', setup(_, { slots }) { return () => h('div', { class: 'ion-card-content' }, slots.default && slots.default()); } });
+const IonCard = defineComponent({ name: 'IonCard', setup(_, { slots }) { return () => h('div', { class: 'app-card' }, slots.default && slots.default()); } });
+const IonCardHeader = defineComponent({ name: 'IonCardHeader', setup(_, { slots }) { return () => h('div', { class: 'app-card-header' }, slots.default && slots.default()); } });
+const IonCardTitle = defineComponent({ name: 'IonCardTitle', setup(_, { slots }) { return () => h('div', { class: 'app-card-title' }, slots.default && slots.default()); } });
+const IonCardContent = defineComponent({ name: 'IonCardContent', setup(_, { slots }) { return () => h('div', { class: 'app-card-content' }, slots.default && slots.default()); } });
 
 // Grid
-const IonGrid = defineComponent({ name: 'IonGrid', setup(_, { slots }) { return () => h('div', { class: 'ion-grid' }, slots.default && slots.default()); } });
-const IonRow = defineComponent({ name: 'IonRow', setup(_, { slots }) { return () => h('div', { class: 'ion-row' }, slots.default && slots.default()); } });
+const IonGrid = defineComponent({ name: 'IonGrid', setup(_, { slots }) { return () => h('div', { class: 'app-grid' }, slots.default && slots.default()); } });
+const IonRow = defineComponent({ name: 'IonRow', setup(_, { slots }) { return () => h('div', { class: 'app-grid__row' }, slots.default && slots.default()); } });
 const IonCol = defineComponent({
 	name: 'IonCol',
 	props: { size: { type: String, default: undefined } },
 	setup(props, { slots })
 	{
-		const cls = ['ion-col'];
-		if (props.size) cls.push(`ion-col-${props.size}`);
+		const cls = ['app-grid__col'];
+		if (props.size) cls.push(`app-grid__col--${props.size}`);
 		return () => h('div', { class: cls }, slots.default && slots.default());
 	}
 });
 
 // Form controls
-const IonList = defineComponent({ name: 'IonList', setup(_, { slots }) { return () => h('div', { class: 'ion-list' }, slots.default && slots.default()); } });
-const IonItem = defineComponent({ name: 'IonItem', setup(_, { slots }) { return () => h('div', { class: 'ion-item' }, slots.default && slots.default()); } });
+const IonList = defineComponent({ name: 'IonList', setup(_, { slots }) { return () => h('div', { class: 'app-list' }, slots.default && slots.default()); } });
+const IonItem = defineComponent({ name: 'IonItem', setup(_, { slots }) { return () => h('div', { class: 'app-item' }, slots.default && slots.default()); } });
 const IonInput = defineComponent({
 	name: 'IonInput',
 	props: {
@@ -107,8 +107,8 @@ const IonSelect = defineComponent({
 	}
 });
 const IonSelectOption = defineComponent({ name: 'IonSelectOption', props: { value: { type: [String, Number, Boolean, Object] as PropType<any>, default: undefined } }, setup(props, { slots }) { return () => h('option', { value: props.value }, slots.default && slots.default()); } });
-const IonNote = defineComponent({ name: 'IonNote', setup(_, { slots }) { return () => h('small', { class: 'ion-note' }, slots.default && slots.default()); } });
-const IonText = defineComponent({ name: 'IonText', setup(_, { slots }) { return () => h('span', { class: 'ion-text' }, slots.default && slots.default()); } });
+const IonNote = defineComponent({ name: 'IonNote', setup(_, { slots }) { return () => h('small', { class: 'app-note' }, slots.default && slots.default()); } });
+const IonText = defineComponent({ name: 'IonText', setup(_, { slots }) { return () => h('span', { class: 'app-text' }, slots.default && slots.default()); } });
 
 // Buttons
 const IonButton = defineComponent({
@@ -126,11 +126,11 @@ const IonButton = defineComponent({
 	setup(props, { slots })
 	{
 		const classes = () => [
-			'ion-button',
-			props.fill ? `ion-fill-${props.fill}` : '',
-			props.expand ? `ion-expand-${props.expand}` : '',
-			props.size ? `ion-size-${props.size}` : '',
-			props.color ? `ion-color-${props.color}` : '',
+			'app-button',
+			props.fill ? `app-fill-${props.fill}` : '',
+			props.expand ? `app-expand-${props.expand}` : '',
+			props.size ? `app-size-${props.size}` : '',
+			props.color ? `app-color-${props.color}` : '',
 		].filter(Boolean);
 		return () =>
 		{
@@ -160,10 +160,10 @@ const IonButton = defineComponent({
 });
 
 // Simplified Icon placeholder; renders a span for layout consistency
-const IonIcon = defineComponent({ name: 'IonIcon', props: { icon: { type: [String, Object] as PropType<any>, default: undefined } }, setup() { return () => h('span', { class: 'ion-icon' }); } });
+const IonIcon = defineComponent({ name: 'IonIcon', props: { icon: { type: [String, Object] as PropType<any>, default: undefined } }, setup() { return () => h('span', { class: 'app-icon' }); } });
 
 // Spinner
-const IonSpinner = defineComponent({ name: 'IonSpinner', props: { name: { type: String, default: 'crescent' } }, setup() { return () => h('span', { class: 'ion-spinner' }); } });
+const IonSpinner = defineComponent({ name: 'IonSpinner', props: { name: { type: String, default: 'crescent' } }, setup() { return () => h('span', { class: 'app-spinner' }); } });
 
 // Segments
 const IonSegment = defineComponent({
@@ -174,14 +174,14 @@ const IonSegment = defineComponent({
 	{
 		const onClick = (e: MouseEvent) =>
 		{
-			const target = (e.target as HTMLElement).closest('.ion-segment-button') as HTMLElement | null;
+			const target = (e.target as HTMLElement).closest('.app-segment-button') as HTMLElement | null;
 			if (target)
 			{
 				const val = target.dataset.value || '';
 				emit('ionChange', { detail: { value: val } });
 			}
 		};
-		return () => h('div', { class: 'ion-segment', onClick }, slots.default && slots.default());
+		return () => h('div', { class: 'app-segment', onClick }, slots.default && slots.default());
 	}
 });
 
@@ -190,13 +190,13 @@ const IonSegmentButton = defineComponent({
 	props: { value: { type: String, required: true } },
 	setup(props, { slots })
 	{
-		return () => h('button', { class: 'ion-segment-button', 'data-value': props.value }, slots.default && slots.default());
+		return () => h('button', { class: 'app-segment-button', 'data-value': props.value }, slots.default && slots.default());
 	}
 });
 
 // Tabs
-const IonTabs = defineComponent({ name: 'IonTabs', setup(_, { slots }) { return () => h('div', { class: 'ion-tabs' }, slots.default && slots.default()); } });
-const IonTabBar = defineComponent({ name: 'IonTabBar', setup(_, { slots }) { return () => h('nav', { class: 'ion-tab-bar' }, slots.default && slots.default()); } });
+const IonTabs = defineComponent({ name: 'IonTabs', setup(_, { slots }) { return () => h('div', { class: 'app-tabs' }, slots.default && slots.default()); } });
+const IonTabBar = defineComponent({ name: 'IonTabBar', setup(_, { slots }) { return () => h('nav', { class: 'app-tab-bar' }, slots.default && slots.default()); } });
 const IonTabButton = defineComponent({
 	name: 'IonTabButton',
 	props: { tab: { type: String, default: '' }, href: { type: String, default: '#' } },
@@ -209,7 +209,7 @@ const IonTabButton = defineComponent({
 				default: ({ href, navigate, isActive }: any) => h(
 					'a',
 					{
-						class: ['ion-tab-button', isActive ? 'active' : ''],
+						class: ['app-tab-button', isActive ? 'active' : ''],
 						href,
 						onClick: (e: MouseEvent) => { e.preventDefault(); navigate(e); }
 					},
@@ -295,4 +295,3 @@ export
 	IonApp, IonButton, IonButtons,
 	IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonList, IonNote, IonPage, IonRouterOutlet, IonRow, IonSegment, IonSegmentButton, IonSelect, IonSelectOption, IonSpinner, IonTabBar, IonTabButton, IonTabs, IonText, IonTextarea, IonTitle, IonToolbar
 };
-

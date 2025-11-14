@@ -237,7 +237,7 @@ const systemAction = async(action: string) =>
 				</ion-segment>
 			</div>
 				
-			<div v-if="segmentSelected === 'node'">
+			<div v-if="segmentSelected === 'node'" class="action-group">
 				<!-- Start Node -->
 				<ion-card v-if="nodeStore.status !== 'running'" class="container">
 					<ion-card-content>
@@ -271,7 +271,7 @@ const systemAction = async(action: string) =>
 				</ion-card>
 			</div>
 
-			<div v-if="segmentSelected === 'maintenance'">
+			<div v-if="segmentSelected === 'maintenance'" class="action-group">
 				<!-- Upgrade System -->
 				<ion-card class="container">
 					<ion-card-content>
@@ -297,7 +297,7 @@ const systemAction = async(action: string) =>
 				</ion-card>
 			</div>
 
-			<div v-if="segmentSelected === 'system'">
+			<div v-if="segmentSelected === 'system'" class="action-group">
 				<!-- Hard Reboot -->
 				<ion-card class="container">
 					<ion-card-content>
@@ -323,24 +323,25 @@ const systemAction = async(action: string) =>
 
 <style lang="scss" scoped>
 @import '@scss/container';
+@import '@scss/container';
 
 .actions
 {
-	.segment-container
-	{
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		width: 100%;
-
-		ion-segment
+		.segment-container
 		{
-			width: auto;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			width: 100%;
+
+			:deep(.app-segment)
+			{
+				width: auto;
+			}
 		}
-	}
 }
 
-ion-card-content
+:deep(.app-card-content)
 {
 	&> p
 	{

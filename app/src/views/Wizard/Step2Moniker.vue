@@ -1,15 +1,6 @@
 <script lang="ts" setup>
 import NetworkService from '@/services/NetworkService';
-import {
-	IonCol,
-	IonContent,
-	IonGrid,
-	IonItem,
-	IonList,
-	IonPage,
-	IonRow,
-	IonText,
-} from '@/ui';
+import { AppGrid, AppGridCol, AppGridRow, IonContent, IonItem, IonList, IonPage, IonText } from '@/ui';
 import AppInput from '@components/AppInput.vue';
 import LoadingButton from '@components/LoadingButton.vue';
 import { useNodeStore } from '@stores/NodeStore';
@@ -91,13 +82,13 @@ const setValueAndNavigate = async () =>
 				</ion-list>
 			</div>
 			<div class="submit">
-				<ion-grid>
-					<ion-row>
-						<ion-col size="6" offset="6">
+				<AppGrid>
+					<AppGridRow>
+						<AppGridCol size="6" offset="6">
 							<loading-button :label="$t('wizard.button-next')" :callback="setValueAndNavigate" />
-						</ion-col>
-					</ion-row>
-				</ion-grid>
+						</AppGridCol>
+					</AppGridRow>
+				</AppGrid>
 			</div>
 		</div>
 	</ion-content>

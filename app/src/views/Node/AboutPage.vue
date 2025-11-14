@@ -133,4 +133,5 @@ onUnmounted(() =>
 </template>
 <style lang="scss" scoped>
 @import '@scss/container';
+@import '@scss/container';
 </style>

@@ -1,18 +1,7 @@
 <script lang="ts" setup>
 import AppToolbar from '@/components/AppToolbar.vue';
 import NetworkService from '@/services/NetworkService';
-import {
-	IonButton,
-	IonCard,
-	IonCardContent,
-	IonCardHeader, IonCardTitle,
-	IonCol,
-	IonContent,
-	IonGrid,
-	IonHeader,
-	IonPage,
-	IonRow
-} from '@/ui';
+import { AppGrid, AppGridCol, AppGridRow, IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonContent, IonHeader, IonPage } from '@/ui';
 import { useDeviceStore, type DeviceEntry } from '@stores/DeviceStore';
 import { useNodeStore } from '@stores/NodeStore';
 import { computed, onMounted } from 'vue';
@@ -89,18 +78,18 @@ const nodeDisconnect = async() =>
 		<div class="dashboard">
 			<ion-card class="container bg-blue">
 				<ion-card-content>
-					<ion-grid>
-						<ion-row>
-							<ion-col class="item column">
+					<AppGrid>
+						<AppGridRow>
+							<AppGridCol class="item column">
 								<p class="label">{{ $t('dashboard.status-title') }}</p>
 								<p class="value">{{ nodeStatus }}</p>
-							</ion-col>
-							<ion-col class="item column right">
+							</AppGridCol>
+							<AppGridCol class="item column right">
 								<p class="label">{{ $t('dashboard.status-users') }}</p>
 								<p class="value">{{ nodeStore.onlineUsers }}</p>
-							</ion-col>
-						</ion-row>
-					</ion-grid>
+							</AppGridCol>
+						</AppGridRow>
+					</AppGrid>
 				</ion-card-content>
 			</ion-card>
 				
@@ -149,14 +138,15 @@ const nodeDisconnect = async() =>
 </template>
 <style lang="scss" scoped>
 @import '@scss/container';
+@import '@scss/container';
 
 .dashboard
 {
 	.bg-blue
 	{
-		.ion-grid
+		.app-grid
 		{
-			.ion-row
+			.app-grid__row
 			{
 				align-items: flex-start;
 			}
