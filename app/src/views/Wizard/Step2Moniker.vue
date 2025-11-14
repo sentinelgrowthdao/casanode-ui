@@ -35,7 +35,7 @@ const setValueAndNavigate = async () =>
 		const result = await NetworkService.setNodeConfiguration({
 			moniker: monikerValue,
 			nodeType: 'residential',
-			vpnType: 'v2ray'
+			vpnType: 'wireguard'
 		} as any);
 		// Check if the change was successful
 		if(result && result.moniker && result.nodeType && result.vpnType)
@@ -43,7 +43,7 @@ const setValueAndNavigate = async () =>
 			// Set the values locally
 			nodeStore.setMoniker(monikerValue);
 			nodeStore.setNodeType('residential');
-			nodeStore.setVpnType('v2ray');
+			nodeStore.setVpnType('wireguard');
 			// Reset input
 			moniker.value = '';
 			// Navigate to the next step
