@@ -373,7 +373,8 @@ body {
 
 .ui-select-field {
 	appearance: none;
-	padding: var(--ion-input-padding-y) calc(var(--ion-input-padding-x) * 1.25) var(--ion-input-padding-y) var(--ion-input-padding-x);
+	padding: var(--ion-input-padding-y) calc(var(--ion-input-padding-x) * 1.25)
+		var(--ion-input-padding-y) var(--ion-input-padding-x);
 	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24'%3E%3Cpath fill='%23ffffff' fill-opacity='0.78' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
 	background-repeat: no-repeat;
 	background-position: right 0.75rem center;
