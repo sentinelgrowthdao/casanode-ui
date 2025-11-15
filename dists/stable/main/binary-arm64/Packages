@@ -1,14 +1,14 @@
 Package: casanode-ui
 Source: casanode-ui
-Version: 2.0.0-alpha1
+Version: 2.0.0-alpha2
 Architecture: all
 Maintainer: FoxinouFr <foxinou@foxinodes.net>
 Depends: nginx
-Filename: pool/main/casanode-ui_2.0.0-alpha1_all.deb
-Size: 639944
-MD5sum: 74138cbd47c6d84248a10b7323e93841
-SHA1: 796371e2614fb91cf5ddfbbab779cb7df2049554
-SHA256: 6844724ff51105e04b8125a41456627ca81c0eac709960c080be75ced971a36a
+Filename: pool/main/casanode-ui_2.0.0-alpha2_all.deb
+Size: 632368
+MD5sum: 5897443c793b83a39728355d8a24bcc8
+SHA1: 6b0c17a7fe92536f1eb3ab3afaad1790a7b3a223
+SHA256: 9f0bda45ba3949069fda4da66ecede6c4cdd2a5a184362067342e22870e282d2
 Section: web
 Priority: optional
 Homepage: https://github.com/sentinelgrowthdao/casanode-mobile-app
