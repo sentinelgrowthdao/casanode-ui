@@ -12,7 +12,6 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import i18n from './locales';
 import router from './router';
-import { initSentry } from './utils/sentry';
 
 /* Theme variables */
 import './scss/theme/ionic-shim.scss';
@@ -34,9 +33,6 @@ const app = createApp(App)
 registerFontAwesome(app);
 // Register UI overrides for ion-page, ion-header, ion-content
 registerUi(app);
-
-// Initialize Sentry
-initSentry(app, router);
 
 // Attempt to auto-connect API from .env and restore JWT from store for deep-links
 try { NetworkService.connect({}); }
