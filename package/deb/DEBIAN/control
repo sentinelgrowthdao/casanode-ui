@@ -3,7 +3,7 @@ Section: web
 Priority: optional
 Maintainer: FoxinouFr <foxinou@foxinodes.net>
 Standards-Version: 4.1.4
-Homepage: https://github.com/sentinelgrowthdao/casanode-mobile-app
+Homepage: https://github.com/sentinelgrowthdao/casanode-ui
 Package: casanode-ui
 Version: 0.1.0
 Architecture: all
