@@ -1,17 +1,17 @@
 Package: casanode-ui
 Source: casanode-ui
-Version: 2.0.0-alpha3
+Version: 2.0.0-alpha4
 Architecture: all
 Maintainer: FoxinouFr <foxinou@foxinodes.net>
 Depends: nginx
-Filename: pool/main/casanode-ui_2.0.0-alpha3_all.deb
-Size: 632328
-MD5sum: 29dfb9050f73fbafaea9e0177de8094e
-SHA1: 39d22cf1042bccc38b45fcfd01cfc600a498798f
-SHA256: 0599f30e538129a770cabaf5f1922daa1f4eafebb491929b981dcc219f47e119
+Filename: pool/main/casanode-ui_2.0.0-alpha4_all.deb
+Size: 632332
+MD5sum: 87a96b08406a4f4994cb4a7101dd360b
+SHA1: 81da498ad31ca5e259250d46257b177c934e06cb
+SHA256: f730fd0cf458f00b8a74927d70297c8f4d13c24bf2f53062ba5f553cb2090f78
 Section: web
 Priority: optional
-Homepage: https://github.com/sentinelgrowthdao/casanode-mobile-app
+Homepage: https://github.com/sentinelgrowthdao/casanode-ui
 Description: Casanode UI - Web interface for dVPN node management
      Casanode UI is a Vue 3 single-page application served by Nginx.
      It provides the web interface for configuring and monitoring Casanode devices.
