@@ -2,6 +2,8 @@
 /app/dist/
 /package/deb/opt/casanode/www/
 /package/dist/
+gh-pages-temp/
+package/gh-pages-temp/
 
 ######################
 # IDE generated files #
