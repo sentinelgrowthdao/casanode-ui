@@ -1,14 +1,14 @@
 Package: casanode-ui
 Source: casanode-ui
-Version: 2.0.0-alpha5
+Version: 2.0.0-alpha6
 Architecture: all
 Maintainer: FoxinouFr <foxinou@foxinodes.net>
 Depends: nginx
-Filename: pool/main/casanode-ui_2.0.0-alpha5_all.deb
-Size: 632276
-MD5sum: d7d9b30a7982b41f01dad7321cc63eeb
-SHA1: d31b36df883fe8d789508193cff1afa8e3837d3f
-SHA256: 296e9ea63a1e5113acf80bcaca706ae73e815dd776084f528a5ed6e682eddb64
+Filename: pool/main/casanode-ui_2.0.0-alpha6_all.deb
+Size: 632344
+MD5sum: 8361c50abaef2f99a695642cdcc9a027
+SHA1: 1983bd2535636549c7b3caffc4dd548573286ed0
+SHA256: 5cbbafee84ba94784ef37db85b4c60fa062c25a0925fb57619a247c52cecbd76
 Section: web
 Priority: optional
 Homepage: https://github.com/sentinelgrowthdao/casanode-ui
