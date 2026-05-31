@@ -51,5 +51,5 @@ const removeMnemonicStore = async () =>
 </ion-page>
 </template>
 <style lang="scss" scoped>
-@import '@scss/wizard';
+@use '@scss/wizard' as *;
 </style>

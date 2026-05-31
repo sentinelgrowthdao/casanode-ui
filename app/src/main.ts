@@ -1,7 +1,7 @@
 import { registerFontAwesome } from '@/plugins/fontawesome';
 import NetworkService from '@/services/NetworkService';
 import { useAuthStore } from '@/stores/AuthStore';
-import { IonicVue } from '@/ui';
+import { UiPlugin } from '@/ui';
 import { registerUi } from '@/ui/register';
 import '@fontsource/lato/400.css';
 import '@fontsource/lato/700.css';
@@ -14,7 +14,7 @@ import i18n from './locales';
 import router from './router';
 
 /* Theme variables */
-import './scss/theme/ionic-shim.scss';
+import './scss/theme/ui-shim.scss';
 import './scss/theme/variables.scss';
 
 /* Initialize Pinia */
@@ -23,7 +23,7 @@ pinia.use(piniaPluginPersistedstate);
 setActivePinia(pinia);
 
 const app = createApp(App)
-	.use(IonicVue)
+	.use(UiPlugin)
 	.use(pinia)
 	.use(i18n)
 	.use(router)
@@ -31,12 +31,12 @@ const app = createApp(App)
 
 // Register Font Awesome globally
 registerFontAwesome(app);
-// Register UI overrides for ion-page, ion-header, ion-content
+// Register app shell components used across the views
 registerUi(app);
 
 // Attempt to auto-connect API from .env and restore JWT from store for deep-links
 try { NetworkService.connect({}); }
-catch (e) { /* ignore */ }
+catch { /* ignore */ }
 const authStore = useAuthStore();
 if (authStore.token)
 {

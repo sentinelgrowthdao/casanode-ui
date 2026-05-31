@@ -32,14 +32,14 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { RouterLink } from 'vue-router';
+import { RouterLink, type RouteLocationRaw } from 'vue-router';
 
 const props = defineProps({
 	href: { type: String, default: undefined },
-	routerLink: { type: [String, Object] as unknown as () => string | Record<string, any>, default: undefined },
+	routerLink: { type: [String, Object] as unknown as () => RouteLocationRaw, default: undefined },
 	routerDirection: { type: String, default: undefined },
 	fill: { type: String as () => 'clear' | 'outline' | 'solid' | 'default' | undefined, default: undefined },
-	expand: { type: String as () => 'block' | undefined, default: undefined },
+	expand: { type: String as () => 'block' | 'full' | undefined, default: undefined },
 	size: { type: String as () => 'small' | 'default' | 'large' | undefined, default: undefined },
 	color: { type: String, default: undefined },
 	disabled: { type: Boolean, default: false },

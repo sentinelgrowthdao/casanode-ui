@@ -118,7 +118,7 @@ const IonButton = defineComponent({
 		routerLink: { type: [String, Object] as PropType<any>, default: undefined },
 		routerDirection: { type: String as PropType<string | undefined>, default: undefined },
 		fill: { type: String as PropType<'clear' | 'outline' | 'solid' | 'default' | undefined>, default: undefined },
-		expand: { type: String as PropType<'block' | undefined>, default: undefined },
+		expand: { type: String as PropType<'block' | 'full' | undefined>, default: undefined },
 		size: { type: String as PropType<'small' | 'default' | undefined>, default: undefined },
 		disabled: { type: Boolean, default: false },
 		color: { type: String as PropType<string | undefined>, default: undefined },
@@ -245,7 +245,7 @@ export const modalController = {
 };
 
 // Plugin to register kebab-case tags used in templates
-export const IonicVue: Plugin = {
+export const UiPlugin: Plugin = {
 	install(app: App)
 	{
 		const register = (name: string, comp: any) => app.component(name, comp);

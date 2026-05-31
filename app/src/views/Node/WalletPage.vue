@@ -169,8 +169,7 @@ const refreshBalance = async () =>
 </template>
 
 <style lang="scss" scoped>
-@import '@scss/container';
-@import '@scss/container';
+@use '@scss/container' as *;
 
 
 .container

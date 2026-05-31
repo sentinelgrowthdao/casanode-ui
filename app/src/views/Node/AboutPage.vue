@@ -46,7 +46,7 @@ function updateUptime()
 // Define the uptime value
 const uptime = ref(formatDuration(Math.floor(Date.now() / 1000) - nodeStore.uptime));
 // Refresh the uptime value every second
-let intervalId: NodeJS.Timeout | null = null;
+let intervalId: ReturnType<typeof setInterval> | null = null;
 
 /**
  * Lifecycle hook to run when the component is mounted
@@ -132,6 +132,5 @@ onUnmounted(() =>
 	</ion-page>
 </template>
 <style lang="scss" scoped>
-@import '@scss/container';
-@import '@scss/container';
+@use '@scss/container' as *;
 </style>

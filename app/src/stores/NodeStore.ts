@@ -13,6 +13,13 @@ export interface NodeBalance
 	denom: string;
 }
 
+export interface WalletTransaction
+{
+	type: string;
+	amount: string;
+	hash: string;
+}
+
 /**
  * The initial state of the node store
  * @returns The initial state of the node store
@@ -49,7 +56,7 @@ function createDefaultState()
 		publicAddress: '',
 		nodeAddress: '',
 		mnemonic: [] as string[],
-		transactions: [],
+		transactions: [] as WalletTransaction[],
 		
 		// System Information
 		casanodeVersion: '',

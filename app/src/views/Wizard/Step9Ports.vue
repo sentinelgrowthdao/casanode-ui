@@ -115,7 +115,7 @@ const retryTest = () =>
 </ion-page>
 </template>
 <style lang="scss" scoped>
-@import '@scss/wizard';
+@use '@scss/wizard' as *;
 
 // <Transition>
 .v-enter-active, .v-leave-active

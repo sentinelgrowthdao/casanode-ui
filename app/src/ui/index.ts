@@ -1,5 +1,5 @@
-// Export only needed pieces from the ionic shim
-export { IonicVue, IonTabs, IonTabBar, IonTabButton, IonLabel, IonItem, IonList, IonNote, IonText, IonSpinner, IonToolbar, IonTitle, IonButtons, IonCard, IonSegment, IonSegmentButton, toastController, modalController } from '../ionic-shim/index.ts';
+// Export only needed pieces from the UI shim
+export { UiPlugin, IonTabs, IonTabBar, IonTabButton, IonLabel, IonItem, IonList, IonNote, IonText, IonSpinner, IonToolbar, IonTitle, IonButtons, IonCard, IonSegment, IonSegmentButton, toastController, modalController } from '../ui-shim/index';
 
 // Export our UI replacements and registration helper
 export { registerUi, IonPage, IonHeader, IonContent, IonButton, IonCardHeader, IonCardTitle, IonCardContent } from './register';

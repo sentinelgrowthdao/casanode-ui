@@ -4,12 +4,17 @@ import NodeService from '@/services/NodeService';
 import { useAuthStore } from '@/stores/AuthStore';
 import { IonButton, IonContent, IonItem, IonPage, IonSpinner, UiInputField } from '@/ui';
 import { computed, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
 const authStore = useAuthStore();
+const { t, te } = useI18n();
 
 const invalidReason = computed(() => authStore.invalidReason);
+const hasStartupContext = computed(() => Boolean(authStore.token && authStore.lastIp && authStore.lastPort));
+const startupIssueKey = computed(() => invalidReason.value || '');
+const missingContext = computed(() => !invalidReason.value && !hasStartupContext.value);
 
 const loading = ref(false);
 const isConnecting = ref(false);
@@ -20,6 +25,11 @@ const passphraseFormOpen = ref(false);
 const passphraseInputValue = ref('');
 const passphraseLoading = ref(false);
 const passphraseErrorMessage = ref('');
+
+const resolveText = (key: string): string =>
+{
+	return te(key) ? t(key) : key;
+};
 
 /**
  * Final step: load node config and route user
@@ -66,13 +76,11 @@ const proceed = async () =>
 	// Install Docker image if missing
 	if (!imageAvailable)
 	{
-		connectingMessage.value =
-			(window as any).$t?.('loading.wait-docker') || 'Preparing environment…';
+		connectingMessage.value = t('loading.wait-docker');
 		const ok = await NetworkService.installDockerImage();
 		if (!ok) 
 		{
-			error.value =
-				(window as any).$t?.('loading.error-message-docker') || 'Failed to install Docker image.';
+			error.value = t('loading.error-message-docker');
 			return;
 		}
 		imageAvailable = true;
@@ -81,13 +89,11 @@ const proceed = async () =>
 	// Install node/VPN/certificate configs if missing
 	if (!nodeConfig || !certificateKey) 
 	{
-		connectingMessage.value =
-			(window as any).$t?.('loading.wait-config') || 'Installing configuration…';
+		connectingMessage.value = t('loading.wait-config');
 		const cfg = await NetworkService.installNodeConfiguration();
 		if (!cfg?.nodeConfig || !cfg?.certificate) 
 		{
-			error.value =
-				(window as any).$t?.('loading.error-message-config') || 'Failed to install configuration.';
+			error.value = t('loading.error-message-config');
 			return;
 		}
 		nodeConfig = true;
@@ -95,8 +101,7 @@ const proceed = async () =>
 	}
 
 	// If passphrase is required, open form (pause keep-awake while typing)
-	connectingMessage.value =
-		(window as any).$t?.('loading.wait-connection') || 'Connecting to node…';
+	connectingMessage.value = t('loading.wait-connection');
 	install = await NetworkService.checkInstallation(); // refresh state
 	const pass = await NetworkService.nodePassphrase();
 	if (pass.required && !pass.available) 
@@ -113,19 +118,18 @@ const proceed = async () =>
 
 /**
  * Start sequence logic (priority order):
- * 1. If we already have a JWT + stored endpoint (authStore.lastIp/lastPort) → reuse them (skip login).
- * 2. Else we cannot proceed: user must go to /connect to scan or input params (ConnectionStore removed).
- * 3. Persist endpoint after successful authentication for future automatic reuse.
+ * 1. If we already have a JWT + stored endpoint (authStore.lastIp/lastPort) → reuse them.
+ * 2. If the context is missing, show a clear UI state and stop.
+ * 3. Persist endpoint after a successful reconnect.
  */
 const start = async () =>
 {
 	// Prevent double click
 	if (isConnecting.value) return;
 
-	// If session invalid, force user to /connect
-	if (authStore.invalidReason)
+	if (startupIssueKey.value)
 	{
-		error.value = authStore.invalidReason + ' Please go to the connection page.';
+		error.value = resolveText(startupIssueKey.value);
 		return;
 	}
 
@@ -136,47 +140,28 @@ const start = async () =>
 
 	try
 	{
-		let ip: string | undefined;
-		let port: number | undefined;
-		let useExistingJwt = false;
-
-		if (authStore.token && authStore.lastIp && authStore.lastPort)
+		const ip = authStore.lastIp;
+		const port = authStore.lastPort;
+		if (!ip || !port)
 		{
-			ip = authStore.lastIp;
-			port = authStore.lastPort;
-			useExistingJwt = true;
-		}
-		else
-		{
-			throw new Error(
-				(window as any).$t?.('homepage.no-context') ||
-					"No connection context. Please go to /connect to scan the node's QR code."
-			);
+			error.value = resolveText('homepage.no-context');
+			return;
 		}
 
 		const connected = await NetworkService.connect({ ip, port });
 		if (!connected)
 		{
-			throw new Error(
-				(window as any).$t?.('homepage.unable-connect-api') || 'Unable to connect to the API.'
-			);
-		}
-
-		if (!useExistingJwt)
-		{
-			throw new Error(
-				(window as any).$t?.('homepage.missing-jwt') || 'Missing JWT. Please rescan the QR code.'
-			);
+			error.value = resolveText('homepage.unable-connect-api');
+			return;
 		}
 
 		NetworkService.setAuthToken(authStore.token);
 		authStore.setLastEndpoint(ip || null, port || null);
 		await proceed();
 	}
-	catch (e: any)
+	catch (e: unknown)
 	{
-		error.value =
-			e?.message || (window as any).$t?.('homepage.error-generic') || 'An error occurred.';
+		error.value = e instanceof Error ? e.message : resolveText('homepage.error-generic');
 	}
 	finally
 	{
@@ -198,9 +183,7 @@ const submitPassphrase = async () =>
 		const value = (passphraseInputValue.value || '').trim();
 		if (!value || value.length < 8)
 		{
-			passphraseErrorMessage.value =
-				(window as any).$t?.('homepage.error-passphrase-length') ||
-				'Passphrase must contain at least 8 characters.';
+			passphraseErrorMessage.value = t('homepage.error-passphrase-length');
 			return;
 		}
 
@@ -208,16 +191,14 @@ const submitPassphrase = async () =>
 		const reconnected = await (NetworkService.reconnect?.() ?? Promise.resolve(true));
 		if (reconnected === false)
 		{
-			passphraseErrorMessage.value =
-				(window as any).$t?.('loading.passphrase-error') || 'Passphrase validation failed.';
+			passphraseErrorMessage.value = t('loading.passphrase-error');
 			return;
 		}
 
 		const ok = await NetworkService.setNodePassphrase(value);
 		if (!ok)
 		{
-			passphraseErrorMessage.value =
-				(window as any).$t?.('loading.passphrase-error') || 'Failed to send passphrase.';
+			passphraseErrorMessage.value = t('loading.passphrase-error');
 			return;
 		}
 
@@ -239,33 +220,13 @@ const submitPassphrase = async () =>
 	<ion-page>
 		<ion-content class="homepage" :fullscreen="true">
 			<div class="content">
-				<!-- Invalid session banner -->
-				<div v-if="invalidReason" class="invalid-banner">
-					<p class="text">
-						<!-- Try to translate the reason if it's a key, else display raw -->
-						{{ $te(`errors.${invalidReason}`) ? $t(`errors.${invalidReason}`) : invalidReason }}
+				<div v-if="startupIssueKey" class="invalid-banner" role="alert" aria-live="polite">
+					<p class="title">
+						{{ $t('homepage.invalid-session') }}
 					</p>
-					<div class="actions">
-						<ion-button
-							size="small"
-							fill="outline"
-							@click="
-								() => {
-									authStore.clear();
-									router.replace({ name: 'ConnectLink' });
-								}
-							"
-						>
-							{{ $t('homepage.invalid-banner-reset') }}
-						</ion-button>
-						<ion-button
-							size="small"
-							color="primary"
-							@click="() => router.replace({ name: 'ConnectLink' })"
-						>
-							{{ $t('homepage.invalid-banner-go-connect') }}
-						</ion-button>
-					</div>
+					<p class="text">
+						{{ resolveText(startupIssueKey) }}
+					</p>
 				</div>
 				<div class="header">
 					<h1>{{ $t('app.name') }}</h1>
@@ -279,8 +240,11 @@ const submitPassphrase = async () =>
 					<h2>{{ $t('welcome.start-title') }}</h2>
 					<div class="start">
 						<p class="message">{{ $t('welcome.start-text') }}</p>
+						<p v-if="missingContext" class="help">
+							{{ $t('homepage.no-context-help') }}
+						</p>
 						<p class="button">
-							<ion-button :disabled="loading || isConnecting" @click="start">
+							<ion-button :disabled="loading || isConnecting || missingContext" @click="start">
 								<ion-spinner v-if="loading || isConnecting" name="crescent" />
 								{{
 									loading || isConnecting
@@ -331,7 +295,7 @@ const submitPassphrase = async () =>
 </template>
 
 <style lang="scss" scoped>
-@import '@scss/homepage';
+@use '@scss/homepage' as *;
 
 .invalid-banner {
 	background: #331;
@@ -344,14 +308,17 @@ const submitPassphrase = async () =>
 	margin-bottom: 1rem;
 }
 
+.invalid-banner .title {
+	color: #fff;
+	font-size: 0.95rem;
+	font-weight: 700;
+	margin: 0;
+}
+
 .invalid-banner .text {
 	color: #f99;
 	font-size: 0.85rem;
 	margin: 0;
 }
 
-.invalid-banner .actions {
-	display: flex;
-	gap: 0.5rem;
-}
 </style>

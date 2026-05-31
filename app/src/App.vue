@@ -6,6 +6,6 @@
 </template>
 
 <script setup lang="ts">
-import '@scss/theme/ionic-shim.scss';
+import '@scss/theme/ui-shim.scss';
 import '@scss/theme/variables.scss';
 </script>
