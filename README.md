@@ -29,12 +29,6 @@ Install the required packages
 npm i
 ```
 
-Install `ionic`
-
-```bash
-npm install -g @ionic/cli
-```
-
 Generate the build information file for the application using the following command:
 
 ```bash
@@ -44,7 +38,7 @@ npm run prebuild
 Launch the application
 
 ```bash
-ionic serve
+npm run dev
 ```
 
 ## Quick Connect URL (/connect)
@@ -68,7 +62,7 @@ The application (web build / packaged UI) exposes a lightweight bootstrap route 
 1. The `/connect` view validates the query parameters.
 2. If valid, it stores `ip`, `port`, and (optionally) `key` in an in‑memory Pinia store (`ConnectionStore`) that is NOT persisted (data is lost on full reload).
 3. It immediately performs a `router.replace({ name: 'Home' })` to go back to the Home screen.
-4. When you press Start, the app first uses the in‑memory values. If those are absent (e.g. page was reloaded), it falls back to the last successful endpoint (`lastIp` / `lastPort`) persisted alongside the authentication token in the `AuthStore`.
+4. When you press Start, the app uses the last successful endpoint (`lastIp` / `lastPort`) persisted alongside the authentication token in the `AuthStore`.
 5. After a successful login, the resolved endpoint (ip/port) is stored as the new persisted fallback for future sessions.
 
 ### Security & hygiene notes
